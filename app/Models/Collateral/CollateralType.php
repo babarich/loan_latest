@@ -12,7 +12,7 @@ class CollateralType extends Model
 
     protected $table = 'collateral_types';
 
-    protected $fillable = ['name','user_id', 'description', 'status'];
+    protected $fillable = ['name','user_id', 'description', 'status', 'com_id'];
 
 
     public function user(){

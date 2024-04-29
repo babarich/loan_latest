@@ -24,14 +24,14 @@ class DashboardController extends Controller
                           MonthlyPayment $monthlyPayment, LoanDueChart $dueChart,PrincipleDue $principleDue,
              InterestDue $interestDue){
 
-        $totalOutstanding = LoanSchedule::sum('amount');
-        $principleOutstanding = LoanSchedule::sum('principle');
-         $interestOut = LoanSchedule::sum('interest');
-         $fully = LoanPayment::query()->where('status', '=','completed')->count();
-            $open = LoanPayment::query()->where('status', '!=', 'completed')->count();
-            $borrowers = Borrower::count('id');
-           $denied =Loan::query()->where('status', '=', 'rejected')->count();
-           $loans =Loan::query()->where('release_status', '=', 'approved')->count();
+             $totalOutstanding = LoanSchedule::sum('amount');
+             $principleOutstanding = LoanSchedule::sum('principle');
+             $interestOut = LoanSchedule::sum('interest');
+             $fully = LoanPayment::query()->where('status', '=','completed')->count();
+             $open = LoanPayment::query()->where('status', '!=', 'completed')->count();
+             $borrowers = Borrower::count('id');
+             $denied =Loan::query()->where('status', '=', 'rejected')->count();
+             $loans =Loan::query()->where('release_status', '=', 'approved')->count();
 
         return view ('dashboard',[
             'totalOutstanding' => $totalOutstanding,

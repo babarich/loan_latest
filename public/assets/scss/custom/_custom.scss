@@ -33,9 +33,6 @@ button {
 
 /* Start::basic */
 .page {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   min-height: 100vh;
 }
 @media (min-width: 992px) {

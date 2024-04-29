@@ -18,7 +18,8 @@ class Collateral extends Model
 
     protected $table = 'collaterals';
 
-    protected $fillable = ['loan_id','type_id', 'name', 'product_name', 'amount', 'date', 'condition', 'description', 'attachment','filename', 'attachment_size', 'user_id'];
+    protected $fillable = ['loan_id','type_id', 'name', 'product_name', 'amount', 'date', 'condition',
+        'description', 'attachment','filename', 'attachment_size', 'user_id','com_id'];
 
 
     public function loan(){

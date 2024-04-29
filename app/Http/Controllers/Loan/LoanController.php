@@ -327,7 +327,7 @@ class LoanController extends Controller
         $types = CollateralType::query()->get();
         $loan = Loan::with(['schedules','user', 'borrower','guarantor','product', 'loanpayment','agreements',
             'collaterals', 'files','comments','cycles', 'payments'])->findOrFail($id);
-        return Inertia::render('Loan/View',['loan' =>$loan, 'types' => $types]);
+        return view('loan.view',['loan' =>$loan, 'types' => $types]);
     }
 
 
@@ -348,11 +348,12 @@ class LoanController extends Controller
            LoanAttachment::create([
                'loan_id' => $loanId,
                'name' => $validatedData['filename'],
-               'filename' => $request->input('name'),
+               'filename' => $request->input('filename'),
                'file' => $filename,
                'attachment' => $path,
                'attachment_size' => $filesize,
                'uploaded_by' => Auth::id(),
+               'com_id' => Auth::user()->com_id,
                'type' => 'agreement'
            ]);
 
@@ -497,7 +498,11 @@ class LoanController extends Controller
                     'payment_date' => $validatedData['date'],
                     'amount' => $validatedData['amount'],
                     'type' => $validatedData['type'],
-                    'user_id' => Auth::id()
+                    'bank' => $request->filled('bank') ? $request->input('bank') : null,
+                    'mobile' => $request->filled('mobile') ? $request->input('mobile') : null,
+                    'reference' => $request->filled('reference') ? $request->input('reference') : null,
+                    'user_id' => Auth::id(),
+                    'com_id' => Auth::user()->com_id,
                 ]);
             }
 

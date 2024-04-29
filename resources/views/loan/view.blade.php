@@ -1,338 +1,790 @@
 @extends('layouts.app')
 @section('content')
-    <div class="row mb-6 mt-4">
-        <div class="col-sm-12 col-md-6 col-lg-6">
-
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-6">
-            <div class="d-flex flex-row-reverse gap-3">
-                <div class="mr-4">
-                    <a class="btn btn-primary" href="{{route('borrow.index')}}"><i class="bx bx-left-arrow-alt"></i>Back</a>
-                </div>
-                <div class="vr"></div>
-              <div>
-                  <a   class="btn btn-danger rounded mr-4 ml-3">
-                      <i class="bx bx-box mr-2"></i>  Assign to group
-                  </a>
-              </div>
-
-                <div class="vr"></div>
-                <div>
-                    <a  :href="route('borrow.assign', customer.id)" class="btn btn-primary mr-4">
-                        <i class="bx bx-user w-4 h-4 mr-2"></i>  Assign as Guarantor
-                    </a>
-                </div>
-                <div class="vr"></div>
-              <div class="ms-4">
-                  <a   class="btn btn-dark">
-                      <i class="bx bx-download"></i>  Download Profile
-                  </a>
-              </div>
+    <div class="container-fluid mt-8">
 
 
 
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Start::row-1 -->
-    <div class="row mt-4">
-        <div class="col-xxl-4 col-xl-12">
-            <div class="card custom-card overflow-hidden">
-                <div class="card-body p-0">
-                    <div class="d-sm-flex align-items-top p-4 border-bottom-0 main-profile-cover">
-                        <div>
-                        <span class="avatar avatar-xxl avatar-rounded online me-3">
-                            @if(isset($borrow->attachment))
-                                <img src="{{'storage/attachments/'.$borrow->attachment}}" alt="">
-                            @else
-                                <img src="{{asset('/assets/images/faces/9.jpg')}}" alt="">
-                            @endif
-
-                        </span>
-                        </div>
-                        <div class="flex-fill main-profile-info">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <h6 class="fw-semibold mb-1 text-fixed-white">{{$borrow->first_name}} {{$borrow->last_name}}</h6>
-
-                            </div>
-                            <p class="mb-1 text-muted text-fixed-white op-7">{{$borrow->working_status}} , {{$borrow->business_name}}</p>
-                            <p class="fs-12 text-fixed-white mb-4 op-5">
-                                <span class="me-3"><i class="ri-building-line me-1 align-middle"></i>{{$borrow->address}}</span>
-
-                            </p>
-
-                        </div>
+        <!-- Start::row-1 -->
+        <div class="row mb-5 mt-4">
+            <div class="col-xl-12">
+                <div class="card custom-card">
+                    <div class="card-header d-sm-flex d-block">
+                        <ul class="nav nav-tabs nav-tabs-header mb-0 d-sm-flex d-block" role="tablist">
+                            <li class="nav-item m-1">
+                                <a class="nav-link active" data-bs-toggle="tab" role="tab" aria-current="page"
+                                   href="#personal-info" aria-selected="true">Loan Information</a>
+                            </li>
+                            <li class="nav-item m-1">
+                                <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+                                   href="#account-settings" aria-selected="true">Payments</a>
+                            </li>
+                            <li class="nav-item m-1">
+                                <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+                                   href="#email-settings" aria-selected="true">Loan Schedules</a>
+                            </li>
+                            <li class="nav-item m-1">
+                                <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+                                   href="#agreements" aria-selected="true">Agreement</a>
+                            </li>
+                            <li class="nav-item m-1">
+                                <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+                                   href="#labels" aria-selected="true">Collaterals</a>
+                            </li>
+                            <li class="nav-item m-1">
+                                <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+                                   href="#notification-settings" aria-selected="true">Loan Files</a>
+                            </li>
+                            <li class="nav-item m-1">
+                                <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+                                   href="#security" aria-selected="true">Loan Comments</a>
+                            </li>
+                        </ul>
                     </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane show active" id="personal-info"
+                                 role="tabpanel">
+                                <div class="row mt-4">
+                                    <div class="col-xxl-4 col-xl-12">
+                                        <div class="card custom-card overflow-hidden">
+                                            <div class="card-body p-0">
+                                                <div class="d-sm-flex align-items-top p-4 border-bottom-0 main-profile-cover">
+                                                    <div>
+                                                    <span class="avatar avatar-xxl avatar-rounded online me-3">
+                                                        @if(isset($loan->borrower->attachment))
+                                                            <img src="{{asset('storage/attachments/'.$loan->borrower->attachment)}}" alt="">
+                                                        @else
+                                                            <img src="{{asset('/assets/images/faces/9.jpg')}}" alt="">
+                                                        @endif
 
-                    <div class="p-4 border-bottom border-block-end-dashed">
-                        <p class="fs-15 mb-2 me-4 fw-semibold">Customer Information :</p>
-                        <div class="text-muted">
-                            <p class="mb-2">
+                                                    </span>
+                                                    </div>
+                                                    <div class="flex-fill main-profile-info">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <h6 class="fw-semibold mb-1 text-fixed-white">{{$loan->borrower->first_name}} {{$loan->borrower->last_name}}</h6>
+
+                                                        </div>
+                                                        <p class="mb-1 text-muted text-fixed-white op-7">{{$loan->borrower->working_status}} , {{$loan->borrower->business_name}}</p>
+                                                        <p class="fs-12 text-fixed-white mb-4 op-5">
+                                                            <span class="me-3"><i class="ri-building-line me-1 align-middle"></i>{{$loan->borrower->address}}</span>
+
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="p-4 border-bottom border-block-end-dashed">
+                                                    <p class="fs-15 mb-2 me-4 fw-semibold">Customer Information :</p>
+                                                    <div class="text-muted">
+                                                        <p class="mb-2">
                                             <span class="avatar avatar-sm avatar-rounded me-2 bg-light text-muted">
                                                           <i class="ri-phone-line align-middle fs-14"></i>
                                             </span>
-                              {{$borrow->mobile}}
-                            </p>
-                            <p class="mb-2">
+                                                            {{$loan->borrower->mobile}}
+                                                        </p>
+                                                        <p class="mb-2">
                                             <span class="avatar avatar-sm avatar-rounded me-2 bg-light text-muted">
                                                       <i class="ri-mail-line align-middle fs-14"></i>
                                             </span>
-                             {{$borrow->email}}
-                            </p>
-                            <p class="mb-0">
+                                                            {{$loan->borrower->email}}
+                                                        </p>
+                                                        <p class="mb-0">
                                             <span class="avatar avatar-sm avatar-rounded me-2 bg-light text-muted">
                                                 <i class="ri-user-line align-middle fs-14"></i>
                                             </span>
-                               {{ucfirst(strtolower($borrow->gender))}}
-                            </p>
-                            <p class="mb-0">
+                                                            {{ucfirst(strtolower($loan->borrower->gender))}}
+                                                        </p>
+                                                        <p class="mb-0">
                                             <span class="avatar avatar-sm avatar-rounded me-2 bg-light text-muted">
                                                 <i class="ri-calendar-line align-middle fs-14"></i>
                                             </span>
-                                {{$borrow->age}} Years
-                            </p>
-                        </div>
-                    </div>
+                                                            {{$loan->borrower->age}} Years
+                                                        </p>
+                                                    </div>
+                                                </div>
 
 
 
-                </div>
-            </div>
-        </div>
-        <div class="col-xxl-8 col-xl-12">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card custom-card">
-                        <div class="card-body p-0">
-                            <div class="p-3 border-bottom border-block-end-dashed d-flex align-items-center justify-content-between">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-8 col-xl-12">
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <div class="card custom-card">
+                                                    <div class="card-body p-0">
+                                                        <div class="border-bottom border-block-end-dashed d-flex align-items-center justify-content-between">
+                                                            <ul class="list-group" style="width: 100%">
+                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Reference :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{$loan->reference}}</span>
 
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap gap-2 align-items-center">
-                                            <div class="me-2 fw-semibold">
-                                                Reference :
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Joined Date :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{\Carbon\Carbon::parse($loan->borrower->created_at)->format('Y-m-d')}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Loan Officer :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{$loan->user->name ?? ''}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Loan Product
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{$loan->product->name}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Loan Release Date
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{$loan->loan_release_date}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Disbursement Method :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{ucfirst(strtolower($loan->disbursement))}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Principle Amount :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{number_format($loan->principle_amount)}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Total Interest :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{number_format($loan->total_interest)}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Interest  :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{$loan->interest_percentage ? $loan->interest_percentage . '%' : $loan->interest_amount}} per {{$loan->interest_duration}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Interest  Type :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{$loan->interest_method}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Loan Duration :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{$loan->loan_duration}} {{$loan->duration_type}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Repayment Cycle :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{$loan->payment_number}} {{$loan->payment_cycle}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Total Due :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{number_format($loan->loanPayment->due_amount)}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Total Paid Amount :
+                                                                        </div>
+                                                                        <span class="fs-12 text-muted float-end">{{ $loan->loanPayment->paid_amount ? number_format($loan->loanPayment->paid_amount) : 0}}</span>
+
+                                                                </li>
+                                                                <li class="list-group-item d-flex justify-content-between">
+
+                                                                        <div class="me-2 fw-semibold">
+                                                                            Loan Status :
+                                                                        </div>
+                                                                        @if($loan->status === 'pending')
+                                                                            <span class="badge bg-warning">
+                                                                                Pending
+                                                                            </span>
+                                                                            @else
+                                                                                <span class="badge bg-success">
+                                                                                Approved
+                                                                            </span>
+                                                                        @endif
+
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <span class="fs-12 text-muted float-end">{{$borrow->reference}}</span>
+
                                         </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap gap-2 align-items-center">
-                                            <div class="me-2 fw-semibold">
-                                                Onboarded Date :
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="tab-pane" id="account-settings"
+                                 role="tabpanel">
+                                <div class="d-flex align-items-center justify-content-between w-100 p-3 border-bottom">
+                                    <div>
+                                        <h6 class="fw-semibold mb-0">Payment List</h6>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary d-flex align-items-center justify-content-center btn-wave waves-light"
+                                            data-bs-toggle="modal" data-bs-target="#create-folder">
+                                        <i class="ri-add-circle-line align-middle me-1"></i>Add  Payment
+                                    </button>
+                                </div>
+                                <div class="modal fade" id="create-folder" tabindex="-1"
+                                     aria-labelledby="create-folder" data-bs-keyboard="false"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-top">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h6 class="modal-title" id="staticBackdropLabel">Create Payment
+                                                </h6>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                             </div>
-                                            <span class="fs-12 text-muted float-end">{{$borrow->created_at}}</span>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap gap-2 align-items-center">
-                                            <div class="me-2 fw-semibold">
-                                                Loan Officer :
+                                            <form action="{{route('loan.payment', $loan->id)}}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                            <div class="modal-body">
+
+
+                                                <div class="col-xl-12 mb-3">
+                                                    <label for="create-folder1" class="form-label">Payment  Cycle</label>
+                                                    <select  class="form-control" name="schedule" id="paymentSchedule" required>
+                                                        <option value="">Select...</option>
+                                                        @foreach($loan->schedules as $schedule)
+                                                            <option value="{{$schedule->id}}">{{$schedule->due_date}} - {{number_format($schedule->amount)}}</option>
+                                                        @endforeach
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-xl-12 mb-3">
+                                                    <label for="create-folder1" class="form-label"> Enter Amount</label>
+                                                    <input  class="form-control  number-format" type="number" name="amount" id="amount" required>
+                                                </div>
+                                                <div class="col-xl-12 mb-3">
+                                                    <label for="create-folder1" class="form-label"> Payment Date</label>
+                                                    <input  class="form-control" type="date" name="date" required>
+                                                </div>
+                                                <div class="col-xl-12 mb-3">
+                                                    <label for="create-folder1" class="form-label"> Payment Method</label>
+                                                    <select class="form-control" name="type" id="paymentMethod" required>
+                                                        <option value="">select..</option>
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Bank">Bank</option>
+                                                        <option value="Cheque">Cheque</option>
+                                                        <option value="Mobile Transfer">mobile Transfer</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xl-12 mb-3" id="bankDiv" style="display: none">
+                                                    <label for="create-folder1" class="form-label">Bank Name</label>
+                                                    <input class="form-control" name="bank" type="text" />
+
+                                                </div>
+                                                <div class="col-xl-12 mb-3" id="mobileMoney"  style="display: none">
+                                                    <label for="create-folder1" class="form-label">Mobile Money</label>
+                                                    <select class="form-control" name="mobile">
+                                                        <option value="">select..</option>
+                                                        <option value="M-pesa">M-pesa</option>
+                                                        <option value="Tigo Pesa">Tigo Pesa</option>
+                                                        <option value="Airtel">Airtel Money</option>
+                                                        <option value="Halopesa">Halopesa</option>
+                                                        <option value="T-Pesa">T-Pesa</option>
+                                                        <option value="Azam Pay">Azam Pay</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-xl-12 mb-3" id="referenceDiv" style="display: none">
+                                                    <label for="create-folder1" class="form-label">Reference</label>
+                                                    <input class="form-control" name="reference" type="text" />
+
+                                                </div>
+                                                <div class="col-xl-12 mb-3">
+                                                    <label for="create-folder1" class="form-label"> Comments</label>
+                                                    <textarea  class="form-control" rows="3" name="description"></textarea>
+                                                </div>
                                             </div>
-                                            <span class="fs-12 text-muted float-end">{{$borrow->user->name ?? ''}}</span>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap gap-2 align-items-center">
-                                            <div class="me-2 fw-semibold">
-                                                Identity
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-sm  btn-light"
+                                                        data-bs-dismiss="modal"><i class="ri-close-fill"></i> Cancel</button>
+                                                <button type="submit" class="btn btn-sm btn-success"><i class="ri-save-fill"></i> Submit</button>
                                             </div>
-                                            <span class="fs-12 text-muted float-end">{{$borrow->identity}}</span>
+                                            </form>
                                         </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap align-items-center">
-                                            <div class="me-2 fw-semibold">
-                                                Identification Number
-                                            </div>
-                                            <span class="fs-12 text-muted float-end">{{$borrow->id_number}}</span>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap align-items-center">
-                                            <div class="me-2 fw-semibold">
-                                                Customers Group :
-                                            </div>
-                                            <span class="fs-12 text-muted float-end">{{$borrow->group ? $borrow->group->name : ''}}</span>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap align-items-center">
-                                            <div class="me-2 fw-semibold">
-                                                Description :
-                                            </div>
-                                            <span class="fs-12 text-muted float-end">{{$borrow->description}}</span>
-                                        </div>
-                                    </li>
-                                </ul>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                <table class="table text-nowrap">
+                                    <thead class="table-primary">
+                                    <tr>
+                                        <th scope="col">SN</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Collected By</th>
+                                        <th scope="col">Method</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Receipt</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($loan->payments as $payment)
+                                        <tr>
+                                            <td>
+                                                {{$loop->iteration}}
+                                            </td>
+                                            <td>{{$payment->payment_date}}</td>
+                                            <td>{{$payment->user->name ?? ''}}</td>
+                                            <td> {{$payment->type}}</td>
+                                            <td> {{number_format($payment->amount)}}</td>
+                                            <td></td>
+                                        </tr>
+                                    @endforeach
+
+                                    </tbody>
+                                </table>
                             </div>
 
+                            </div>
+                            <div class="tab-pane p-0" id="email-settings"
+                                 role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table text-nowrap">
+                                        <thead class="table-primary">
+                                        <tr>
+                                            <th scope="col">S/N</th>
+                                            <th scope="col">Due Date</th>
+                                            <th scope="col">Principle</th>
+                                            <th scope="col">Interest</th>
+                                            <th scope="col">Penalty</th>
+                                            <th scope="col">Fees</th>
+                                            <th scope="col">Interest Paid</th>
+                                            <th scope="col">Principle Paid</th>
+                                            <th scope="col">Due Amount</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($loan->schedules as $schedule)
+                                            <tr>
+                                                <td>
+                                                    {{$loop->iteration}}
+                                                </td>
+
+                                                <td>
+                                                    {{$schedule->due_date}}
+                                                </td>
+                                                <td>
+                                                    {{number_format($schedule->principle)}}
+                                                </td>
+                                                <td>
+                                                    {{number_format($schedule->interest)}}
+                                                </td>
+
+                                                <td>
+
+                                                </td>
+
+                                                <td>
+
+                                                </td>
+
+                                                <td>
+                                                    {{$schedule->interest_paid ? number_format($schedule->interest_paid) : 0.00}}
+                                                </td>
+
+                                                <td>
+                                                    {{$schedule->principal_paid ? number_format($schedule->principal_paid) : 0.00}}
+                                                </td>
+                                                <td>
+                                                    {{number_format($schedule->amount)}}
+                                                </td>
+                                                <td>
+                                                    @if($schedule->status === 'pending')
+                                                        <span class="badge bg-warning">Pending</span>
+                                                    @elseif($schedule->status === 'due')
+                                                        <span class="badge bg-danger">Due</span>
+                                                    @elseif($schedule->status === 'completed')
+                                                        <span class="badge bg-success">Completed</span>
+                                                    @elseif($schedule->status === 'partial')
+                                                        <span class="badge bg-danger">Partial Paid</span>
+                                                    @else
+                                                        <span  class="badge bg-danger">Overdue</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <div class="tab-pane" id="agreements"
+                                 role="tabpanel">
+
+                                <div class="d-flex align-items-center justify-content-between w-100 p-3 border-bottom">
+                                    <div>
+                                        <h6 class="fw-semibold mb-0">Agreement Forms</h6>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary d-flex align-items-center justify-content-center btn-wave waves-light"
+                                            data-bs-toggle="modal" data-bs-target="#agreement">
+                                        <i class="ri-add-circle-line align-middle me-1"></i>Add  Agreement Form
+                                    </button>
+                                </div>
+                                <div class="modal fade" id="agreement" tabindex="-1"
+                                     aria-labelledby="agreement" data-bs-keyboard="false"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-top">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h6 class="modal-title" id="staticBackdropLabel">Attach Agreement Form
+                                                </h6>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{route('loan.attachment', $loan->id)}}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-body">
+
+                                                    <div class="col-xl-12 mb-3">
+                                                        <label class="form-label">File Name</label>
+                                                        <input  class="form-control" type="text" name="filename"/>
+                                                    </div>
+                                                    <div class="col-xl-12 mb-3">
+                                                        <label for="create-folder1" class="form-label"> Add Attachment </label>
+                                                        <input  class="form-control" type="file" name="file"  required>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-sm  btn-light"
+                                                            data-bs-dismiss="modal"><i class="ri-close-fill"></i> Cancel</button>
+                                                    <button type="submit" class="btn btn-sm btn-success"><i class="ri-save-fill"></i> Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table text-nowrap">
+                                        <thead class="table-primary">
+                                        <tr>
+                                            <th scope="col">S/N</th>
+                                            <th scope="col">File Name</th>
+                                            <th scope="col">Attachment Size</th>
+                                            <th scope="col">Uploaded By</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($loan->agreements as $attach)
+                                            <tr>
+                                                <td>
+                                                    {{$loop->iteration}}
+                                                </td>
+
+                                                <td>
+                                                    {{$attach->name}}
+                                                </td>
+                                                <td>
+                                                    {{$attach->attachment_size}}
+                                                </td>
+                                                <td>
+                                                    {{$attach->user ? $attach->user->name : 'N/A'}}
+                                                </td>
+                                                <td>
+                                                    <a href="{{route('loan.download', $attach->id)}}" class="btn btn-primary">
+                                                        <i class="bx bx-download"></i> Download
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+
+                                        @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="labels"
+                                 role="tabpanel">
+                                <div class="d-flex align-items-center justify-content-between w-100 p-3 border-bottom">
+                                    <div>
+                                        <h6 class="fw-semibold mb-0">Loan  Collaterals</h6>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary d-flex align-items-center justify-content-center btn-wave waves-light"
+                                            data-bs-toggle="modal" data-bs-target="#collateral">
+                                        <i class="ri-add-circle-line align-middle me-1"></i>Add  Collateral
+                                    </button>
+                                </div>
+
+                                <div class="modal fade" id="collateral" tabindex="-1"
+                                     aria-labelledby="agreement" data-bs-keyboard="false"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-top">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h6 class="modal-title" id="staticBackdropLabel">Add  Loan Collaterals
+                                                </h6>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{route('collateral.store', $loan->id)}}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-body">
+
+                                                    <div class="col-xl-12 mb-3">
+                                                        <label class="form-label">Select Collateral Type</label>
+                                                        <select  class="form-control"  name="typeId">
+                                                            <option value="">Select..</option>
+                                                            @foreach($types as $type)
+                                                                <option value="{{$type->id}}">{{$type->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xl-12 mb-3">
+                                                        <label for="create-folder1" class="form-label"> Product Name </label>
+                                                        <input  class="form-control" type="text" name="product_name"  required>
+                                                    </div>
+                                                    <div class="col-xl-12 mb-3">
+                                                        <label for="create-folder1" class="form-label"> Value </label>
+                                                        <input  class="form-control number-format" type="number" name="amount"  required>
+                                                    </div>
+                                                    <div class="col-xl-12 mb-3">
+                                                        <label for="create-folder1" class="form-label"> Registered Date </label>
+                                                        <input  class="form-control" type="date" name="date" >
+                                                    </div>
+                                                    <div class="col-xl-12 mb-3">
+                                                        <label for="create-folder1" class="form-label"> Product Condition </label>
+                                                        <select class="form-control" name="condition">
+                                                            <option value="">select..</option>
+                                                            <option value="Excellent">Excellent</option>
+                                                            <option value="Good">Good</option>
+                                                            <option value="Fair">Fair</option>
+                                                            <option value="Bad">Bad</option>
+                                                            <option value="Worst">Worst</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xl-12 mb-3">
+                                                        <label for="create-folder1" class="form-label"> Description </label>
+                                                        <textarea  class="form-control" rows="3" name="comment"></textarea>
+                                                    </div>
+                                                    <div class="col-xl-12 mb-3">
+                                                        <label for="create-folder1" class="form-label"> Attachment </label>
+                                                        <input  class="form-control" type="file" name="file" />
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-sm  btn-light"
+                                                            data-bs-dismiss="modal"><i class="ri-close-fill"></i> Cancel</button>
+                                                    <button type="submit" class="btn btn-sm btn-success"><i class="ri-save-fill"></i> Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table text-nowrap">
+                                        <thead class="table-primary">
+                                        <tr>
+                                            <th scope="col">S/N</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Registered Date</th>
+                                            <th scope="col">Value</th>
+                                            <th scope="col">Condition</th>
+                                            <th scope="col">Created By</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($loan->collaterals as $col)
+                                            <tr>
+                                                <td>
+                                                    {{$loop->iteration}}
+                                                </td>
+                                                <td>
+                                                    {{$col->product_name}}
+                                                </td>
+                                                <td>
+                                                    {{$col->date}}
+                                                </td>
+                                                <td>
+                                                    {{number_format($col->amount)}}
+                                                </td>
+                                                <td>
+                                                    {{$col->condition}}
+                                                </td>
+                                                <td>
+                                                    {{$col->user ? $col->user->name : 'N/A'}}
+                                                </td>
+                                                <td>
+                                                    <a href="{{route('collateral.download', $col->id)}}" class="btn btn-sm btn-primary">
+                                                        <i class="bx bx-download"></i> Download
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                        @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                            <div class="tab-pane p-0" id="notification-settings"
+                                 role="tabpanel">
+                                <div class="d-flex align-items-center justify-content-between w-100 p-3 border-bottom">
+                                    <div>
+                                        <h6 class="fw-semibold mb-0">Loan Forms</h6>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary d-flex align-items-center justify-content-center btn-wave waves-light"
+                                            data-bs-toggle="modal" data-bs-target="#loanForm">
+                                        <i class="ri-add-circle-line align-middle me-1"></i>Add  Loan Form
+                                    </button>
+                                </div>
+                                <div class="modal fade" id="loanForm" tabindex="-1"
+                                     aria-labelledby="loanForm" data-bs-keyboard="false"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-top">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h6 class="modal-title" id="staticBackdropLabel">Attach Loan Form
+                                                </h6>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{route('collateral.attach', $loan->id)}}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-body">
+
+                                                    <div class="col-xl-12 mb-3">
+                                                        <label class="form-label">File Name</label>
+                                                        <input  class="form-control" type="text" name="filename"/>
+                                                    </div>
+                                                    <div class="col-xl-12 mb-3">
+                                                        <label for="create-folder1" class="form-label"> Add Attachment </label>
+                                                        <input  class="form-control" type="file" name="file"  required>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-sm  btn-light"
+                                                            data-bs-dismiss="modal"><i class="ri-close-fill"></i> Cancel</button>
+                                                    <button type="submit" class="btn btn-sm btn-success"><i class="ri-save-fill"></i> Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table text-nowrap">
+                                        <thead class="table-primary">
+                                        <tr>
+                                            <th scope="col">S/N</th>
+                                            <th scope="col">File Name</th>
+                                            <th scope="col">Attachment Size</th>
+                                            <th scope="col">Uploaded By</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($loan->files as $file)
+                                            <tr>
+                                                <td>
+                                                    {{$loop->iteration}}
+                                                </td>
+
+                                                <td>
+                                                    {{$file->name}}
+                                                </td>
+                                                <td>
+                                                    {{$file->attachment_size}}
+                                                </td>
+                                                <td>
+                                                    {{$file->user ? $file->user->name : 'N/A'}}
+                                                </td>
+                                                <td>
+                                                    <a href="{{route('collateral.downloadFile', $file->id)}}" class="btn btn-primary">
+                                                        <i class="bx bx-download"></i> Download
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+
+                                        @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane p-0" id="security"
+                                 role="tabpanel">
+
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-        </div>
-    </div>
-
-
-
-    <!--End::row-1 -->
-    <div class="col-xl-12 col-lg-12 col-sm-12">
-        <div class="card custom-card overflow-hidden">
-            <div class="card-header justify-content-between">
-                <div class="card-title">
-                    Customer Files
-                </div>
-
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table text-nowrap table-bordered border-primary">
-                        <thead>
-                        <tr>
-                            <th scope="col">S/N</th>
-                            <th scope="col">File Name</th>
-                            <th scope="col">Attachment Size</th>
-                            <th scope="col">Uploaded By</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($borrow->attachments as $attachment)
-                            <tr>
-                               <td>{{$loop->iteration}}</td>
-                                <td>{{$attachment->filename}}</td>
-                                <td>{{$attachment->attachment_size}}</td>
-                                <td>{{$attachment->user->name ?? ''}}</td>
-                                <td>
-                                    <a href="{{route('borrow.download', $attachment->id)}}" class="btn btn-success"><i class="bx bx-download"></i> Download</a>
-                                </td>
-                            </tr>
-                        @endforeach
-
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
+        <!--End::row-1 -->
+
     </div>
-    <!--End::row-1 -->
-    <div class="col-xl-12 col-lg-12 col-sm-12">
-        <div class="card custom-card overflow-hidden">
-            <div class="card-header justify-content-between">
-                <div class="card-title">
-                    Loan History
-                </div>
-
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table text-nowrap table-bordered border-primary">
-                        <thead>
-                        <tr>
-                            <th scope="col">S/N</th>
-                            <th scope="col">Reference</th>
-                            <th scope="col">Principle</th>
-                            <th scope="col">Total Interest</th>
-                            <th scope="col">Interest</th>
-                            <th scope="col">Interest Type</th>
-                            <th scope="col">Due Amount</th>
-                            <th scope="col">Total Paid</th>
-                            <th scope="col">Last Payment</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($borrow->loans as $loan)
-                            <tr>
-                                <td>{{$loop->iteration}}</td>
-                                <td>{{$loan->reference}}</td>
-                                <td>{{$loan->principle_amount}}</td>
-                                <td>{{$loan->total_interest}}</td>
-                                <td>{{$loan->interest_percentage ? $loan->interest_percentage . ' ' . '%' : $loan->interest_amount}}</td>
-                                <td>{{'per'.' ' . $loan->interest_duration}}</td>
-                                <td>{{$loan->loanpayment->due_amount}}</td>
-                                <td>{{$loan->loanpayment->paid_amount}}</td>
-                                <td>{{$loan->loanpayment->latest_payment}}</td>
-                                <td>
-                                    @if($loan->status === 'pending')
-                                        <span class="badge badge-warning">
-                                        Pending
-                                    </span>
-                                    @else
-                                        <span class="badge badge-success" >
-                                        Approved
-                                    </span>
-                                    @endif
-
-
-                                </td>
-                                <td>
-                                    <a href="{{route('loan.show', $loan->id)}}" class="btn btn-success">
-                                        <i class="bx bx-eye"></i> View
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--End::row-1 -->
-
-    <div class="col-xl-12 col-lg-12 col-sm-12">
-        <div class="card custom-card overflow-hidden">
-            <div class="card-header justify-content-between">
-                <div class="card-title">
-                    Payment History
-                </div>
-
-            </div>
-
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table text-nowrap table-bordered border-primary">
-                        <thead>
-                        <tr>
-                            <th scope="col">S/N</th>
-                            <th scope="col">Collection Date</th>
-                            <th scope="col">Loan Reference</th>
-                            <th scope="col">Amount Paid</th>
-                            <th scope="col">Payment Type</th>
-                            <th scope="col">Collected By</th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($borrow->payments as $payment)
-                            <tr>
-                                <td>{{$loop->iteration}}</td>
-                                <td>{{$payment->payment_date}}</td>
-                                <td>{{$payment->loan->reference}}</td>
-                                <td>{{number_format($payment->amount)}}</td>
-                                <td>{{$payment->type}}</td>
-                                <td>{{$payment->user->name ?? null}}</td>
-
-                            </tr>
-                        @endforeach
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 @endsection
 
 @section('scripts')
-
-
+<script>
+    $(document).ready(function (){
+        $('#paymentMethod').on('change', function (){
+            var stat = $(this).val()
+            if(stat === 'Bank'){
+                $("#bankDiv").show()
+                $("#referenceDiv").show()
+                $("#mobileMoney").hide()
+            }else if(stat === 'Mobile Transfer'){
+                $("#bankDiv").hide()
+                $("#referenceDiv").show()
+                $("#mobileMoney").show()
+            }else{
+                $("#bankDiv").hide()
+                $("#referenceDiv").hide()
+                $("#mobileMoney").hide()
+            }
+        })
+    })
+</script>
 @endsection

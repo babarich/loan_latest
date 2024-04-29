@@ -66,6 +66,7 @@ class CollateralController extends Controller
                 'attachment' => $request->hasFile('file') ? $request->file('file')->store('file') : null,
                 'filename' => $request->hasFile('file') ? $request->file('file')->getClientOriginalName() : null,
                 'attachment_size' => $request->hasFile('file') ? $request->file('file')->getSize() : null,
+                'com_id' => Auth::user()->com_id,
                 'user_id' => Auth::id()
 
             ]);
@@ -113,6 +114,7 @@ class CollateralController extends Controller
                 'attachment' => $path,
                 'attachment_size' => $filesize,
                 'uploaded_by' => Auth::id(),
+                'com_id' => Auth::user()->com_id,
                 'type' => 'loan'
             ]);
 

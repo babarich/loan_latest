@@ -12,7 +12,7 @@ class PaymentLoan extends Model
     use HasFactory,FilterByDatesTrait;
     protected $table = 'payment_loans';
 
-    protected $fillable = ['loan_id', 'description', 'amount', 'payment_date', 'user_id', 'type','borrower_id', 'com_id'];
+    protected $fillable = ['loan_id', 'description', 'amount', 'payment_date', 'user_id', 'type','borrower_id', 'com_id', 'bank', 'mobile', 'reference'];
 
 
     public function user(){

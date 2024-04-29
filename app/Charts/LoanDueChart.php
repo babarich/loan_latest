@@ -21,16 +21,6 @@ class LoanDueChart
     {
 
 
-        $data = PaymentLoan::query()->get();
-        $groupedData = $data->groupBy(function($item) {
-            return Carbon::parse($item->payment_date)->format('M');
-        });
-
-        $totals = $groupedData->map(function($group) {
-            return $group->sum('amount');
-        });
-
-
         $dataSchedule = LoanSchedule::query()->get();
         $groupedDataSchedule = $dataSchedule->groupBy(function($item) {
             return Carbon::parse($item->due_date)->format('M');
@@ -40,14 +30,12 @@ class LoanDueChart
             return $group->sum('amount');
         });
 
-        $totalLabel = array_merge($totals->keys()->toArray(),$totalSchedule->keys()->toArray());
 
-        return $this->chart->areaChart()
-            ->addData('Collected Amount', $totals->values()->toArray())
+        return $this->chart->barChart()
             ->addData('Due Amount', $totalSchedule->values()->toArray())
-            ->setXAxis($totalLabel)
+            ->setXAxis($totalSchedule->keys()->toArray())
             ->setHeight(350)
-            ->setColors(['#259AE6', '#DC3545']);
+            ->setColors(['#DC3545']);
 
     }
 }
