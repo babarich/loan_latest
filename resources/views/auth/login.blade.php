@@ -4,7 +4,7 @@
         <!-- Left Pane -->
         <div class="hidden lg:flex items-center justify-center flex-1  account-block"
              style="background-image: url('{{asset("assets/images/woman.jpg")}}');
-background-repeat: no-repeat;  background-size: cover;">
+              background-repeat: no-repeat;  background-size: cover;">
             <div class="max-w-md text-center">
                 <div class="hero-in">
                     <div class="text-4xl text-white leading-10 py-1 font-[900]">MINAJO<br> Finance Limited</div>
@@ -25,21 +25,23 @@ background-repeat: no-repeat;  background-size: cover;">
                     @csrf
 
                     <!-- Email Address -->
+
                     <div>
                         <x-input-label for="email" :value="__('Email')" />
-                        <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                        <input id="email" class="form-control form-control-lg" type="email" name="email" value="{{old('email')}}" required
+                               autofocus autocomplete="username" placeholder="email"/>
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
                     <!-- Password -->
                     <div class="mt-4">
                         <x-input-label for="password" :value="__('Password')" />
-
-                        <x-text-input id="password" class="block mt-1 w-full"
-                                      type="password"
-                                      name="password"
-                                      required autocomplete="current-password" />
-
+                        <div class="input-group">
+                            <input type="password" class="form-control form-control-lg" id="signin-password" name="password"
+                                   placeholder="password"  required autocomplete="current-password" >
+                            <button class="btn btn-secondary" type="button" onclick="createpassword('signin-password',this)" id="button-addon2">
+                                <i class="ri-eye-off-line align-middle"></i></button>
+                        </div>
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
@@ -50,24 +52,11 @@ background-repeat: no-repeat;  background-size: cover;">
                             <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                         </label>
                     </div>
-
-                    <div class="flex items-center justify-end mt-4">
-                        @if (Route::has('password.request'))
-                            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                                {{ __('Forgot your password?') }}
-                            </a>
-                        @endif
-
-                        <x-primary-button class="ms-3">
-                            {{ __('Log in') }}
-                        </x-primary-button>
+                    <div class="col-xl-12 d-grid mt-4">
+                        <button type="submit" class="btn btn-lg btn-primary">Login</button>
                     </div>
+
                 </form>
-                <div class="items-center text-center mt-8">
-                    <div class="signinform text-center">
-                        <h4>Don’t have an account? <a href="{{route('register')}}" class="hover-a text-blue-800">Sign Up</a></h4>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

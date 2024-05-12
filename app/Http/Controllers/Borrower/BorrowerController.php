@@ -172,6 +172,7 @@ class BorrowerController extends Controller
     public function show(Request $request, $id)
     {
         $borrow = Borrower::with(['attachments','payments', 'loans'])->findOrFail($id);
+
         return view('customers.view', compact('borrow'));
     }
 

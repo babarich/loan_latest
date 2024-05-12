@@ -10,24 +10,12 @@
                     <a class="btn btn-primary" href="{{route('borrow.index')}}"><i class="bx bx-left-arrow-alt"></i>Back</a>
                 </div>
                 <div class="vr"></div>
-              <div>
-                  <a   class="btn btn-danger rounded mr-4 ml-3">
-                      <i class="bx bx-box mr-2"></i>  Assign to group
-                  </a>
-              </div>
-
-                <div class="vr"></div>
                 <div>
-                    <a  :href="route('borrow.assign', customer.id)" class="btn btn-primary mr-4">
+                    <a  href="{{route('borrow.assign', $borrow->id)}}" class="btn btn-danger mr-4">
                         <i class="bx bx-user w-4 h-4 mr-2"></i>  Assign as Guarantor
                     </a>
                 </div>
-                <div class="vr"></div>
-              <div class="ms-4">
-                  <a   class="btn btn-dark">
-                      <i class="bx bx-download"></i>  Download Profile
-                  </a>
-              </div>
+
 
 
 
@@ -108,62 +96,63 @@
                         <div class="card-body p-0">
                             <div class="p-3 border-bottom border-block-end-dashed d-flex align-items-center justify-content-between">
 
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                <ul class="list-group" style="width: 100%">
+
+                                    <li class="list-group-item d-flex justify-content-between">
+
                                             <div class="me-2 fw-semibold">
                                                 Reference :
                                             </div>
                                             <span class="fs-12 text-muted float-end">{{$borrow->reference}}</span>
-                                        </div>
+
                                     </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                    <li class="list-group-item d-flex justify-content-between">
+
                                             <div class="me-2 fw-semibold">
                                                 Onboarded Date :
                                             </div>
                                             <span class="fs-12 text-muted float-end">{{$borrow->created_at}}</span>
-                                        </div>
+
                                     </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                    <li class="list-group-item d-flex justify-content-between">
+
                                             <div class="me-2 fw-semibold">
                                                 Loan Officer :
                                             </div>
                                             <span class="fs-12 text-muted float-end">{{$borrow->user->name ?? ''}}</span>
-                                        </div>
+
                                     </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                    <li class="list-group-item d-flex justify-content-between">
+
                                             <div class="me-2 fw-semibold">
                                                 Identity
                                             </div>
                                             <span class="fs-12 text-muted float-end">{{$borrow->identity}}</span>
-                                        </div>
+
                                     </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap align-items-center">
+                                    <li class="list-group-item d-flex justify-content-between">
+
                                             <div class="me-2 fw-semibold">
                                                 Identification Number
                                             </div>
                                             <span class="fs-12 text-muted float-end">{{$borrow->id_number}}</span>
-                                        </div>
+
                                     </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap align-items-center">
+                                    <li class="list-group-item d-flex justify-content-between">
+
                                             <div class="me-2 fw-semibold">
                                                 Customers Group :
                                             </div>
                                             <span class="fs-12 text-muted float-end">{{$borrow->group ? $borrow->group->name : ''}}</span>
-                                        </div>
+
                                     </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap align-items-center">
+                                    <li class="list-group-item d-flex justify-content-between">
+
                                             <div class="me-2 fw-semibold">
                                                 Description :
                                             </div>
                                             <span class="fs-12 text-muted float-end">{{$borrow->description}}</span>
-                                        </div>
+
                                     </li>
                                 </ul>
                             </div>
@@ -259,11 +248,11 @@
                                 <td>{{$loan->loanpayment->latest_payment}}</td>
                                 <td>
                                     @if($loan->status === 'pending')
-                                        <span class="badge badge-warning">
+                                        <span class="badge bg-warning">
                                         Pending
                                     </span>
                                     @else
-                                        <span class="badge badge-success" >
+                                        <span class="badge bg-success" >
                                         Approved
                                     </span>
                                     @endif

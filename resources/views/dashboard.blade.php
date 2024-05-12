@@ -135,7 +135,28 @@
                         <div class="card-body">
                             <div class="content-wrapper">
                                 <div id="crm-revenue-analytics">
-                                    {!! $dueChart->container() !!}
+
+                                        <div class="table-responsive">
+                                            <table  class="table table-bordered text-nowrap w-100 dataTable no-footer">
+                                                <thead>
+                                                <tr>
+                                                    <th>SN</th>
+                                                    <th>Month</th>
+                                                    <th>Amount</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                @foreach($dueChart as $due)
+                                                    <tr>
+                                                        <td>{{$loop->iteration}}</td>
+                                                         <td>{{$due}}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -154,6 +175,4 @@
 
 @section('scripts')
 
-    <script src="{{ $dueChart->cdn() }}"></script>
-    {{ $dueChart->script() }}
 @endsection

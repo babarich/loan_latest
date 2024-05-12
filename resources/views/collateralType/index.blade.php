@@ -15,7 +15,7 @@
         <div class="col-xl-12">
             <div class="card custom-card">
                 <div class="card-header">
-                    <div class="card-title">Collateral Type List</div>
+                    <div class="card-title">Loan Security Type List</div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

@@ -88,6 +88,7 @@
                         @foreach($group->borrowers as $borrow)
                             <tr>
                                <td>{{$loop->iteration}}</td>
+                                <td>{{$borrow->reference}} </td>
                                 <td>{{$borrow->first_name}} {{$borrow->last_name}}</td>
                                 <td>{{$borrow->business_name}}</td>
                                 <td>{{ucfirst(strtolower($borrow->gender))}}</td>

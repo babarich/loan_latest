@@ -19,10 +19,11 @@ class LoanSchedule extends Model
 
     protected  $casts = [
         'due_date' => "datetime:Y-m-d",
+        'start_date' => "datetime:Y-m-d",
     ];
 
     protected $fillable = ['loan_id', 'borrower_id', 'due_date', 'amount', 'status','user_id', 'paid','principle', 'interest', 'penalty',
-        'fees', 'interest_paid', 'principal_paid', 'com_id'];
+        'fees', 'interest_paid', 'principal_paid', 'com_id', 'start_date'];
 
 
     public function loan()

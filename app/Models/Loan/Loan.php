@@ -71,7 +71,7 @@ class Loan extends Model
 
     public function cycles()
     {
-        return  $this->hasMany(LoanSchedule::class, 'loan_id')->whereNot('status', 'completed');
+        return  $this->hasMany(LoanSchedule::class, 'loan_id')->whereNot('status', 'completed')->orderBy('due_date','asc');
     }
 
 

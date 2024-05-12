@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +22,7 @@ class UserController extends Controller
 
         $users = User::with('roles:name')->orderBy('id', 'DESC')->get(['id', 'name', 'email','last_login']);
         $roles = Role::orderBy('id', 'ASC')->get();
-        return Inertia::render('Settings/Users/Index', ['users' => $users, 'roles' => $roles]);
+        return view('settings.users.index', ['users' => $users, 'roles' => $roles]);
     }
 
     public function unassignRole(Request $request, $userId){
@@ -38,9 +39,9 @@ class UserController extends Controller
 
         }catch (\Exception $e){
             Log::info('error', [$e]);
-            return  Redirect::back()->with('error', 'sorry something went wrong cannot create loan try again');
+            return  redirect()->back()->with('error', 'sorry something went wrong cannot create loan try again');
         }
-        return Redirect::route('user.index')->with('success','You have removed successfully a role');
+        return redirect()->route('user.index')->with('success','You have removed successfully a role');
     }
 
 
@@ -58,26 +59,28 @@ class UserController extends Controller
 
         }catch (\Exception $e){
             Log::info('error', [$e]);
-            return  Redirect::back()->with('error', 'sorry something went wrong cannot assign role try again');
+            return  redirect()->back()->with('error', 'sorry something went wrong cannot assign role try again');
         }
-        return Redirect::route('user.index')->with('success','You have assigned successfully a role');
+        return redirect()->route('user.index')->with('success','You have assigned successfully a role');
     }
 
 
     public function create(Request $request){
         $roles = Role::all();
-        return Inertia::render('Settings/Users/Create',['roles' => $roles]);
+        return view('settings.users.create',['roles' => $roles]);
     }
 
 
 
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
             'name' => 'required',
             'role' => 'required',
             'password' => 'required|min:4',
             'email' => 'required|email|unique:users,email',
+
         ]);
         try {
             DB::beginTransaction();
@@ -85,14 +88,15 @@ class UserController extends Controller
                 'email' => $validatedData['email'],
                 'name' => $validatedData['name'],
                 'password' => Hash::make($validatedData['password']),
+                'com_id' => Auth::user()->com_id,
              ]);
              $role = Role::findOrFail($validatedData['role']);
             $user->assignRole($role->name);
             DB::commit();
         }catch (\Exception $e){
             DB::rollBack();
-            return  Redirect::back()->with('error', 'sorry something went wrong cannot create user try again');
+            return  redirect()->back()->with('error', 'sorry something went wrong cannot create user try again');
         }
-        return Redirect::route('user.index')->with('success','You have created a user successfully');
+        return redirect()->route('user.index')->with('success','You have created a user successfully');
     }
 }

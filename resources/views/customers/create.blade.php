@@ -129,7 +129,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <label for="qualification" class="form-label">Customers Group :</label>
-                                <select class="form-control" name="group" id="group">
+                                <select class="form-control" name="groupId" id="group">
                                     <option value="" >Select..</option>
                                     @foreach($groups as $group)
                                         <option value="{{$group->id}}">{{$group->name}}</option>

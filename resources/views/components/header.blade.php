@@ -25,4 +25,5 @@
 <link rel="stylesheet" href="{{asset('assets/libs/datatable/responsive.dataTable.min.css')}}">
 
 <link href="{{asset('assets/libs/toastr/toastr.min.css')}}" rel="stylesheet" >
+<link href="{{asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" >
 

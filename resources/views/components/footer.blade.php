@@ -19,7 +19,7 @@
 <script src="{{asset('assets/libs/datatable/buttons.html5.min.js')}}"></script>
 <script src="{{asset('assets/libs/datatable/jszip.js')}}"></script>
 <script src="{{asset('assets/libs/toastr/toastr.min.js')}}"></script>
-
+<script src="{{asset('assets/libs/sweetalert2/sweetalert2.min.js')}}"></script>
 <!-- Internal Datatables JS -->
 <script src="{{asset('assets/js/datatables.js')}}"></script>
 

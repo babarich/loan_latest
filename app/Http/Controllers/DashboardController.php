@@ -11,6 +11,7 @@ use App\Models\Borrow\Borrower;
 use App\Models\Loan\Loan;
 use App\Models\Loan\LoanPayment;
 use App\Models\Loan\LoanSchedule;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 
@@ -20,9 +21,7 @@ class DashboardController extends Controller
 
 
 
-    public function index(Request $request, LoanMonthly $loanMonthly,
-                          MonthlyPayment $monthlyPayment, LoanDueChart $dueChart,PrincipleDue $principleDue,
-             InterestDue $interestDue){
+    public function index(Request $request){
 
              $totalOutstanding = LoanSchedule::sum('amount');
              $principleOutstanding = LoanSchedule::sum('principle');
@@ -33,6 +32,15 @@ class DashboardController extends Controller
              $denied =Loan::query()->where('status', '=', 'rejected')->count();
              $loans =Loan::query()->where('release_status', '=', 'approved')->count();
 
+        $dataSchedule = LoanSchedule::query()->get();
+        $groupedDataSchedule = $dataSchedule->groupBy(function($item) {
+             Carbon::parse($item->due_date)->format('M');
+        });
+
+        $totalSchedule = $groupedDataSchedule->map(function($group) {
+             $group->sum('amount');
+        });
+
         return view ('dashboard',[
             'totalOutstanding' => $totalOutstanding,
             'principleOutstanding' => $principleOutstanding,
@@ -42,11 +50,8 @@ class DashboardController extends Controller
             'loans' => $loans,
             'borrowers' => $borrowers,
             'denied' => $denied,
-            'chartData' => $loanMonthly->build(),
-            'monthlyPaid' => $monthlyPayment->build(),
-            'dueChart' => $dueChart->build(),
-            'interest' => $interestDue->build(),
-            'principle' => $principleDue->build(),
+            'dueChart' => $totalSchedule,
+
 
         ]);
     }

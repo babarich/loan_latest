@@ -50,15 +50,23 @@ Route::group(['middleware' => 'auth'], function (){
             Route::controller(LoanController::class)->group(function (){
                 Route::get('index', 'index')->name('index');
                 Route::get('create', 'create')->name('create');
+                Route::get('settlement', 'settlement')->name('settlement');
+                Route::get('rollover', 'rollover')->name('rollover');
+                Route::get('closed', 'closed')->name('closed');
                 Route::post('store', 'store')->name('store');
                 Route::post('check/{id?}', 'checkLoan')->name('check');
                 Route::get('view/{id?}', 'show')->name('show');
+                Route::get('view_settlement/{id?}', 'showSettlement')->name('viewSettlement');
+                Route::get('view_rollover/{id?}', 'showRollover')->name('viewRollOver');
                 Route::post('update/{id?}', 'update')->name('update');
+                Route::post('settle_payment/{id?}', 'settlePayment')->name('settlePayment');
+                Route::post('roll_over_payment/{id?}', 'rolloverPayment')->name('rolloverPayment');
                 Route::post('attachment/{id?}', 'attachment')->name('attachment');
                 Route::get('export/{id?}', 'downloadAttachment')->name('download');
                 Route::get('download_report', 'report')->name('report');
                 Route::get('edit/{id?}', 'edit')->name('edit');
                 Route::post('repayment/{id?}', 'distributeLoanPayment')->name('payment');
+                Route::post('submit_loan/{id?}', 'submitLoan')->name('submit');
             });
         });
     });
@@ -90,6 +98,7 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::post('update/{id?}', 'update')->name('update');
                 Route::get('export/{id?}', 'downloadAttachment')->name('download');
                 Route::get('edit/{id?}', 'edit')->name('edit');
+                Route::post('assign/{id?}', 'assign')->name('assign');
             });
         });
     });
@@ -117,6 +126,7 @@ Route::group(['middleware' => 'auth'], function (){
             Route::controller(\App\Http\Controllers\Loan\LoanApprovalController::class)->group(function (){
                 Route::get('index', 'index')->name('index');
                 Route::get('approve/{id?}', 'approve')->name('approveFirst');
+                Route::post('disburse/{id?}', 'approve')->name('disburse');
                 Route::get('reject/{id?}', 'reject')->name('rejectFirst');
                 Route::post('comment/{id?}', 'return')->name('comment');
                 Route::get('view/{id?}', 'show')->name('show');
@@ -166,6 +176,51 @@ Route::group(['middleware' => 'auth'], function (){
 
         Route::name('product.')->group(function (){
             Route::controller(ProductController::class)->group(function (){
+                Route::get('index', 'index')->name('index');
+                Route::get('create', 'create')->name('create');
+                Route::post('store', 'store')->name('store');
+                Route::get('view/{id?}', 'show')->name('show');
+                Route::post('update/{id?}', 'update')->name('update');
+                Route::get('edit/{id?}', 'edit')->name('edit');
+            });
+        });
+    });
+
+
+    Route::group(['prefix' => 'interests'], function (){
+
+        Route::name('interest.')->group(function (){
+            Route::controller(\App\Http\Controllers\InterestController::class)->group(function (){
+                Route::get('index', 'index')->name('index');
+                Route::get('create', 'create')->name('create');
+                Route::post('store', 'store')->name('store');
+                Route::get('view/{id?}', 'show')->name('show');
+                Route::post('update/{id?}', 'update')->name('update');
+                Route::get('edit/{id?}', 'edit')->name('edit');
+            });
+        });
+    });
+
+
+
+    Route::group(['prefix' => 'penaltys'], function (){
+
+        Route::name('penalty.')->group(function (){
+            Route::controller(\App\Http\Controllers\PenaltyController::class)->group(function (){
+                Route::get('index', 'index')->name('index');
+                Route::get('create', 'create')->name('create');
+                Route::post('store', 'store')->name('store');
+                Route::get('view/{id?}', 'show')->name('show');
+                Route::post('update/{id?}', 'update')->name('update');
+                Route::get('edit/{id?}', 'edit')->name('edit');
+            });
+        });
+    });
+
+    Route::group(['prefix' => 'companies'], function (){
+
+        Route::name('company.')->group(function (){
+            Route::controller(\App\Http\Controllers\CompanyController::class)->group(function (){
                 Route::get('index', 'index')->name('index');
                 Route::get('create', 'create')->name('create');
                 Route::post('store', 'store')->name('store');

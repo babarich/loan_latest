@@ -26,13 +26,13 @@
                                     <th>Reference</th>
                                     <th>Full Name</th>
                                     <th>Principle</th>
-                                   <th>Total Interest</th>
-                                   <th>Interest</th>
-                                   <th>Due Amount</th>
-                                   <th>Total Paid</th>
-                                   <th>Status</th>
-                                   <th>Stage</th>
-                                   <th>Action</th>
+                                    <th>Total Interest</th>
+                                    <th>Interest</th>
+                                    <th>Due Amount</th>
+                                    <th>Total Paid</th>
+                                     <th>Status</th>
+                                     <th>Stage</th>
+                                     <th>Action</th>
                                </tr>
                                </thead>
                                 <tbody>

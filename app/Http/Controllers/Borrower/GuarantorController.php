@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Borrower;
 
 use App\Http\Controllers\Controller;
+use App\Models\Borrow\Borrower;
 use App\Models\Borrow\Guarantor;
 use App\Models\Borrow\GuarantorAttachment;
 use Carbon\Carbon;
@@ -209,6 +210,47 @@ class GuarantorController extends Controller
         file_put_contents($relativePath, $image);
 
         return $relativePath;
+    }
+
+
+    public function borrower(Request $request, $id){
+
+        try {
+            DB::beginTransaction();
+            $borrow = Guarantor::findOrFail($id);
+            Borrower::create([
+                'reference' => 'GAN'.rand(1000,9999),
+                'first_name' => $borrow->first_name ?? null,
+                'last_name' => $borrow->last_name ?? null,
+                'gender' => $borrow->gender ?? null,
+                'title' => $borrow->title ?? null,
+                'mobile' => $borrow->mobile ?? null,
+                'email' => $borrow->email ?? null,
+                'date_birth' => $borrow->birth ?? null,
+                'address' => $borrow->address ?? null,
+                'city' => $borrow->city ?? null,
+                'working_status' => $borrow->working_status ?? null,
+                'business_name' => $borrow->business_name ?? null,
+                'filename' =>  $borrow->filename ?? null,
+                'attachment_size' => null,
+                'attachment' => $borrow->attachment ?? null,
+                'uploaded_by' => Auth::id(),
+                'status' => 'pending',
+                'description' => $borrow->description ?? null,
+                'id_number' => $borrow->id_number ?? null,
+                'identity' => $borrow->identity ?? null,
+                'com_id' => Auth::user()->com_id,
+            ]);
+
+
+
+            DB::commit();
+        }catch (\Exception $e){
+            Log::info('error_borrow', [$e]);
+            return  Redirect::back()->with('error', 'sorry something went wrong cannot create guarantor try again');
+        }
+
+        return Redirect::route('guarantor.index')->with('success','You have updated successfully reassign borrower');
     }
 
 }

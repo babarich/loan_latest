@@ -24,6 +24,8 @@ class LoanComment extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-
+   public function loan(){
+        return $this->belongsTo(Loan::class, 'loan_id', 'id');
+   }
 
 }

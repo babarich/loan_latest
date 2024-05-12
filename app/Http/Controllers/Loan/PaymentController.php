@@ -17,6 +17,7 @@ use App\Models\Loan\LoanSchedule;
 use App\Models\Loan\PaymentLoan;
 use App\Models\User;
 use App\Services\ChartService;
+use App\Services\CollectionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
@@ -30,27 +31,10 @@ class PaymentController extends Controller
 
     public function index(Request $request){
 
-        $perPage = request('per_page',10);
-        $sortField = request('sort_field','created_at');
-        $sortDirection = request('sort_direction','desc');
-        return Inertia::render('Payment/Index',[
-            'filters' => FacadesRequest::all('search'),
-            'payments' => PaymentLoan::query()
-                ->orderBy($sortField, $sortDirection)
-                ->filter(FacadesRequest::only('search'))
-                ->paginate($perPage,['*'],'payments')
-                ->withQueryString()
-                ->through(fn ($payment) => [
-                    'id' => $payment->id,
-                    'reference' => $payment->loan->reference,
-                    'name' => $payment->loan->borrower->first_name . ' ' . $payment->loan->borrower->last_name,
-                    'date' =>$payment->payment_date,
-                    'type' => $payment->type,
-                    'amount'=>$payment->amount,
-                    'user' => $payment->user->name
-                ])
 
-        ]);
+        $payments = PaymentLoan::query()->orderBy('updated_at', 'desc')->get();
+
+        return view('payment.index', compact('payments'));
 
     }
 
@@ -70,7 +54,7 @@ class PaymentController extends Controller
         $principle = LoanSchedule::sum('principal_paid');
 
 
-        return Inertia::render('Payment/Chart',[
+        return view('payment.chart',[
             'today' => $today,
             'total' => $total,
             'week' => $week,
@@ -93,51 +77,9 @@ class PaymentController extends Controller
     public function collection(Request $request)
     {
 
-        $filterUser = $request->input('filterCollection');
-        $query = PaymentLoan::today()
-            ->select(
-                DB::raw('COUNT(id) as total_id'),
-                DB::raw('SUM(amount) as total_amount'),
-                DB::raw('COUNT(DISTINCT user_id) as total_users')
-            );
-
-        if ($filterUser) {
-            $startDate = $filterUser['startDate'];
-            $endDate = $filterUser['endDate'];
-            $userId = $filterUser['staffId'];
-            $borrowerGroup = $filterUser['groupId'];
-
-            $query->with(['loan', 'loan.borrower']);
-
-            if ($startDate && $endDate) {
-                $query->whereBetween('payment_date', [$startDate, $endDate]);
-            }
-
-            if ($userId) {
-                $query->where('user_id', $userId);
-            }
-
-            if ($borrowerGroup) {
-                $query->whereHas('loan.borrower', function ($query) use ($borrowerGroup) {
-                    $query->where('group_id', $borrowerGroup);
-                });
-            }
-        }
-
-        $results = $query->first();
+     $weekly = new CollectionService();
+     $weeks = $weekly->report();
 
 
-
-
-
-        $staff = User::query()->get();
-        $groups = BorrowerGroup::query()->get();
-
-        return Inertia::render('Collection/Index',
-        [
-            'staffs' => $staff,
-            'groups' => $groups,
-            'collections' => $results
-        ]);
     }
 }

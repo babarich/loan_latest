@@ -56,7 +56,7 @@ $(function (e) {
             sSearch: '',
         },
     });
-    // file export datatable
+
 
     // delete row datatable
     var table = $('#delete-datatable').DataTable({
@@ -65,6 +65,7 @@ $(function (e) {
             sSearch: '',
         }
     });
+
     $('#delete-datatable tbody').on('click', 'tr', function () {
         if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
@@ -74,6 +75,7 @@ $(function (e) {
             $(this).addClass('selected');
         }
     });
+
     $('#button').on("click", function () {
         table.row('.selected').remove().draw(false);
     });
@@ -113,16 +115,18 @@ $(function (e) {
         // scrollX: true
     });
     // hidden columns
-    
+
     // add row datatable
     var t = $('#add-row').DataTable({
-        
+
         language: {
             searchPlaceholder: 'Search...',
             sSearch: '',
         },
     });
+
     var counter = 1;
+
     $('#addRow').on('click', function () {
         t.row.add([counter + '.1', counter + '.2', counter + '.3', counter + '.4', counter + '.5']).draw(false);
         counter++;

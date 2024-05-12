@@ -25,28 +25,10 @@ class CollateralController extends Controller
 
     public function index(Request $request){
 
-        $perPage = request('per_page',10);
-        $sortField = request('sort_field','created_at');
-        $sortDirection = request('sort_direction','desc');
-        return Inertia::render('Collateral/Index',[
-            'filters' => FacadesRequest::all('search'),
-            'collaterals' => Collateral::query()
-                ->orderBy($sortField, $sortDirection)
-                ->filter(FacadesRequest::only('search'))
-                ->paginate($perPage,['*'],'collaterals')
-                ->withQueryString()
-                ->through(fn ($collateral) => [
-                    'id' => $collateral->id,
-                    'type' => $collateral->type->name,
-                    'name' => $collateral->product_name,
-                    'borrower' => $collateral->loan->borrower->first_name . ' ' . $collateral->loan->borrower->last_name ?? null,
-                    'amount' =>$collateral->amount,
-                    'date' => Carbon::parse($collateral->date)->format('Y-m-d'),
-                    'condition' => $collateral->condition,
-                    'user' => $collateral->user->name ?? null,
-                ])
-
-        ]);
+        $collaterals = Collateral::query()
+                       ->orderBy('updated_at', 'desc')
+                       ->get();
+        return view('collateral.index', compact('collaterals'));
     }
 
     public function store(CollateralRequest $request, $loanId){
@@ -75,10 +57,10 @@ class CollateralController extends Controller
         }catch (\Exception $e){
             DB::rollBack();
             Log::info('error_borrow', [$e]);
-            return  Redirect::back()->with('error', 'sorry something went wrong cannot create borrower try again');
+            return  redirect()->back()->with('error', 'sorry something went wrong cannot create borrower try again');
         }
 
-        return Redirect::back()->with('success','You have added successfully a new collateral');
+        return redirect()->back()->with('success','You have added successfully a new collateral');
     }
 
 
@@ -124,7 +106,7 @@ class CollateralController extends Controller
             Log::info('error', [$e]);
             return  Redirect::back()->with('error', 'sorry something went wrong cannot create loan try again');
         }
-        return Redirect::back()->with('success','You have added successfully a new agreement file');
+        return Redirect::back()->with('success','You have added successfully a new  file');
     }
 
 
@@ -147,6 +129,7 @@ class CollateralController extends Controller
             LoanComment::create([
                 'loan_id' => $loanId,
                 'description' => $validatedData['comment'],
+                'com_id' => Auth::user()->com_id,
                 'user_id' => Auth::id()
 
             ]);
@@ -166,26 +149,10 @@ class CollateralController extends Controller
     public  function showComment(Request $request)
     {
 
-        $perPage = request('per_page',10);
-        $sortField = request('sort_field','created_at');
-        $sortDirection = request('sort_direction','desc');
-        return Inertia::render('Collateral/Comment',[
-            'filters' => FacadesRequest::all('search'),
-            'comments' => Collateral::query()
-                ->orderBy($sortField, $sortDirection)
-                ->filter(FacadesRequest::only('search'))
-                ->paginate($perPage,['*'],'comments')
-                ->withQueryString()
-                ->through(fn ($comment) => [
-                    'id' => $comment->id,
-                    'description' => $comment->description,
-                    'reference' => $comment->loan->reference,
-                    'borrower' => $comment->loan->borrower->first_name . ' ' . $comment->loan->borrower->last_name ?? null,
-                    'date' => Carbon::parse($comment->created_at)->format('Y-m-d'),
-                    'user' => $comment->user->name ?? null,
-                ])
-
-        ]);
+        $comments = LoanComment::query()
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+        return view('collateral.comment', compact('comments'));
     }
 }
 
