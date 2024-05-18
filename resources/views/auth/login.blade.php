@@ -3,7 +3,7 @@
     <div class="flex h-screen">
         <!-- Left Pane -->
         <div class="hidden lg:flex items-center justify-center flex-1  account-block"
-             style="background-image: url('{{asset("assets/images/woman.jpg")}}');
+             style="background-image: url('{{asset("assets/images/loan.jpg")}}');
               background-repeat: no-repeat;  background-size: cover;">
             <div class="max-w-md text-center">
                 <div class="hero-in">

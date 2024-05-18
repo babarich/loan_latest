@@ -39,7 +39,7 @@ class RegisteredUserController extends Controller
 
         $company = Company::create($request->all() + [
                 'reference' => 'NALD'.Carbon::now()->format('YmdHis'),
-                'name'=>$request->name,
+                'name'=>$request->company,
                 'phone_number'=>$request->phone_number
             ]);
 
