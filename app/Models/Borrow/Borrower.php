@@ -49,7 +49,7 @@ class Borrower extends Model
     }
     public function attachments()
     {
-        return $this->hasMany(BorrowerAttachment::class, 'borrower_id', 'id');
+        return $this->hasMany(BorrowerAttachment::class, 'borrower_id');
     }
 
 

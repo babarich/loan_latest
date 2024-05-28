@@ -40,7 +40,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <label class="form-label">Disbursement Method</label>
-                                <select class="form-control"  name="payment" required>
+                                <select class="form-control"  name="payment" required id="paymentMethod">
                                     <option value="">Select...</option>
                                     <option value="cash">Cash</option>
                                     <option value="cheque">Cheque</option>
@@ -51,7 +51,34 @@
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
                             </div>
+                            <div class="col-xl-6" id="bankDiv" style="display: none">
+                                <label class="form-label">Select Banks</label>
+                                <select class="form-control"  name="bank_name">
+                                    <option value="">Select...</option>
+                                    <option value="NMB">NMB</option>
+                                    <option value="CRDB">CRDB</option>
+                                    <option value="NBC">NBC</option>
+                                    <option value="Exim">Exim</option>
+                                </select>
+                                @error('bank_name')
+                                <span class="text-danger"><strong>{{$message}}</strong></span>
+                                @enderror
+                            </div>
 
+
+                            <div class="col-xl-6" id="mobileMoney" style="display: none">
+                                <label class="form-label">Select Mobile Money</label>
+                                <select class="form-control"  name="mobile_money">
+                                    <option value="">Select...</option>
+                                    <option value="M-pesa">Mpesa</option>
+                                    <option value="Tigo Pesa">Tigo Pesa</option>
+                                    <option value="Airtel Money">Airtel money</option>
+                                    <option value="T-Pesa">T-pesa</option>
+                                </select>
+                                @error('payment')
+                                <span class="text-danger"><strong>{{$message}}</strong></span>
+                                @enderror
+                            </div>
                             <div class="col-xl-6">
                                 <label class="form-label">Loan Principle Amount</label>
                                 <input type="number" class="form-control number_format" id="principle" placeholder=""
@@ -201,6 +228,20 @@
 @section('scripts')
    <script>
        $(document).ready(function (){
+
+           $('#paymentMethod').on('change', function (){
+               var stat = $(this).val()
+               if(stat === 'bank'){
+                   $("#bankDiv").show()
+                   $("#mobileMoney").hide()
+               }else if(stat === 'mobile'){
+                   $("#bankDiv").hide()
+                   $("#mobileMoney").show()
+               }else{
+                   $("#bankDiv").hide()
+                   $("#mobileMoney").hide()
+               }
+           })
 
            $('#customerId').on('change', function (){
                var id = $(this).val()

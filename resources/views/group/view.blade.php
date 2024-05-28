@@ -27,23 +27,20 @@
                         <div class="card-body p-0">
                             <div class="p-3 border-bottom border-block-end-dashed d-flex align-items-center justify-content-between">
 
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                <ul class="list-group" style="width: 100%">
+                                    <li class="list-group-item d-flex justify-content-between">
                                             <div class="me-2 fw-semibold">
                                                 Name :
                                             </div>
                                             <span class="fs-12 text-muted float-end">{{$group->name}}</span>
-                                        </div>
                                     </li>
 
-                                    <li class="list-group-item">
-                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                    <li class="list-group-item d-flex justify-content-between">
                                             <div class="me-2 fw-semibold">
                                                 Description:
                                             </div>
                                             <span class="fs-12 text-muted float-end">{{$group->description}}</span>
-                                        </div>
+
                                     </li>
 
                                 </ul>

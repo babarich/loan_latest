@@ -171,9 +171,12 @@ class BorrowerController extends Controller
 
     public function show(Request $request, $id)
     {
-        $borrow = Borrower::with(['attachments','payments', 'loans'])->findOrFail($id);
+        $borrow = Borrower::with(['payments', 'loans'])->findOrFail($id);
 
-        return view('customers.view', compact('borrow'));
+        $attachments = BorrowerAttachment::query()->where('borrower_id', $id)->get();
+
+
+        return view('customers.view', compact('borrow', 'attachments'));
     }
 
 
@@ -273,6 +276,7 @@ class BorrowerController extends Controller
                 'attachment' => $borrow->attachment ?? null,
                 'uploaded_by' => Auth::id(),
                 'status' => 'pending',
+                'com_id' => Auth::user()->com_id,
                 'description' => $borrow->description ?? null,
             ]);
 
@@ -280,10 +284,11 @@ class BorrowerController extends Controller
 
             DB::commit();
         }catch (\Exception $e){
+            DB::rollBack();
             Log::info('error_borrow', [$e]);
-            return  Redirect::back()->with('error', 'sorry something went wrong cannot create guarantor try again');
+            return  redirect()->back()->with('error', 'sorry something went wrong cannot create guarantor try again');
         }
 
-        return Redirect::route('guarantor.index')->with('success','You have updated successfully reassign borrower');
+        return redirect()->route('guarantor.index')->with('success','You have updated successfully reassign borrower');
     }
 }

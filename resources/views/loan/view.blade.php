@@ -448,7 +448,7 @@
                                                 <td>
                                                     {{$schedule->principal_paid ? number_format($schedule->principal_paid) : 0.00}}
                                                 </td>
-                                                <td>
+                                                <td class="amount">
                                                     {{number_format($schedule->amount)}}
                                                 </td>
                                                 <td>
@@ -468,6 +468,12 @@
                                         @endforeach
 
                                         </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>Total</th>
+                                            <th id="totalAmount"></th>
+                                        </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
 
@@ -881,6 +887,14 @@
 
         });
 
+
+
+            updateTotal();
+            $('.amount').on('input', function() {
+                updateTotal();
+            });
+
+
         var viewTab = localStorage.getItem('viewTab');
         if(viewTab){
             $('.nav-tabs a[href="' + viewTab + '"]').tab('show')
@@ -912,6 +926,16 @@
         //     }
         // }
         // )
-    })
+    });
+    function updateTotal() {
+        let total = 0;
+        $('.amount').each(function() {
+            let value = parseFloat($(this).text());
+            if (!isNaN(value)) {
+                total += value;
+            }
+        });
+        $('#totalAmount').text(total);
+    }
 </script>
 @endsection

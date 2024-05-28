@@ -141,7 +141,8 @@
                             </div>
                             <div class="col-xl-6">
                                 <label for="language" class="form-label">Customer Photo:</label>
-                                <input type="file" class="form-control" id="input_file" placeholder="" name="photo">
+                                <input type="file" class="form-control" id="input_file" placeholder="" name="photo"
+                                >
                                 @error('photo')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror

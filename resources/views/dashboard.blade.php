@@ -104,13 +104,68 @@
                                         <div class="flex-fill ms-3">
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
-                                                    <p class="text-muted mb-0">Pending Loans</p>
+                                                    <p class="text-muted mb-0">Open Loans</p>
                                                     <h4 class="fw-semibold mt-1">{{$open}}</h4>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-1">
                                                 <div>
                                                     <a class="text-warning" href="{{route('loan.index')}}">View All<i class="ti ti-arrow-narrow-right ms-2 fw-semibold d-inline-block"></i></a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-lg-3 col-md-3 col-sm-12">
+                            <div class="card custom-card overflow-hidden">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-top justify-content-between">
+                                        <div>
+                                                        <span class="avatar avatar-md avatar-rounded bg-success">
+                                                            <i class="ti ti-briefcase fs-16"></i>
+                                                        </span>
+                                        </div>
+                                        <div class="flex-fill ms-3">
+                                            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                                <div>
+                                                    <p class="text-muted mb-0">Completed Loans</p>
+                                                    <h4 class="fw-semibold mt-1">{{$fully}}</h4>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mt-1">
+                                                <div>
+                                                    <a class="text-success" href="{{route('loan.closed')}}">View All<i class="ti ti-arrow-narrow-right ms-2 fw-semibold d-inline-block"></i></a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-lg-3 col-md-3 col-sm-12">
+                            <div class="card custom-card overflow-hidden">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-top justify-content-between">
+                                        <div>
+                                                        <span class="avatar avatar-md avatar-rounded bg-danger">
+                                                            <i class="ti ti-box fs-16"></i>
+                                                        </span>
+                                        </div>
+                                        <div class="flex-fill ms-3">
+                                            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                                <div>
+                                                    <p class="text-muted mb-0">Rejected Loans</p>
+                                                    <h4 class="fw-semibold mt-1">{{$denied}}</h4>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mt-1">
+                                                <div>
+                                                    <a class="text-danger" href="{{route('loan.index')}}">View All<i class="ti ti-arrow-narrow-right ms-2 fw-semibold d-inline-block"></i></a>
                                                 </div>
 
                                             </div>
@@ -147,11 +202,12 @@
                                                 </thead>
                                                 <tbody>
 
-                                                @foreach($dueChart as $due)
+
+                                                @foreach($monthly as $data)
                                                     <tr>
                                                         <td>{{$loop->iteration}}</td>
-                                                         <td>{{$due}}</td>
-                                                        <td></td>
+                                                        <td>{{ $data->month }}</td>
+                                                        <td>{{ number_format($data->total)}}</td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>

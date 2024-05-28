@@ -11,6 +11,7 @@ use App\Models\Borrow\Borrower;
 use App\Models\Loan\Loan;
 use App\Models\Loan\LoanPayment;
 use App\Models\Loan\LoanSchedule;
+use App\Services\ChartService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -32,14 +33,10 @@ class DashboardController extends Controller
              $denied =Loan::query()->where('status', '=', 'rejected')->count();
              $loans =Loan::query()->where('release_status', '=', 'approved')->count();
 
-        $dataSchedule = LoanSchedule::query()->get();
-        $groupedDataSchedule = $dataSchedule->groupBy(function($item) {
-             Carbon::parse($item->due_date)->format('M');
-        });
+            $dataMonth = new ChartService();
+            $monthly = $dataMonth->getMonthProjected();
 
-        $totalSchedule = $groupedDataSchedule->map(function($group) {
-             $group->sum('amount');
-        });
+
 
         return view ('dashboard',[
             'totalOutstanding' => $totalOutstanding,
@@ -50,7 +47,7 @@ class DashboardController extends Controller
             'loans' => $loans,
             'borrowers' => $borrowers,
             'denied' => $denied,
-            'dueChart' => $totalSchedule,
+            'monthly' => $monthly,
 
 
         ]);

@@ -43,12 +43,13 @@ class ChartService
         $totals = $groupedData->map(function($group) {
             return $group->sum('amount');
         });
+        $chartData = $groupedData->map(function($monthlyPayments, $month) {
+            return (object) [
+                'month' => $month,
+                'total' => $monthlyPayments->sum('amount'),
+            ];
+        })->values()->toArray();
 
-        $chartData = [
-            'data' => $totals->values()->toArray(),
-            'labels' => $totals->keys()->toArray(),
-
-        ];
         return $chartData;
     }
 
