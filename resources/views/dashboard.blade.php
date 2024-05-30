@@ -97,6 +97,33 @@
                                 <div class="card-body">
                                     <div class="d-flex align-items-top justify-content-between">
                                         <div>
+                                                        <span class="avatar avatar-md avatar-rounded bg-success">
+                                                            <i class="ti ti-hand-move fs-16"></i>
+                                                        </span>
+                                        </div>
+                                        <div class="flex-fill ms-3">
+                                            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                                <div>
+                                                    <p class="text-muted mb-0">Total Loans Approved</p>
+                                                    <h4 class="fw-semibold mt-1">{{$loans}}</h4>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mt-1">
+                                                <div>
+                                                    <a class="text-success" href="{{route('loan.index')}}">View All<i class="ti ti-arrow-narrow-right ms-2 fw-semibold d-inline-block"></i></a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-lg-3 col-md-3 col-sm-12">
+                            <div class="card custom-card overflow-hidden">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-top justify-content-between">
+                                        <div>
                                                         <span class="avatar avatar-md avatar-rounded bg-warning">
                                                             <i class="ti ti-briefcase fs-16"></i>
                                                         </span>
@@ -179,17 +206,57 @@
                 </div>
 
 
-                <div class="col-xl-12">
-                    <div class="card custom-card">
-                        <div class="card-header justify-content-between">
-                            <div class="card-title">
-                                Due Loan  Analytics
-                            </div>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card custom-card">
+                            <div class="card-header justify-content-between">
+                                <div class="card-title">
+                                    Loan  Analytics
+                                </div>
 
+                            </div>
+                            <div class="card-body">
+                                <div class="content-wrapper">
+                                    <div id="crm-revenue-analytics">
+
+                                        <div class="table-responsive">
+                                            <table  class="table table-bordered text-nowrap w-100 dataTable no-footer">
+                                                <thead>
+                                                <tr>
+                                                    <th>SN</th>
+                                                    <th>Month</th>
+                                                    <th>Total Loans</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+
+                                                @foreach($books as $book)
+                                                    <tr>
+                                                        <td>{{$loop->iteration}}</td>
+                                                        <td>{{ $book->month }}</td>
+                                                        <td>{{$book->count}}</td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="content-wrapper">
-                                <div id="crm-revenue-analytics">
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card custom-card">
+                            <div class="card-header justify-content-between">
+                                <div class="card-title">
+                                    Due Loan  Analytics
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <div class="content-wrapper">
+                                    <div id="crm-revenue-analytics">
 
                                         <div class="table-responsive">
                                             <table  class="table table-bordered text-nowrap w-100 dataTable no-footer">
@@ -213,11 +280,13 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
 
 
 

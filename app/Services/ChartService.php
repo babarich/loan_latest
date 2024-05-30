@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Loan\Loan;
 use App\Models\Loan\LoanSchedule;
 use App\Models\Loan\PaymentLoan;
 use Carbon\Carbon;
@@ -47,6 +48,29 @@ class ChartService
             return (object) [
                 'month' => $month,
                 'total' => $monthlyPayments->sum('amount'),
+            ];
+        })->values()->toArray();
+
+        return $chartData;
+    }
+
+
+
+    public function getMonthLoan()
+    {
+
+        $data = Loan::query()->where('release_status','approved')->get();
+        $groupedData = $data->groupBy(function($item) {
+            return Carbon::parse($item->created_at)->format('M');
+        });
+
+        $totals = $groupedData->map(function($group) {
+            return $group->count('id');
+        });
+        $chartData = $groupedData->map(function($monthlyPayments, $month) {
+            return (object) [
+                'month' => $month,
+                'count' => $monthlyPayments->count('id'),
             ];
         })->values()->toArray();
 

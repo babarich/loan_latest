@@ -19,7 +19,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                            <table id="file-export" class="table table-bordered text-nowrap w-100 dataTable no-footer">
+                            <table id="groupTable" class="table table-bordered text-nowrap w-100 dataTable no-footer">
                                <thead>
                                <tr>
                                    <th>SN</th>
@@ -47,9 +47,10 @@
                                                 <i class="ri-eye-line align-middle me-2 d-inline-block"></i>View
                                             </a>
 
-                                            <button class="btn btn-sm btn-danger btn-wave waves-effect waves-light">
+                                            <a class="btn btn-sm btn-danger btn-wave waves-effect waves-light deleteGroup"
+                                            data-id="{{$group->id}}">
                                                 <i class="ri-delete-bin-line align-middle me-2 d-inline-block"></i>Delete
-                                            </button>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -66,6 +67,59 @@
 @endsection
 
 @section('scripts')
+            <script>
+                $(document).ready(function (){
+                    $('#groupTable').on('click', '.deleteGroup', function (){
+                        var id = $(this).data('id');
+                        const swalWithBootstrapButtons = Swal.mixin({
+                            customClass: {
+                                confirmButton: 'btn btn-success ms-2',
+                                cancelButton: 'btn btn-danger'
+                            },
+                            buttonsStyling: false
+                        })
+                        swalWithBootstrapButtons.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes, delete it!',
+                            cancelButtonText: 'No, cancel!',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url:'{{route('group.delete')}}',
+                                    type:'POST',
+                                    data:{
+                                        _token:'{{csrf_token()}}',
+                                        id:id
+                                    },
+                                    success:function (response){
+                                        location.reload()
+                                        swalWithBootstrapButtons.fire(
+                                            'Deleted!',
+                                            'Your group has been deleted.',
+                                            'success'
+                                        )
+                                    },
+                                    error:function (error){
 
+                                    }
+                                })
+
+                            } else if (
+                                result.dismiss === Swal.DismissReason.cancel
+                            ) {
+                                swalWithBootstrapButtons.fire(
+                                    'Cancelled',
+                                    'You have cancelled this action :)',
+                                    'error'
+                                )
+                            }
+                        })
+                    });
+                });
+            </script>
 
 @endsection

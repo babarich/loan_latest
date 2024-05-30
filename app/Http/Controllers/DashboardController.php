@@ -35,6 +35,7 @@ class DashboardController extends Controller
 
             $dataMonth = new ChartService();
             $monthly = $dataMonth->getMonthProjected();
+            $books = $dataMonth->getMonthLoan();
 
 
 
@@ -48,6 +49,7 @@ class DashboardController extends Controller
             'borrowers' => $borrowers,
             'denied' => $denied,
             'monthly' => $monthly,
+            'books' => $books
 
 
         ]);

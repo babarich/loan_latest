@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::get('edit/{id?}', 'edit')->name('edit');
                 Route::post('reassign/{id?}', 'reassign')->name('reassign');
                 Route::get('borrow_assign/{id?}', 'guarantor')->name('assign');
+                Route::post('delete/{id?}', 'delete')->name('delete');
             });
         });
     });
@@ -114,6 +115,7 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::post('update/{id?}', 'update')->name('update');
                 Route::get('edit/{id?}', 'edit')->name('edit');
                 Route::post('assign_user/{id?}', 'assignRelation')->name('relation');
+                Route::post('delete/{id?}', 'delete')->name('delete');
             });
         });
     });
