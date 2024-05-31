@@ -11,6 +11,45 @@
         </div>
     </div>
 
+
+
+    <div>
+        <button class="btn btn-sm btn-primary d-flex align-items-center justify-content-center btn-wave waves-light"
+                data-bs-toggle="modal" data-bs-target="#commentForm">
+             Upload Customer
+        </button>
+    </div>
+
+    <div class="modal fade" id="commentForm" tabindex="-1"
+         aria-labelledby="commentForm" data-bs-keyboard="false"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-top">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="staticBackdropLabel">Upload Files
+                    </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <form action="{{route('borrow.upload')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+
+                        <div class="col-xl-12 mb-3">
+                            <label class="form-label">Enter File</label>
+                            <input type="file"  class="form-control"  name="customer_report"  />
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm  btn-light"
+                                data-bs-dismiss="modal"><i class="ri-close-fill"></i> Cancel</button>
+                        <button type="submit" class="btn btn-sm btn-success"><i class="ri-save-fill"></i> Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="row mt-4">
         <div class="col-xl-12">
             <div class="card custom-card">

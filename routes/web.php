@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::post('reassign/{id?}', 'reassign')->name('reassign');
                 Route::get('borrow_assign/{id?}', 'guarantor')->name('assign');
                 Route::post('delete/{id?}', 'delete')->name('delete');
+                Route::post('upload_customer_report', 'uploadCustomer')->name('upload');
             });
         });
     });
@@ -102,6 +103,7 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::get('edit/{id?}', 'edit')->name('edit');
                 Route::post('assign/{id?}', 'assign')->name('assign');
                 Route::post('delete/{id?}', 'delete')->name('delete');
+                Route::post('upload_guarantor_report', 'uploadCustomer')->name('upload');
             });
         });
     });

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Borrower;
 
 use App\Http\Controllers\Controller;
+use App\Imports\CustomerImport;
+use App\Imports\GuarantorImport;
 use App\Models\Borrow\Borrower;
 use App\Models\Borrow\Guarantor;
 use App\Models\Borrow\GuarantorAttachment;
@@ -15,8 +17,10 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 use function Pest\Laravel\get;
 
 class GuarantorController extends Controller
@@ -271,5 +275,18 @@ class GuarantorController extends Controller
             return  redirect()->back()->with('error', 'sorry something went wrong  try again');
         }
         return redirect()->route('borrow.index')->with('success','You have deleted successfully a guarantor');
+    }
+
+    public function uploadCustomer(Request $request)
+    {
+        try {
+            $file =  $request->file('customer_report');
+            $path = Storage::putFile('temp', $file);
+            Excel::import(new GuarantorImport(Auth::user()), $path);
+        }catch(\Exception $e){
+            Log::info('error_borrow', [$e]);
+            return redirect()->back()->with('error', 'sorry something went wrong cannot upload customer report');
+        }
+        return redirect()->route('borrow.index')->with('success','You have successfully upload customer report');
     }
 }
