@@ -52,6 +52,10 @@
                                     <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
                                        href="#security" aria-selected="true"><i class="bx bx-message-dots  me-2"></i>Loan Comments</a>
                                 </li>
+                            <li class="nav-item m-1">
+                                <a class="nav-link" data-bs-toggle="tab" role="tab" aria-current="page"
+                                   href="#approve" aria-selected="true"><i class="bx bx-user-check me-2"></i>Approver Comments</a>
+                            </li>
                             </ul>
                     </div>
                     <div class="col-xxl-10 col-xl-10 col-md-10 col-sm-12">
@@ -838,6 +842,37 @@
 
                                         </ul>
                                     </div>
+
+                            </div>
+                            <div class="tab-pane p-0" id="approve"
+                                 role="tabpanel">
+                                <div class="d-flex align-items-center justify-content-between w-100 p-3 border-bottom">
+                                    <div>
+                                        <h6 class="fw-semibold mb-0">Approver Comments</h6>
+                                    </div>
+
+                                </div>
+
+                                <div class="card-body">
+                                    <ul class="list-unstyled profile-timeline">
+                                        @foreach($returns as $return)
+                                            <li>
+                                                <div>
+                                            <span class="avatar avatar-sm bg-primary-transparent avatar-rounded profile-timeline-avatar">
+                                                {{substr($return->user->name, 0,2)}}
+                                            </span>
+                                                    <p class="mb-2">
+                                                        <b>{{$return->user->name ?? ''}}</b> <span class="float-end fs-11 text-muted">{{\Carbon\Carbon::parse($return->created_at)->format('D, d M Y H:i:s')}}</span>
+                                                    <p class="text-muted mb-0">
+                                                        {{$return->comment}}
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        @endforeach
+
+
+                                    </ul>
+                                </div>
 
                             </div>
                         </div>

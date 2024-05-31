@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::get('edit/{id?}', 'edit')->name('edit');
                 Route::post('repayment/{id?}', 'distributeLoanPayment')->name('payment');
                 Route::post('submit_loan/{id?}', 'submitLoan')->name('submit');
+                Route::post('delete/{id?}', 'delete')->name('delete');
             });
         });
     });
@@ -100,6 +101,7 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::get('export/{id?}', 'downloadAttachment')->name('download');
                 Route::get('edit/{id?}', 'edit')->name('edit');
                 Route::post('assign/{id?}', 'assign')->name('assign');
+                Route::post('delete/{id?}', 'delete')->name('delete');
             });
         });
     });
@@ -129,7 +131,7 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::get('index', 'index')->name('index');
                 Route::get('approve/{id?}', 'approve')->name('approveFirst');
                 Route::post('disburse/{id?}', 'approve')->name('disburse');
-                Route::get('reject/{id?}', 'reject')->name('rejectFirst');
+                Route::post('reject/{id?}', 'reject')->name('rejectFirst');
                 Route::post('comment/{id?}', 'return')->name('comment');
                 Route::get('view/{id?}', 'show')->name('show');
                 Route::post('update/{id?}', 'update')->name('update');

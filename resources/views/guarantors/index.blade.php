@@ -52,9 +52,10 @@
                                                 <i class="ri-eye-line align-middle me-2 d-inline-block"></i>View
                                             </a>
 
-                                            <button class="btn btn-sm btn-danger btn-wave waves-effect waves-light">
+                                            <a class="btn btn-sm btn-danger btn-wave waves-effect waves-light deleteGuarantor"
+                                            data-id="{{$guarantor->id}}">
                                                 <i class="ri-delete-bin-line align-middle me-2 d-inline-block"></i>Delete
-                                            </button>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -71,6 +72,60 @@
 @endsection
 
 @section('scripts')
+<script>
 
+    $(document).ready(function (){
+        $('#file-export').on('click', '.deleteGuarantor', function (){
+            var id = $(this).data('id');
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success ms-2',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url:'{{route('guarantor.delete')}}',
+                        type:'POST',
+                        data:{
+                            _token:'{{csrf_token()}}',
+                            id:id
+                        },
+                        success:function (response){
+                            location.reload()
+                            swalWithBootstrapButtons.fire(
+                                'Deleted!',
+                                'Your guarantor has been deleted.',
+                                'success'
+                            )
+                        },
+                        error:function (error){
+
+                        }
+                    })
+
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'You have cancelled this action :)',
+                        'error'
+                    )
+                }
+            })
+        });
+    });
+</script>
 
 @endsection

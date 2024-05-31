@@ -10,6 +10,7 @@ use App\Models\Collateral\CollateralType;
 use App\Models\Loan\Loan;
 use App\Models\Loan\LoanAttachment;
 use App\Models\Loan\LoanPayment;
+use App\Models\Loan\LoanReturn;
 use App\Models\Loan\LoanSchedule;
 use App\Models\Loan\PaymentLoan;
 use App\Models\Loan\Product;
@@ -340,7 +341,8 @@ class LoanController extends Controller
         $types = CollateralType::query()->get();
         $loan = Loan::with(['schedules','user', 'borrower','guarantor','product', 'loanpayment','agreements',
             'collaterals', 'files','comments','cycles', 'payments'])->findOrFail($id);
-        return view('loan.view',['loan' =>$loan, 'types' => $types]);
+        $returns  = LoanReturn::query()->where('loan_id', $id)->get();
+        return view('loan.view',['loan' =>$loan, 'types' => $types, 'returns' => $returns]);
     }
 
 
@@ -774,4 +776,17 @@ class LoanController extends Controller
         return Redirect::route('loan.settlement')->with('success','You have added successfully a payment');
     }
 
+    public function delete(Request $request)
+    {
+        $id = $request->input('id');
+        try {
+            $loan = Loan::findOrFail($id);
+            $loan->delete();
+
+        }catch (\Exception $e){
+            Log::info('error_borrow', [$e]);
+            return  redirect()->back()->with('error', 'sorry something went wrong  try again');
+        }
+        return redirect()->route('borrow.index')->with('success','You have deleted successfully a loan');
+    }
 }

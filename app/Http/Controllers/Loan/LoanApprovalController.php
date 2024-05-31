@@ -103,6 +103,12 @@ class LoanApprovalController extends Controller
             }else{
                 $loan->update([ 'status' => 'disbursement rejected', 'release_status' => 'rejected']);
             }
+            LoanReturn::create([
+                'loan_id' => $loan->id,
+                'type' => $stage,
+                'description' => $request->input('comment'),
+                'user_id' => Auth::id()
+            ]);
             DB::commit();
         }catch (\Exception $e){
             DB::rollBack();

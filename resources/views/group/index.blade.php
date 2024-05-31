@@ -19,7 +19,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                            <table id="groupTable" class="table table-bordered text-nowrap w-100 dataTable no-footer">
+                            <table id="file-export" class="table table-bordered text-nowrap w-100 dataTable no-footer">
                                <thead>
                                <tr>
                                    <th>SN</th>
@@ -69,7 +69,7 @@
 @section('scripts')
             <script>
                 $(document).ready(function (){
-                    $('#groupTable').on('click', '.deleteGroup', function (){
+                    $('#file-export').on('click', '.deleteGroup', function (){
                         var id = $(this).data('id');
                         const swalWithBootstrapButtons = Swal.mixin({
                             customClass: {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Borrower;
 
 use App\Http\Controllers\Controller;
+use App\Models\Borrow\Borrower;
 use App\Models\Borrow\BorrowerAttachment;
 use App\Models\Borrow\RelationOfficer;
 use App\Models\User;
@@ -136,6 +137,25 @@ class BorrowerGroup extends Controller
         }
 
         return Redirect::back()->with('success','You have assigned successfully your relation officer to group');
+    }
+
+
+    public function delete(Request $request)
+    {
+        $id = $request->input('id');
+        try {
+            $group = \App\Models\Borrow\BorrowerGroup::findOrFail($id);
+            $borrow = Borrower::query()->where('group_id',$group->id)->first();
+            if ($borrow){
+                return  redirect()->back()->with('error', 'sorry you cannot delete this group has members');
+            }else{
+                $group->delete();
+            }
+        }catch (\Exception $e){
+            Log::info('error_borrow', [$e]);
+            return  redirect()->back()->with('error', 'sorry something went wrong  try again');
+        }
+        return redirect()->route('group.index')->with('success','You have deleted successfully a group');
     }
 
 }

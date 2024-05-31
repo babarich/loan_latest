@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Borrow\Borrower;
 use App\Models\Borrow\Guarantor;
 use App\Models\Borrow\GuarantorAttachment;
+use App\Models\Loan\Loan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -253,4 +254,22 @@ class GuarantorController extends Controller
         return Redirect::route('guarantor.index')->with('success','You have updated successfully reassign borrower');
     }
 
+
+    public function delete(Request $request)
+    {
+        $id = $request->input('id');
+        try {
+            $guarantor = Guarantor::findOrFail($id);
+            $loan = Loan::query()->where('guarantor_id',$guarantor->id)->first();
+            if ($loan){
+                return  redirect()->back()->with('error', 'sorry you cannot delete this borrower has loan');
+            }else{
+                $guarantor->delete();
+            }
+        }catch (\Exception $e){
+            Log::info('error_borrow', [$e]);
+            return  redirect()->back()->with('error', 'sorry something went wrong  try again');
+        }
+        return redirect()->route('borrow.index')->with('success','You have deleted successfully a guarantor');
+    }
 }
