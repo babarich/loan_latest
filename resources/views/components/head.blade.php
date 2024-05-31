@@ -69,13 +69,15 @@
                 <ul class="main-header-dropdown dropdown-menu pt-0 overflow-hidden header-profile-dropdown dropdown-menu-end" aria-labelledby="mainHeaderProfile">
 
                     <li>
-                        <a href="{{route('logout')}}" class="dropdown-item d-flex"
-                        onclick="event.preventDefault()"><i class="ti ti-logout fs-18 me-2 op-7"></i>Log Out</a>
-                        <form action="{{route('logout')}}" method="POST">
+                        <a href="{{ route('logout') }}" class="dropdown-item d-flex"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="ti ti-logout fs-18 me-2 op-7"></i> Log Out
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
-
                     </li>
+
                 </ul>
             </div>
             <!-- End::header-element -->
