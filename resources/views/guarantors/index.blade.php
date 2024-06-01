@@ -11,12 +11,7 @@
         </div>
     </div>
 
-    <div>
-        <button class="btn btn-sm btn-primary d-flex align-items-center justify-content-center btn-wave waves-light"
-                data-bs-toggle="modal" data-bs-target="#commentForm">
-            Upload Customer
-        </button>
-    </div>
+
 
     <div class="modal fade" id="commentForm" tabindex="-1"
          aria-labelledby="commentForm" data-bs-keyboard="false"
@@ -77,7 +72,7 @@
                                         <td>{{$guarantor->first_name}} {{$guarantor->last_name}}</td>
                                         <td>{{$guarantor->reference}}</td>
                                         <td>{{$guarantor->email}}</td>
-                                        <td>{{$guarantor->mobile}}</td>.
+                                        <td>{{$guarantor->mobile}}</td>
                                         <td>{{$guarantor->business_name}}</td>
                                         <td>{{$guarantor->address}}</td>
                                         <td>{{$guarantor->gender}}</td>

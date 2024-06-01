@@ -39,7 +39,7 @@
                                     <td>{{$collateral->type->name ?? ''}}</td>
                                     <td>{{$collateral->product_name}}</td>
                                     <td>{{$collateral->loan->borrower->first_name}} {{$collateral->loan->borrower->last_name}}</td>
-                                    <td>{{number_format($collateral->amount)}}</td>.
+                                    <td>{{number_format($collateral->amount)}}</td>
                                     <td>{{\Carbon\Carbon::parse($collateral->date)->format('Y-m-d'),}}</td>
                                     <td>{{$collateral->condition}}</td>
                                     <td>{{$collateral->user->name ?? null}}</td>

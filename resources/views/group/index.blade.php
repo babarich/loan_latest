@@ -38,7 +38,7 @@
                                         <td>{{$group->name}}</td>
                                         <td>{{$group->user->name ?? ''}}</td>
                                         <td>{{$group->borrowers()->count()}}</td>
-                                        <td>{{$group->created_at}}</td>.
+                                        <td>{{$group->created_at}}</td>
                                        <td>
                                             <a href="{{route('group.edit', $group->id)}}" class="btn btn-sm btn-primary btn-wave waves-effect waves-light">
                                                 <i class="ri-pencil-line align-middle me-2 d-inline-block"></i>Edit

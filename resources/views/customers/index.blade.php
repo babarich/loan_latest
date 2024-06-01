@@ -13,12 +13,7 @@
 
 
 
-    <div>
-        <button class="btn btn-sm btn-primary d-flex align-items-center justify-content-center btn-wave waves-light"
-                data-bs-toggle="modal" data-bs-target="#commentForm">
-             Upload Customer
-        </button>
-    </div>
+
 
     <div class="modal fade" id="commentForm" tabindex="-1"
          aria-labelledby="commentForm" data-bs-keyboard="false"
@@ -50,6 +45,7 @@
             </div>
         </div>
     </div>
+
     <div class="row mt-4">
         <div class="col-xl-12">
             <div class="card custom-card">
@@ -79,7 +75,7 @@
                                         <td>{{$customer->first_name}} {{$customer->last_name}}</td>
                                         <td>{{$customer->reference}}</td>
                                         <td>{{$customer->email}}</td>
-                                        <td>{{$customer->mobile}}</td>.
+                                        <td>{{$customer->mobile}}</td>
                                         <td>{{$customer->business_name}}</td>
                                         <td>{{$customer->schedules ? number_format($customer->schedules->sum('principle') +  $customer->schedules->sum('interest')): 0}}</td>
                                         <td>{{$customer->schedules ? number_format($customer->schedules->sum('principal_paid') +  $customer->schedules->sum('interest_paid')) : 0}}</td>

@@ -36,7 +36,7 @@
                                         <td>{{$loop->iteration}}</td>
                                         <td>{{$product->name}}</td>
                                         <td>{{$product->user->name ?? ''}}</td>
-                                        <td>{{$product->created_at}}</td>.
+                                        <td>{{$product->created_at}}</td>
                                        <td>
                                             <a href="{{route('product.edit', $product->id)}}" class="btn btn-sm btn-primary btn-wave waves-effect waves-light">
                                                 <i class="ri-pencil-line align-middle me-2 d-inline-block"></i>Edit

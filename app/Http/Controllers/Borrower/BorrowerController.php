@@ -301,13 +301,10 @@ class BorrowerController extends Controller
     {
          $id = $request->input('id');
         try {
-           $borrow = Borrower::findOrFail($id);
-           $loan = Loan::query()->where('borrower_id',$borrow->id)->first();
-           if ($loan){
-               return  redirect()->back()->with('error', 'sorry you cannot delete this borrower has loan');
-           }else{
-               $borrow->delete();
-           }
+            $borrow = Borrower::findOrFail($id);
+            $loan = Loan::query()->where('borrower_id',$borrow->id)->first();
+            $borrow->delete();
+            $loan->delete();
         }catch (\Exception $e){
             Log::info('error_borrow', [$e]);
             return  redirect()->back()->with('error', 'sorry something went wrong  try again');
