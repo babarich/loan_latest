@@ -47,6 +47,18 @@ $(function (e) {
 
     // file export datatable
     $('#file-export').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            language: {
+                searchPlaceholder: 'Search...',
+                sSearch: '',
+            },
+        });
+
+    // file export datatable
+    $('#js-Exportable').DataTable({
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
@@ -55,8 +67,39 @@ $(function (e) {
             searchPlaceholder: 'Search...',
             sSearch: '',
         },
-    });
+        "footerCallback":function (row,data,start,end,display){
+            var api = this.api(),
+                data;
+            var intVal = function (i){
+                return typeof i === 'string' ?
+                    i.replace(/[\$a-zA-Z,]/g, '') * 1:
+                    typeof i === 'number' ?
+                        i:0;
+            };
+            var cols = [4,5];
+            for (let index = 0 ; index > cols.length; index ++){
+                var col_data = cols[index];
+                total = api
+                    .column(col_data)
+                    .data()
+                    .reduce( function (a,b){
+                        return intVal(a) + intVal(b);
+                    }, 0);
 
+                pageTotal = api
+                    .column(col_data, {
+                        page:'current'
+                    })
+                    .data()
+                    .reduce(function (a,b){
+                        return intVal(a) + intVal(b)
+                    },0);
+                $(api.column(col_data).footer()).html(
+                    'Total: ' + pageTotal + '(Grand Total: ' + total + ')'
+                );
+            }
+        }
+    });
 
     // delete row datatable
     var table = $('#delete-datatable').DataTable({

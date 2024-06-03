@@ -28,7 +28,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <label for="job-title" class="form-label">Customer Name</label>
-                                <select class="form-control"  name="borrower" id="customerId" required>
+                                <select class="form-control"  name="borrower"  id="customerId" required>
                                     <option value="">Select...</option>
                                     @foreach($borrowers as $borrower)
                                         <option value="{{$borrower->id}}">{{$borrower->first_name}} {{$borrower->last_name}}</option>
@@ -115,7 +115,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <label class="form-label">Interest Method</label>
-                                <select class="form-control" name="interest">
+                                <select class="form-control" name="interest" required>
                                     <option value="">select..</option>
                                     <option value="flat">Flat Rate</option>
                                     <option value="reducing">Reducing Balance</option>
@@ -127,7 +127,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <label for="percentage" class="form-label">Loan Interest Percentage</label>
-                                <input type="number" name="percent" class="form-control">
+                                <input type="number" name="percent" class="form-control" required>
                                 @error('percent')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
@@ -189,7 +189,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <label for="qualification" class="form-label">Guarantor:</label>
-                                <select class="form-control" name="guarantor" id="group">
+                                <select class="form-control" name="guarantor" id="guarantorId">
                                     <option value="" >Select..</option>
                                     @foreach($guarantors as $guarantor)
                                         <option value="{{$guarantor->id}}">{{$guarantor->first_name}}</option>
@@ -241,6 +241,17 @@
                    $("#bankDiv").hide()
                    $("#mobileMoney").hide()
                }
+           })
+
+           $('#customerId').select2({
+               class:'form-control',
+               placeholder:"Select Customer"
+           })
+
+
+           $('#guarantorId').select2({
+               class:'form-control',
+               placeholder:"Select Customer"
            })
 
            $('#customerId').on('change', function (){

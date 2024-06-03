@@ -38,7 +38,7 @@
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$loan->reference}}</td>
-                                    <td>{{$loan->borrower->first_name}} {{$loan->borrower->last_name}}</td>
+                                    <td>{{$loan->borrower->first_name ?? ''}} {{$loan->borrower->last_name ?? ''}}</td>
                                     <td>{{number_format($loan->principle_amount)}}</td>
                                     <td>{{number_format($loan->total_interest)}}</td>
                                     <td>{{isset($loan->interest_percentage) ? $loan->interest_percentage. ' '. '%' : $loan->interest_amount}}</td>

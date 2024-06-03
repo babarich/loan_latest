@@ -14,6 +14,7 @@ use App\Models\Loan\LoanReturn;
 use App\Models\Loan\LoanSchedule;
 use App\Models\Loan\PaymentLoan;
 use App\Models\Loan\Product;
+use App\Services\LoanService;
 use App\Services\PayOffService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -152,23 +153,51 @@ class LoanController extends Controller
                $paymentCycle = $request->input('payment_cycle');
                $cycle = $request->input('number_payments');
                $singleInterest = $this->singleInterest($principle,$interest_type,$percent,$amount);
-               $schedules = $this->calculateRepaymentSchedule($principle,$totalInterest,$duration,$paymentCycle,$cycle,$loanDate, $interest);
+               $term = $request->input('number_payments');
+               $loanService = new LoanService();
+               if ( $request->input('interest') === 'reducing'){
+                   $schedules = $loanService->generateAmortizationSchedule($principle, $percent, $term, $cycle, $loanDate);
 
-               foreach ($schedules as $schedule){
-                   LoanSchedule::create([
-                       'loan_id' => $loan->id,
-                       'borrower_id' => $validatedData['borrower'],
-                       'start_date' => $schedule['start_date'],
-                       'due_date' => $schedule['due_date'],
-                       'principle' => $schedule['repayment_amount'] - $singleInterest,
-                       'interest' => $singleInterest,
-                       'amount' => $schedule['repayment_amount'],
-                       'status' => 'pending',
-                       'user_id' => Auth::id(),
-                       'paid' => $schedule['paid'],
-                       'com_id' => Auth::user()->com_id,
-                   ]);
+               }else{
+                   $schedules = $this->calculateRepaymentSchedule($principle,$totalInterest,$duration,$paymentCycle,$cycle,$loanDate, $interest);
                }
+
+
+                if ( $request->input('interest') === 'reducing') {
+                    foreach ($schedules as $schedule){
+                        LoanSchedule::create([
+                            'loan_id' => $loan->id,
+                            'borrower_id' => $validatedData['borrower'],
+                            'start_date' => $schedule['start_date'],
+                            'due_date' => $schedule['due_date'],
+                            'principle' => $schedule['principal_payment'],
+                            'interest' => $schedule['interest_payment'],
+                            'amount' => $schedule['monthly_payment'],
+                            'status' => 'pending',
+                            'user_id' => Auth::id(),
+                            'paid' => false,
+                            'com_id' => Auth::user()->com_id,
+                        ]);
+                    }
+
+                }else{
+                    foreach ($schedules as $schedule){
+                        LoanSchedule::create([
+                            'loan_id' => $loan->id,
+                            'borrower_id' => $validatedData['borrower'],
+                            'start_date' => $schedule['start_date'],
+                            'due_date' => $schedule['due_date'],
+                            'principle' => $schedule['repayment_amount'] - $singleInterest,
+                            'interest' => $singleInterest,
+                            'amount' => $schedule['repayment_amount'],
+                            'status' => 'pending',
+                            'user_id' => Auth::id(),
+                            'paid' => $schedule['paid'],
+                            'com_id' => Auth::user()->com_id,
+                        ]);
+                    }
+
+                }
 
 
                DB::commit();
@@ -192,7 +221,7 @@ class LoanController extends Controller
             $totalInterest =  $principle * ($percent/100) * $term;
 
         }elseif ($interest === 'reducing'){
-            $monthlyInterestRate = $percent/100;
+            $monthlyInterestRate = $percent / 12 / 100;
             $term = $this->convertTerm($duration, $type,$method);
             $numberOfPayments = 1;
             $totalInterest = $principle * ($monthlyInterestRate / $numberOfPayments) /

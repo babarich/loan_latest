@@ -22,6 +22,7 @@
 <script src="{{asset('assets/libs/sweetalert2/sweetalert2.min.js')}}"></script>
 <!-- Internal Datatables JS -->
 <script src="{{asset('assets/js/datatables.js')}}"></script>
+<script  src="{{asset('assets/js/select2/dist/js/select2.min.js')}}"></script>
 
 <!-- Custom JS -->
 <script src="{{asset('assets/js/custom.js')}}"></script>

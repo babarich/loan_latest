@@ -402,7 +402,7 @@
                             <div class="tab-pane p-0" id="email-settings"
                                  role="tabpanel">
                                 <div class="table-responsive">
-                                    <table class="table text-nowrap">
+                                    <table id="js-Exportable" class="table text-nowrap">
                                         <thead class="table-primary">
                                         <tr>
                                             <th scope="col">S/N</th>
@@ -430,15 +430,11 @@
                                                 <td>
                                                     {{$schedule->due_date}}
                                                 </td>
-                                                <td>
-                                                    {{number_format($schedule->principle)}}
+                                                <td class="amount">
+                                                    {{number_format($schedule->principle,2)}}
                                                 </td>
                                                 <td>
-                                                    {{number_format($schedule->interest)}}
-                                                </td>
-
-                                                <td>
-
+                                                    {{number_format($schedule->interest, 2)}}
                                                 </td>
 
                                                 <td>
@@ -446,14 +442,18 @@
                                                 </td>
 
                                                 <td>
-                                                    {{$schedule->interest_paid ? number_format($schedule->interest_paid) : 0.00}}
+
+                                                </td>
+
+                                                <td>
+                                                    {{$schedule->interest_paid ? number_format($schedule->interest_paid,2) : 0.00}}
                                                 </td>
 
                                                 <td>
                                                     {{$schedule->principal_paid ? number_format($schedule->principal_paid) : 0.00}}
                                                 </td>
-                                                <td class="amount">
-                                                    {{number_format($schedule->amount)}}
+                                                <td>
+                                                    {{number_format($schedule->amount,2)}}
                                                 </td>
                                                 <td>
                                                     @if($schedule->status === 'pending')
@@ -475,7 +475,9 @@
                                         <tfoot>
                                         <tr>
                                             <th>Total</th>
-                                            <th id="totalAmount"></th>
+                                            <th></th>
+                                            <th></th>
+
                                         </tr>
                                         </tfoot>
                                     </table>

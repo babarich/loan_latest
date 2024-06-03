@@ -17,6 +17,9 @@
 <link href="{{asset('assets/libs/simplebar/simplebar.min.css')}}" rel="stylesheet" >
 <!-- Color Picker Css -->
 <link rel="stylesheet" href="{{asset('assets/libs/flatpickr/flatpickr.min.css')}}">
+
+<!-- Color Picker Css -->
+<link rel="stylesheet" href="{{asset('assets/js/select2/dist/css/select2.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/libs/@simonwep/pickr/themes/nano.min.css')}}">
 <!-- Choices Css -->
 <link rel="stylesheet" href="{{asset('assets/libs/choices.js/public/assets/styles/choices.min.css')}}">
@@ -26,4 +29,5 @@
 
 <link href="{{asset('assets/libs/toastr/toastr.min.css')}}" rel="stylesheet" >
 <link href="{{asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" >
+<link rel="stylesheet" href="{{asset('assets/libs/choices.js/public/assets/styles/choices.min.css')}}">
 
