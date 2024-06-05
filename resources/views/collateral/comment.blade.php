@@ -37,7 +37,10 @@
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$comment->loan->reference ?? ''}}</td>
-                                    <td>{{$comment->loan->borrower->first_name . ' ' . $comment->loan->borrower->last_name ?? null}}</td>
+                                    <td>
+                                        {{ isset($comment->loan->borrower->first_name) ? $comment->loan->borrower->first_name : '' }}
+                                        {{ isset($comment->loan->borrower->last_name) ? ' ' . $comment->loan->borrower->last_name : '' }}
+                                    </td>
                                     <td>{{\Carbon\Carbon::parse($comment->created_at)->format('Y-m-d')}}</td>
                                     <td>{{$comment->user->name ?? null}}</td>.
                                     <td>{{$comment->description}}</td>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Loan;
 use App\Http\Controllers\Controller;
 use App\Models\Collateral\CollateralType;
 use App\Models\Loan\Loan;
+use App\Models\Loan\LoanDisbursement;
 use App\Models\Loan\LoanReturn;
 use App\Models\Loan\TempLoan;
 use App\Models\Setting\CompanyPayment;
@@ -82,6 +83,15 @@ class LoanApprovalController extends Controller
                 $loan->update(['stage' => 2, 'status' => 'approver approved']);
             }else{
                 $loan->update(['stage' => 3, 'status' => 'disbursement', 'release_status' => 'approved']);
+
+                LoanDisbursement::create([
+                    'loan_id' => $loan->id,
+                    'payment_method' => $request->input('payment_method'),
+                    'payment_reference' => $request->input('payment_reference'),
+                    'payment_date' => $request->input('payment_date'),
+                    'user_id' => Auth::id(),
+                    'com_id' => Auth::user()->com_id,
+                ]);
             }
             DB::commit();
         }catch (\Exception $e){

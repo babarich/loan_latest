@@ -56,5 +56,25 @@ class LoanSchedule extends Model
         });
     }
 
+    public function scopeCurrentMonth($query)
+    {
+        return $query->whereMonth('due_date', Carbon::now()->month)
+            ->whereYear('due_date', Carbon::now()->year);
+    }
+
+    public function scopeDueDate($query, $date)
+    {
+        return $query->whereDate('due_date', $date);
+    }
+
+    public function scopeStartDate($query, $date)
+    {
+        return $query->whereDate('start_date', $date);
+    }
+
+    public function scopeByUser($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
 
 }

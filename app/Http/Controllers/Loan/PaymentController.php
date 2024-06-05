@@ -19,6 +19,7 @@ use App\Models\User;
 use App\Services\ChartService;
 use App\Services\CollectionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Validator;
@@ -77,9 +78,26 @@ class PaymentController extends Controller
     public function collection(Request $request)
     {
 
-     $weekly = new CollectionService();
-     $weeks = $weekly->report();
+        $query = LoanSchedule::query();
 
+        $query->currentMonth();
+
+        if ($request->filled('due_date')) {
+            $query->dueDate($request->input('due_date'));
+        }
+
+        if ($request->filled('start_date')) {
+            $query->startDate($request->input('start_date'));
+        }
+
+        if ($request->filled('user_id')) {
+            $query->byUser($request->input('user_id'));
+        }
+
+        $schedules = $query->get();
+        $users = User::query()->where('com_id', Auth::user()->com_id)->get();
+
+        return view('payment.collection', compact('schedules', 'users'));
 
     }
 }
