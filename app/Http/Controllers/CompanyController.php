@@ -101,4 +101,19 @@ class CompanyController extends Controller
     }
 
 
+    public function delete(Request $request)
+    {
+        $id = $request->input('id');
+        try {
+            $comp = CompanyPayment::findOrFail($id);
+            $comp->delete();
+
+        }catch (\Exception $e){
+            Log::info('error_borrow', [$e]);
+            return  redirect()->back()->with('error', 'sorry something went wrong  try again');
+        }
+        return redirect()->back()->with('success','You have deleted successfully a payment loan');
+    }
+
+
 }

@@ -85,7 +85,6 @@
                                             </a>
 
                                             @if($loan->stage === 0)
-
                                                 <a href="{{route('loan.edit', $loan->id)}}" class="btn btn-sm btn-primary btn-wave waves-effect waves-light">
                                                     <i class="ri-pencil-line align-middle me-2 d-inline-block"></i>Edit
                                                 </a>

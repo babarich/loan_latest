@@ -212,6 +212,133 @@ class LoanController extends Controller
    }
 
 
+
+
+    public function update(LoanRequest $request, $loanId){
+
+        $validatedData = $request->validated();
+
+        try {
+            $pendingAmount = $request->input('payoff') === 'yes' ? $request->input('pending') : 0 ;
+            $principle = $validatedData['principle'] - $pendingAmount;
+            $interest = $validatedData['interest'];
+            $interest_type = $validatedData['interest_type'];
+            $percent = $request->input('percent');
+            $amount = $request->input('interest_amount');
+            $duration = $request->input('loan_duration');
+            $type = $request->input('duration_type');
+            $method = $request->input('interest_method');
+
+            DB::beginTransaction();
+            $totalInterest = $this->calculateLoan($principle,$interest,$percent,$duration,$type, $method);
+            $loan = Loan::findOrFail($loanId);
+             $loan->update([
+                'loan_product' => $validatedData['product'],
+                'borrower_id' => $validatedData['borrower'],
+                'principle_amount' => $principle,
+                'interest_method' => $validatedData['interest'],
+                'interest_type' => $validatedData['interest_type'],
+                'disbursement' => $request->filled('payment') ?  $request->input('payment') : null,
+                'interest_percentage' => $request->filled('percent') ? $request->input('percent') : null,
+                'interest_duration' => $request->filled('interest_method') ? $request->input('interest_method') : null,
+                'loan_duration' => $validatedData['loan_duration'],
+                'duration_type' => $request->filled('duration_type') ? $request->input('duration_type') : null,
+                'payment_cycle' => $request->filled('payment_cycle') ? $request->input('payment_cycle') : null,
+                'payment_number' => $request->filled('number_payments') ? $request->input('number_payments') : null,
+                'loan_release_date' => $request->filled('release_date') ? $request->input('release_date') : null,
+                'interest_amount' => $request->filled('interest_amount') ? $request->input('interest_amount') : null,
+                'guarantor_id' => $validatedData['guarantor'],
+                'description' => $request->filled('description') ?  $request->input('description') : null,
+                'total_interest' => $totalInterest
+            ]);
+
+
+            if ($request->input('payoff') === 'yes'){
+                $payment = new PayOffService();
+                $amount = $request->input('pending');
+                $borrowerId = $request->input('borrower_id');
+                $debt = $payment->makePayment($amount, $borrowerId);
+            }
+
+
+            $payLoan = LoanPayment::query()->where('loan_id', $loanId)->first();
+            $payLoan->delete();
+            LoanPayment::create([
+                'loan_id' => $loan->id,
+                'due_amount' => $totalInterest + $principle,
+                'total' => $totalInterest + $principle,
+                'status' => 'pending',
+                'com_id' => Auth::user()->com_id,
+            ]);
+
+            $loanDate = $request->input('release_date');
+            $paymentCycle = $request->input('payment_cycle');
+            $cycle = $request->input('number_payments');
+            $singleInterest = $this->singleInterest($principle,$interest_type,$percent,$amount);
+            $term = $request->input('number_payments');
+            $loanService = new LoanService();
+            if ( $request->input('interest') === 'reducing'){
+                $schedules = $loanService->generateAmortizationSchedule($principle, $percent, $term, $cycle, $loanDate);
+
+            }else{
+                $schedules = $this->calculateRepaymentSchedule($principle,$totalInterest,$duration,$paymentCycle,$cycle,$loanDate, $interest);
+            }
+            $scheduleLoans = LoanSchedule::query()->where('loan_id', $loanId)->get();
+            foreach ($scheduleLoans as $scheduleLoan){
+                $scheduleLoan->delete();
+            }
+
+
+            if ( $request->input('interest') === 'reducing') {
+                foreach ($schedules as $schedule){
+                    LoanSchedule::create([
+                        'loan_id' => $loan->id,
+                        'borrower_id' => $validatedData['borrower'],
+                        'start_date' => $schedule['start_date'],
+                        'due_date' => $schedule['due_date'],
+                        'principle' => $schedule['principal_payment'],
+                        'interest' => $schedule['interest_payment'],
+                        'amount' => $schedule['monthly_payment'],
+                        'status' => 'pending',
+                        'user_id' => Auth::id(),
+                        'paid' => false,
+                        'com_id' => Auth::user()->com_id,
+                    ]);
+                }
+
+            }else{
+                foreach ($schedules as $schedule){
+                    LoanSchedule::create([
+                        'loan_id' => $loan->id,
+                        'borrower_id' => $validatedData['borrower'],
+                        'start_date' => $schedule['start_date'],
+                        'due_date' => $schedule['due_date'],
+                        'principle' => $schedule['repayment_amount'] - $singleInterest,
+                        'interest' => $singleInterest,
+                        'amount' => $schedule['repayment_amount'],
+                        'status' => 'pending',
+                        'user_id' => Auth::id(),
+                        'paid' => $schedule['paid'],
+                        'com_id' => Auth::user()->com_id,
+                    ]);
+                }
+
+            }
+
+
+            DB::commit();
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            Log::info('error', [$e]);
+            return  Redirect::back()->with('error', 'sorry something went wrong cannot create loan try again');
+        }
+        return Redirect::route('loan.index')->with('success','You have updated your loan successfully');
+    }
+
+
+
+
    private function calculateLoan($principle ,$interest, $percent, $duration, $type, $method){
 
 
@@ -818,4 +945,10 @@ class LoanController extends Controller
         }
         return redirect()->route('borrow.index')->with('success','You have deleted successfully a loan');
     }
+
+
+
+
+
+
 }
