@@ -49,9 +49,10 @@
                                                 <i class="ri-eye-line align-middle me-2 d-inline-block"></i>View
                                             </a>
 
-                                            <button class="btn btn-sm btn-danger btn-wave waves-effect waves-light deleteTrans">
+                                            <a class="btn btn-sm btn-danger btn-wave waves-effect waves-light deleteTrans"
+                                            data-id="{{$transaction->id}}">
                                                 <i class="ri-delete-bin-line align-middle me-2 d-inline-block"></i>Delete
-                                            </button>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
