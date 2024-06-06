@@ -421,40 +421,16 @@
                                         <tbody>
                                         @foreach($loan->schedules as $schedule)
                                             <tr>
-                                                <td>
-                                                    {{$loop->iteration}}
-                                                </td>
-                                                <td>
-                                                    {{isset($schedule->start_date) ? \Carbon\Carbon::parse($schedule->start_date)->format('Y-m-d') : ''}}
-                                                </td>
-                                                <td>
-                                                    {{$schedule->due_date}}
-                                                </td>
-                                                <td class="amount">
-                                                    {{number_format($schedule->principle,2)}}
-                                                </td>
-                                                <td>
-                                                    {{number_format($schedule->interest, 2)}}
-                                                </td>
-
-                                                <td>
-
-                                                </td>
-
-                                                <td>
-
-                                                </td>
-
-                                                <td>
-                                                    {{$schedule->interest_paid ? number_format($schedule->interest_paid,2) : 0.00}}
-                                                </td>
-
-                                                <td>
-                                                    {{$schedule->principal_paid ? number_format($schedule->principal_paid) : 0.00}}
-                                                </td>
-                                                <td>
-                                                    {{number_format($schedule->amount,2)}}
-                                                </td>
+                                                <td>{{$loop->iteration}}</td>
+                                                <td class="editable-date" data-field="start_date">{{isset($schedule->start_date) ? \Carbon\Carbon::parse($schedule->start_date)->format('Y-m-d') : ''}}</td>
+                                                <td class="editable-date" data-field="due_date">{{$schedule->due_date}}</td>
+                                                <td class="editable" data-field="principle">{{number_format($schedule->principle,2)}}</td>
+                                                <td class="editable" data-field="interest">{{number_format($schedule->interest, 2)}}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{$schedule->interest_paid ? number_format($schedule->interest_paid,2) : 0.00}}</td>
+                                                <td>{{$schedule->principal_paid ? number_format($schedule->principal_paid) : 0.00}}</td>
+                                                <td>{{number_format($schedule->amount,2)}}</td>
                                                 <td>
                                                     @if($schedule->status === 'pending')
                                                         <span class="badge bg-warning">Pending</span>
@@ -465,22 +441,32 @@
                                                     @elseif($schedule->status === 'partial')
                                                         <span class="badge bg-danger">Partial Paid</span>
                                                     @else
-                                                        <span  class="badge bg-danger">Overdue</span>
+                                                        <span class="badge bg-danger">Overdue</span>
                                                     @endif
                                                 </td>
+                                                <input type="hidden" class="schedule-id" value="{{$schedule->id}}">
                                             </tr>
                                         @endforeach
-
                                         </tbody>
                                         <tfoot>
                                         <tr>
                                             <th>Total</th>
                                             <th></th>
                                             <th></th>
+                                            <th id="total-principle">0.00</th>
+                                            <th id="total-interest">0.00</th>
 
+                                            <th></th>
+                                            <th>
+                                                @if($loan->stage === 0)
+                                                    <button class="btn btn-secondary btn-sm" id="saveChanges">Save</button>
+                                                @endif
+
+                                            </th>
                                         </tr>
                                         </tfoot>
                                     </table>
+
                                 </div>
 
                             </div>
@@ -925,12 +911,150 @@
         });
 
 
+            calculateTotals();
+            $('.editable').on('click', function() {
+                var $cell = $(this);
+                var currentValue = $cell.text().trim().replace(/,/g, '');
 
-            updateTotal();
-            $('.amount').on('input', function() {
-                updateTotal();
+                var $input = $('<input>', {
+                    type: 'text',
+                    value: currentValue,
+                    class: 'edit-input, form-control',
+                    blur: function() {
+                        var newValue = parseFloat($(this).val()).toFixed(2);
+                        if (isNaN(newValue)) {
+                            newValue = 0.00;
+                        }
+                        $cell.text(newValue.toLocaleString());
+                        validateAndCalculateTotals($cell);
+                    },
+                    keyup: function(e) {
+                        if (e.which === 13) {
+                            $(this).blur();
+                        }
+                    }
+                }).appendTo($cell.empty()).focus().select();
             });
 
+
+
+        $('.editable-date').on('click', function() {
+            var $cell = $(this);
+            var currentValue = $cell.text().trim();
+
+            var $input = $('<input>', {
+                type: 'date',
+                value: currentValue,
+                class: 'edit-input form-control',
+                blur: function() {
+                    var newValue = $(this).val();
+                    $cell.text(newValue);
+                },
+                keyup: function(e) {
+                    if (e.which === 13) {
+                        $(this).blur();
+                    }
+                }
+            }).appendTo($cell.empty()).focus().select();
+        });
+
+
+
+        function validateAndCalculateTotals($cell) {
+            var $row = $cell.closest('tr');
+            var principle = parseFloat($row.find('[data-field="principle"]').text().trim().replace(/,/g, '')) || 0;
+            var interest = parseFloat($row.find('[data-field="interest"]').text().trim().replace(/,/g, '')) || 0;
+            var dueAmount = parseFloat($row.find('.due-amount').text().trim().replace(/,/g, '')) || 0;
+
+            if ((principle + interest) !== dueAmount) {
+                alert('Sum of Principle and Interest must be equal to Due Amount.');
+                return false;
+            }
+
+            calculateTotals();
+        }
+
+
+        function calculateTotals() {
+            var totalPrinciple = 0;
+            var totalInterest = 0;
+            var totalDueAmount = 0;
+
+            $('#js-Exportable tbody tr').each(function() {
+                totalPrinciple += parseFloat($(this).find('[data-field="principle"]').text().trim().replace(/,/g, '')) || 0;
+                totalInterest += parseFloat($(this).find('[data-field="interest"]').text().trim().replace(/,/g, '')) || 0;
+                totalDueAmount += parseFloat($(this).find('.due-amount').text().trim().replace(/,/g, '')) || 0;
+            });
+
+            $('#total-principle').text(totalPrinciple.toFixed(2).toLocaleString());
+            $('#total-interest').text(totalInterest.toFixed(2).toLocaleString());
+            $('#total-due-amount').text(totalDueAmount.toFixed(2).toLocaleString());
+        }
+
+
+
+        $('#saveChanges').on('click', function (){
+            var data = [];
+            $('#js-Exportable tbody tr').each(function() {
+                var row = {
+                    id: $(this).find('.schedule-id').val(),
+                    start_date: $(this).find('[data-field="start_date"]').text().trim(),
+                    due_date: $(this).find('[data-field="due_date"]').text().trim(),
+                    principle: parseFloat($(this).find('[data-field="principle"]').text().trim().replace(/,/g, '')) || 0,
+                    interest: parseFloat($(this).find('[data-field="interest"]').text().trim().replace(/,/g, '')) || 0,
+
+                };
+                data.push(row);
+            });
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success ms-2',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url:'{{route('schedule.update')}}',
+                        type:'POST',
+                        data:{
+                            _token:'{{csrf_token()}}',
+                            schedules:data
+                        },
+                        success:function (response){
+                            location.reload()
+                            swalWithBootstrapButtons.fire(
+                                'Deleted!',
+                                'Your loan has been deleted.',
+                                'success'
+                            )
+                        },
+                        error:function (error){
+
+                        }
+                    })
+
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'You have cancelled this action :)',
+                        'error'
+                    )
+                }
+            })
+        });
 
         var viewTab = localStorage.getItem('viewTab');
         if(viewTab){
@@ -944,35 +1068,8 @@
             localStorage.setItem('viewTab', targetTab)
         })
 
-        // Swal.fire({
-        //     title:"Are you sure?",
-        //     text:"You want to submit this Loan",
-        //     type:"warning",
-        //     showCancelButton:true,
-        //     confirmButtonClass:"btn-danger",
-        //     confirmButtonText:"Yes,Accept",
-        //     cancelButtonText:"No,Cancel",
-        //     closeOnConfirm:false,
-        //     closeOnCancel:false
-        // },
-        // function (isConfirm){
-        //     if(isConfirm){
-        //
-        //     }else{
-        //         Swal.fire("Cancelled", "You have cancelled submitting the loan :)", "error")
-        //     }
-        // }
-        // )
+
     });
-    function updateTotal() {
-        let total = 0;
-        $('.amount').each(function() {
-            let value = parseFloat($(this).text());
-            if (!isNaN(value)) {
-                total += value;
-            }
-        });
-        $('#totalAmount').text(total);
-    }
+
 </script>
 @endsection

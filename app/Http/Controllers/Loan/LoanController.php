@@ -37,7 +37,7 @@ class LoanController extends Controller
     public function index(Request $request){
 
 
-        $loans = Loan::query()->where('status', '!=', 'complete')->get();
+        $loans = Loan::query()->where('status', '!=', 'complete')->orderBy('updated_at', 'desc')->get();
 
         return view('loan.index', compact('loans'));
     }
@@ -107,6 +107,20 @@ class LoanController extends Controller
 
                DB::beginTransaction();
                $totalInterest = $this->calculateLoan($principle,$interest,$percent,$duration,$type, $method);
+
+           $loanDate = $request->input('release_date');
+           $paymentCycle = $request->input('payment_cycle');
+           $cycle = $request->input('number_payments');
+           $singleInterest = $this->singleInterest($principle,$interest_type,$percent,$amount);
+           $term = $request->input('number_payments');
+           $loanService = new LoanService();
+           if ( $request->input('interest') === 'reducing'){
+               $schedules = $loanService->generateAmortizationSchedule($principle, $percent, $term, $cycle, $loanDate);
+               $totalInterest = $loanService->calculateTotalInterest($principle,$percent, $term, $type,$method);
+
+           }else{
+               $schedules = $this->calculateRepaymentSchedule($principle,$totalInterest,$duration,$paymentCycle,$cycle,$loanDate, $interest);
+           }
                $loan = Loan::create([
                    'reference' => 'LRN'.''.rand(1000,9999),
                    'loan_product' => $validatedData['product'],
@@ -141,27 +155,14 @@ class LoanController extends Controller
                        $debt = $payment->makePayment($amount, $borrowerId);
                    }
 
-               LoanPayment::create([
-                   'loan_id' => $loan->id,
-                   'due_amount' => $totalInterest + $principle,
-                   'total' => $totalInterest + $principle,
-                   'status' => 'pending',
-                   'com_id' => Auth::user()->com_id,
-               ]);
 
-               $loanDate = $request->input('release_date');
-               $paymentCycle = $request->input('payment_cycle');
-               $cycle = $request->input('number_payments');
-               $singleInterest = $this->singleInterest($principle,$interest_type,$percent,$amount);
-               $term = $request->input('number_payments');
-               $loanService = new LoanService();
-               if ( $request->input('interest') === 'reducing'){
-                   $schedules = $loanService->generateAmortizationSchedule($principle, $percent, $term, $cycle, $loanDate);
-
-               }else{
-                   $schedules = $this->calculateRepaymentSchedule($principle,$totalInterest,$duration,$paymentCycle,$cycle,$loanDate, $interest);
-               }
-
+                   LoanPayment::create([
+                       'loan_id' => $loan->id,
+                       'due_amount' => $totalInterest + $principle,
+                       'total' => $totalInterest + $principle,
+                       'status' => 'pending',
+                       'com_id' => Auth::user()->com_id,
+                   ]);
 
                 if ( $request->input('interest') === 'reducing') {
                     foreach ($schedules as $schedule){
@@ -230,8 +231,8 @@ class LoanController extends Controller
             $method = $request->input('interest_method');
 
             DB::beginTransaction();
-            $totalInterest = $this->calculateLoan($principle,$interest,$percent,$duration,$type, $method);
-            $loan = Loan::findOrFail($loanId);
+             $totalInterest =  $this->calculateLoan($principle,$interest,$percent,$duration,$type, $method);
+             $loan = Loan::findOrFail($loanId);
              $loan->update([
                 'loan_product' => $validatedData['product'],
                 'borrower_id' => $validatedData['borrower'],
@@ -279,6 +280,8 @@ class LoanController extends Controller
             $loanService = new LoanService();
             if ( $request->input('interest') === 'reducing'){
                 $schedules = $loanService->generateAmortizationSchedule($principle, $percent, $term, $cycle, $loanDate);
+                $totalInterest = $loanService->calculateTotalInterest($principle,$percent, $term, $type,$method);
+                $loan->update(['total_interest' => $totalInterest]);
 
             }else{
                 $schedules = $this->calculateRepaymentSchedule($principle,$totalInterest,$duration,$paymentCycle,$cycle,$loanDate, $interest);

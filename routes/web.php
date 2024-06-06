@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::get('maturity', 'maturity')->name('maturity');
                 Route::get('create', 'create')->name('create');
                 Route::get('show', 'show')->name('show');
+                Route::post('update', 'update')->name('update');
             });
         });
     });

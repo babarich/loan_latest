@@ -9,23 +9,33 @@ class LoanService
 
     public function calculateMonthlyPayment($principal, $annualInterestRate, $term)
     {
-        $monthlyInterestRate = $annualInterestRate / 12 / 100;
-        $numberOfPayments = $term;
+        $years = 1;
+        $annualRate = $annualInterestRate * $term;
+        $ratePeriod =  $annualRate /100;
+        $ratePerPeriod = $ratePeriod / $term;
+//        $monthlyInterestRate = $annualInterestRate / 12 / 100;
+        $numberOfPayments = $term * $years;
 
-        return ($principal * $monthlyInterestRate) / (1 - pow(1 + $monthlyInterestRate, -$numberOfPayments));
+        $emi = $principal * $ratePerPeriod * pow(1 + $ratePerPeriod, $numberOfPayments)/(pow(1 + $ratePerPeriod, $numberOfPayments)-1);
+
+        return $emi;
+//        return ($principal * $ratePerPeriod) / (1 - pow(1 + $monthlyInterestRate, -$numberOfPayments));
     }
 
     public function generateAmortizationSchedule($principal, $annualInterestRate, $term, $cycle, $loanDate)
     {
         $monthlyPayment = $this->calculateMonthlyPayment($principal, $annualInterestRate, $term);
+
         $monthlyInterestRate = $annualInterestRate /12 / 100;
         $balance = $principal;
         $schedule = [];
         $date = Carbon::parse($loanDate);
+        $totalInterest = 0;
         for ($i = 0; $i < $term; $i++) {
             $interest = $balance * $monthlyInterestRate;
             $principalPayment = $monthlyPayment - $interest;
             $balance -= $principalPayment;
+            $totalInterest += $interest;
             if ($cycle === 'week'){
                 $dueDate = $date->addDays(7)->format('Y-m-d');
                 $startDate = Carbon::parse($dueDate)->subDays(7)->format('Y-m-d');
@@ -43,9 +53,74 @@ class LoanService
                 'principal_payment' => $principalPayment,
                 'interest_payment' => $interest,
                 'balance' => $balance > 0 ? $balance : 0,
+                'total_interest' => $totalInterest,
             ];
         }
 
         return $schedule;
     }
+
+
+    public function calculateTotalInterest($principle, $percent, $duration, $type,$method)
+    {
+
+        $monthlyInterestRate = $percent / 12 / 100;
+        $term = $this->convertTerm($duration, $type, $method);
+        $monthlyPayment = ($principle * $monthlyInterestRate) / (1 - pow(1 + $monthlyInterestRate, -$term));
+
+        $totalInterest = 0;
+        $balance = $principle;
+
+        for ($i = 0; $i < $term; $i++) {
+            $interest = $balance * $monthlyInterestRate;
+            $principalPayment = $monthlyPayment - $interest;
+            $balance -= $principalPayment;
+
+            $totalInterest += $interest;
+        }
+
+        return $totalInterest;
+    }
+
+    private function convertTerm($duration, $type, $method)
+    {
+
+        switch ($type) {
+            case 'day':
+                if ($method === 'day'){
+                    return $duration;
+                }elseif ($method === 'week'){
+                    return $duration/7;
+                }else{
+                    return $duration/30;
+                }
+            case 'week':
+                if ($method === 'day'){
+                    return $duration * 7;
+                }elseif ($method === 'week'){
+                    return $duration;
+                }else{
+                    return $duration /4;
+                }
+            case 'month':
+                if ($method === 'day'){
+                    return $duration * 30;
+                }elseif ($method === 'week'){
+                    return $duration * 4;
+                }else{
+                    return $duration;
+                }
+            case 'year':
+                if ($method === 'day'){
+                    return $duration * 360;
+                }elseif ($method === 'week'){
+                    return $duration * 52;
+                }else{
+                    return $duration * 12;
+                }
+            default:
+                return $duration;
+        }
+    }
+
 }

@@ -44,4 +44,27 @@ class LoanScheduleController extends Controller
     {
 
     }
+
+
+
+    public function update(Request $request)
+    {
+        $schedules = $request->input('schedules');
+        foreach ($schedules as $schedule) {
+            $loanSchedule = LoanSchedule::find($schedule['id']);
+            if ($loanSchedule) {
+                $loanSchedule->start_date = $schedule['start_date'];
+                $loanSchedule->due_date = $schedule['due_date'];
+                $loanSchedule->principle = $schedule['principle'];
+                $loanSchedule->interest = $schedule['interest'];
+                $loanSchedule->penalty = $schedule['penalty'];
+                $loanSchedule->fees = $schedule['fees'];
+                $loanSchedule->interest_paid = $schedule['interest_paid'];
+                $loanSchedule->principal_paid = $schedule['principal_paid'];
+                $loanSchedule->amount = $schedule['amount'];
+                $loanSchedule->status = $schedule['status'];
+                $loanSchedule->save();
+            }
+        }
+    }
 }
