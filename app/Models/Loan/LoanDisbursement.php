@@ -10,7 +10,7 @@ class LoanDisbursement extends Model
     use HasFactory;
 
 
-    protected $table = 'loan_disbursement';
+    protected $table = 'loan_disbursements';
     protected $fillable = ['loan_id','payment_method', 'payment_reference', 'payment_date', 'user_id', 'com_id'];
 
 
