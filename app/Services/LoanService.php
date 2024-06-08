@@ -64,10 +64,15 @@ class LoanService
 
 
     public function calculateTotalInterest($principle, $percent, $duration, $type,$method)
-    {
-
-        $monthlyInterestRate = $percent / 12 / 100;
+    { 
+        
+        
         $term = $this->convertTerm($duration, $type, $method);
+        $annualRate = $percent * $term;
+        $ratePeriod =  $annualRate /100;
+        $ratePerPeriod = $ratePeriod / $term;
+              
+        $monthlyInterestRate = $ratePerPeriod;
         $monthlyPayment = ($principle * $monthlyInterestRate) / (1 - pow(1 + $monthlyInterestRate, -$term));
 
         $totalInterest = 0;
