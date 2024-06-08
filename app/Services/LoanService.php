@@ -13,20 +13,22 @@ class LoanService
         $annualRate = $annualInterestRate * $term;
         $ratePeriod =  $annualRate /100;
         $ratePerPeriod = $ratePeriod / $term;
-//        $monthlyInterestRate = $annualInterestRate / 12 / 100;
         $numberOfPayments = $term * $years;
 
         $emi = $principal * $ratePerPeriod * pow(1 + $ratePerPeriod, $numberOfPayments)/(pow(1 + $ratePerPeriod, $numberOfPayments)-1);
 
         return $emi;
-//        return ($principal * $ratePerPeriod) / (1 - pow(1 + $monthlyInterestRate, -$numberOfPayments));
+
     }
 
     public function generateAmortizationSchedule($principal, $annualInterestRate, $term, $cycle, $loanDate)
     {
         $monthlyPayment = $this->calculateMonthlyPayment($principal, $annualInterestRate, $term);
-
-        $monthlyInterestRate = $annualInterestRate /12 / 100;
+        $annualRate = $annualInterestRate * $term;
+        $ratePeriod =  $annualRate /100;
+        $ratePerPeriod = $ratePeriod / $term;
+              
+        $monthlyInterestRate = $ratePerPeriod;
         $balance = $principal;
         $schedule = [];
         $date = Carbon::parse($loanDate);
