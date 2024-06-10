@@ -6,7 +6,7 @@
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="d-flex flex-row-reverse">
-                <a class="btn btn-primary" href="{{route('borrow.create')}}"><i class="bx bx-plus"></i> Add Payment</a>
+                <a class="btn btn-primary" href="{{route('payment.create')}}"><i class="bx bx-plus"></i> Add Payment</a>
             </div>
         </div>
     </div>

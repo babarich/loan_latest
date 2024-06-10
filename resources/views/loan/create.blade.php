@@ -257,7 +257,7 @@
            $('#customerId').on('change', function (){
                var id = $(this).val()
                $.ajax({
-                   url: '{{route('loan.check', ['id' => ''])}}' + '/' + id,
+                   url: "{{route('loan.check', ['id' => ''])}}" + '/' + id,
                    dataType:'json',
                    type:'POST',
                    data:{_token:"{{csrf_token()}}"},

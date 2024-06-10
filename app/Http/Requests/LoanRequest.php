@@ -29,7 +29,10 @@ class LoanRequest extends FormRequest
             'interest' => 'required',
             'interest_type' => 'required',
             'guarantor' => 'required',
-            'principle' => 'required'
+            'principle' => 'required|numeric|gt:0',
+            'percent' => 'required|numeric|gt:0',
+            'loan_duration' => 'required|numeric|gt:0',
+            'number_payments' => 'required|numeric|gt:0'
         ];
     }
 }

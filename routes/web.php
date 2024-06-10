@@ -251,6 +251,7 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::get('collection', 'collection')->name('collection');
                 Route::post('update/{id?}', 'update')->name('update');
                 Route::get('edit/{id?}', 'edit')->name('edit');
+                Route::get('create', 'create')->name('create');
             });
         });
     });
