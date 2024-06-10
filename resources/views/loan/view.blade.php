@@ -232,7 +232,7 @@
                                                                     <div class="me-2 fw-semibold">
                                                                         Total Due :
                                                                     </div>
-                                                                    <span class="fs-12 text-muted float-end">{{number_format($loan->loanPayment->due_amount)}}</span>
+                                                                    <span class="fs-12 text-muted float-end">{{number_format($loan->total_amount_due)}}</span>
 
                                                                 </li>
                                                                 <li class="list-group-item d-flex justify-content-between">

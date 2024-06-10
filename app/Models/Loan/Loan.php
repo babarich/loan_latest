@@ -58,16 +58,23 @@ class Loan extends Model
     }
 
 
-    public function loanpayment(){
-        return $this->hasOne(LoanPayment::class);
-    }
+        public function loanpayment(){
+            return $this->hasOne(LoanPayment::class);
+        }
 
 
+       
         public function schedules()
         {
           return  $this->hasMany(LoanSchedule::class, 'loan_id');
         }
 
+
+        public function getTotalAmountDueAttribute()
+        {
+            return $this->schedules()
+                ->sum('amount');
+        }
 
     public function cycles()
     {
