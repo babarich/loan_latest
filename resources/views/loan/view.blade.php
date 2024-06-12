@@ -847,12 +847,12 @@
                                             <li>
                                                 <div>
                                             <span class="avatar avatar-sm bg-primary-transparent avatar-rounded profile-timeline-avatar">
-                                                {{substr($return->user->name, 0,2)}}
+                                                {{isset($return->user) ? substr($return->user->name, 0,2) : ''}}
                                             </span>
                                                     <p class="mb-2">
                                                         <b>{{$return->user->name ?? ''}}</b> <span class="float-end fs-11 text-muted">{{\Carbon\Carbon::parse($return->created_at)->format('D, d M Y H:i:s')}}</span>
                                                     <p class="text-muted mb-0">
-                                                        {{$return->comment}}
+                                                        {{$return->description}}
                                                     </p>
                                                 </div>
                                             </li>

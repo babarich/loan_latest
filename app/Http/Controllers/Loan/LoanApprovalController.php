@@ -55,13 +55,15 @@ class LoanApprovalController extends Controller
                 'loan_id' => $loan->id,
                 'type' => $stage,
                 'description' => $request->input('comment'),
-                'user_id' => Auth::id()
+                'user_id' => Auth::id(),
+                'com_id' => Auth::user()->com_id,
+            
             ]);
 
             if($stage === 1){
-                $loan->update(['stage' => 0, 'status' => 'approver returned']);
+                $loan->update(['stage' => 0, 'status' => 'approver returned', 'release_status' => 'rejected']);
             }elseif ($stage === 2){
-                $loan->update(['stage' => 1, 'status' => 'disbursement returned']);
+                $loan->update(['stage' => 1, 'status' => 'disbursement returned','release_status' => 'rejected']);
             }
             DB::commit();
         }catch (\Exception $e){
@@ -109,7 +111,7 @@ class LoanApprovalController extends Controller
             $loan = Loan::findOrFail($id);
             $stage = $loan->stage;
             if($stage === 1){
-                $loan->update(['status' => 'approver rejected']);
+                $loan->update(['status' => 'approver rejected', 'release_status' => 'rejected']);
             }else{
                 $loan->update([ 'status' => 'disbursement rejected', 'release_status' => 'rejected']);
             }
@@ -117,7 +119,8 @@ class LoanApprovalController extends Controller
                 'loan_id' => $loan->id,
                 'type' => $stage,
                 'description' => $request->input('comment'),
-                'user_id' => Auth::id()
+                'user_id' => Auth::id(),
+                'com_id' => Auth::user()->com_id,
             ]);
             DB::commit();
         }catch (\Exception $e){
