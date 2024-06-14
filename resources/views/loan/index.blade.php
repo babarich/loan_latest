@@ -84,7 +84,7 @@
                                                 <i class="ri-eye-line align-middle me-2 d-inline-block"></i>View
                                             </a>
 
-                                            @if($loan->stage === 0)
+                                            @if($loan->stage < 3)
                                                 <a href="{{route('loan.edit', $loan->id)}}" class="btn btn-sm btn-primary btn-wave waves-effect waves-light">
                                                     <i class="ri-pencil-line align-middle me-2 d-inline-block"></i>Edit
                                                 </a>
@@ -92,7 +92,7 @@
                                                 <a class="btn btn-sm btn-danger btn-wave waves-effect waves-light deleteLoan"
                                                 data-id="{{$loan->id}}">
                                                 <i class="ri-delete-bin-line align-middle me-2 d-inline-block"></i>Delete
-                                            </a>
+                                                </a>
                                             @endif
                                         </td>
                                     </tr>
@@ -133,7 +133,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url:'{{route('loan.delete')}}',
+                        url:"{{route('loan.delete')}}",
                         type:'POST',
                         data:{
                             _token:'{{csrf_token()}}',

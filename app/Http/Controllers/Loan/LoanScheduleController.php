@@ -7,6 +7,7 @@ use App\Models\Loan\Loan;
 use App\Models\Loan\LoanSchedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Inertia\Inertia;
 
@@ -16,10 +17,19 @@ class LoanScheduleController extends Controller
 
     public function index(Request $request){
 
-        $schedules = LoanSchedule::query()
-            ->where('status', 'pending')
-            ->orderBy('updated_at', 'desc')
-            ->get();
+             $amountDueSums = LoanSchedule::query()
+    ->select('borrower_id', DB::raw('SUM(amount) as total_amount_due'))
+    ->where('status', 'pending')
+    ->groupBy('borrower_id');
+
+
+$schedules = LoanSchedule::query()
+    ->joinSub($amountDueSums, 'amount_due_sums', function ($join) {
+        $join->on('loan_schedules.borrower_id', '=', 'amount_due_sums.borrower_id');
+    })
+    ->where('loan_schedules.status', 'pending')
+    ->orderBy('loan_schedules.updated_at', 'desc')
+    ->get(['loan_schedules.*', 'amount_due_sums.total_amount_due']);
 
         return view('schedule.index', compact('schedules'));
     }
