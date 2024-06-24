@@ -40,7 +40,7 @@
                                     <td>{{$payment->loan->reference}}</td>
                                     <td>{{$payment->loan->borrower->first_name . ' ' . $payment->loan->borrower->last_name}}</td>
                                     <td>{{$payment->type}}</td>
-                                    <td>{{number_format($payment->amount)}}</td>
+                                    <td>{{number_format($payment->amount,2)}}</td>
                                     <td>{{$payment->user->name ?? ''}}</td>
                                 </tr>
                             @endforeach

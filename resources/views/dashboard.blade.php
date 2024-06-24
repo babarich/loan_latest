@@ -49,7 +49,7 @@
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
                                                     <p class="text-muted mb-0">Amount Due</p>
-                                                    <h4 class="fw-semibold mt-1">{{number_format($amountDue)}}</h4>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($amountDue,2)}}</h4>
                                                 </div>
 
                                             </div>
@@ -77,7 +77,7 @@
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
                                                     <p class="text-muted mb-0">Principle Outstanding</p>
-                                                    <h4 class="fw-semibold mt-1">{{number_format($totalOutstanding)}}</h4>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($totalOutstanding,2)}}</h4>
                                                 </div>
 
                                             </div>
@@ -274,7 +274,7 @@
                                                     <tr>
                                                         <td>{{$loop->iteration}}</td>
                                                         <td>{{ $data->month }}</td>
-                                                        <td>{{ number_format($data->total)}}</td>
+                                                        <td>{{ number_format($data->total,2)}}</td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>

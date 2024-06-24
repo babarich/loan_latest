@@ -24,7 +24,7 @@ class PrincipleChart
         });
 
         $totals = $groupedData->map(function($group) {
-            return $group->sum('principal_paid');
+            return round($group->sum('principal_paid'),2);
         });
 
 

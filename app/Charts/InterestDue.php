@@ -25,7 +25,7 @@ class InterestDue
         });
 
         $totals = $groupedData->map(function($group) {
-            return $group->sum('interest_paid');
+            return round($group->sum('interest_paid'),2);
         });
 
 

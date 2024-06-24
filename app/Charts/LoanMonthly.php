@@ -24,7 +24,7 @@ class LoanMonthly
         });
 
         $totals = $groupedData->map(function($group) {
-            return $group->sum('amount');
+            return round($group->sum('amount'),2);
         });
 
 

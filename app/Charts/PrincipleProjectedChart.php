@@ -26,7 +26,7 @@ class PrincipleProjectedChart
         });
 
         $totalDue = $groupedDataDue->map(function($group) {
-            return $group->sum('principle');
+            return round($group->sum('principle'),2);
         });
         return $this->chart->barChart()
             ->addData('Principle Due', $totalDue->values()->toArray())

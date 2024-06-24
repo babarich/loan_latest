@@ -18,9 +18,9 @@ class LoanScheduleController extends Controller
     public function index(Request $request){
 
              $amountDueSums = LoanSchedule::query()
-    ->select('borrower_id', DB::raw('SUM(amount) as total_amount_due'))
-    ->where('status', 'pending')
-    ->groupBy('borrower_id');
+            ->select('borrower_id', DB::raw('SUM(amount) as total_amount_due'))
+            ->where('status', 'pending')
+            ->groupBy('borrower_id');
 
 
 $schedules = LoanSchedule::query()

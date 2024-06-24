@@ -81,10 +81,10 @@
                                     <td>{{$schedule->due_date}}</td>
                                     <td>{{$schedule->borrower->first_name}} {{$schedule->borrower->last_name}}</td>
                                     <td>{{isset($schedule->loan->product) ? $schedule->loan->product->name : null}}</td>
-                                    <td>{{number_format($schedule->principle)}}</td>
-                                    <td>{{number_format($schedule->interest)}}</td>
-                                    <td>{{number_format($schedule->amount)}}</td>
-                                    <td>{{number_format($schedule->interest_paid + $schedule->principle_paid)}}</td>
+                                    <td>{{number_format($schedule->principle,2)}}</td>
+                                    <td>{{number_format($schedule->interest,2)}}</td>
+                                    <td>{{number_format($schedule->amount,2)}}</td>
+                                    <td>{{number_format($schedule->interest_paid + $schedule->principle_paid,2)}}</td>
 
                                     <td>
                                         @if($schedule->status === 'pending')

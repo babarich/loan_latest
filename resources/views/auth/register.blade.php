@@ -13,7 +13,7 @@
         <div class="w-full bg-gray-100 lg:w-1/2 flex items-center justify-center">
             <div class="max-w-md w-full p-6">
                 <h1 class="text-4xl font-[900] leading-5 mb-6 text-black text-center">MINAJO FINANCE LTD </h1>
-                <h1 class="text-sm font-semibold mb-6 text-gray-500 text-center">Make your financial life easy </h1>
+                <h1 class="text-sm font-semibold mb-5 text-gray-500 text-center">Make your financial life easy </h1>
                 <div  class="mb-4 font-medium text-sm text-green-600">
                     <x-auth-session-status class="mb-4" :status="session('status')" />
                 </div>

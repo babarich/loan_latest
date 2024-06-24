@@ -30,7 +30,7 @@
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
                                                     <p class="text-muted mb-0">Today's Collection</p>
-                                                    <h4 class="fw-semibold mt-1">{{number_format($today)}}</h4>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($today,2)}}</h4>
                                                 </div>
 
                                             </div>
@@ -53,7 +53,7 @@
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
                                                     <p class="text-muted mb-0">Last 7 days </p>
-                                                    <h4 class="fw-semibold mt-1">{{number_format($week)}}</h4>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($week,2)}}</h4>
                                                 </div>
 
                                             </div>
@@ -76,7 +76,7 @@
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
                                                     <p class="text-muted mb-0">Last 30 days </p>
-                                                    <h4 class="fw-semibold mt-1">{{number_format($month)}}</h4>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($month,2)}}</h4>
                                                 </div>
 
                                             </div>
@@ -98,7 +98,7 @@
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
                                                     <p class="text-muted mb-0">All Time  Collection</p>
-                                                    <h4 class="fw-semibold mt-1">{{number_format($total)}}</h4>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($total,2)}}</h4>
                                                 </div>
                                             </div>
 
@@ -123,7 +123,7 @@
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
                                                     <p class="text-muted mb-0">Total Interest</p>
-                                                    <h4 class="fw-semibold mt-1">{{number_format($interest)}}</h4>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($interest,2)}}</h4>
                                                 </div>
 
                                             </div>
@@ -146,7 +146,7 @@
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
                                                     <p class="text-muted mb-0">Total Principle </p>
-                                                    <h4 class="fw-semibold mt-1">{{number_format($principle)}}</h4>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($principle,2)}}</h4>
                                                 </div>
 
                                             </div>

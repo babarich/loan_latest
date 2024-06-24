@@ -26,7 +26,7 @@ class InterestProjectedChart
         });
 
         $totalDue = $groupedDataDue->map(function($group) {
-            return $group->sum('interest');
+            return round($group->sum('interest'),2);
         });
         return $this->chart->barChart()
             ->addData('Interest Due',  $totalDue->values()->toArray())
