@@ -42,7 +42,7 @@
         <div class="row">
             <div class="col-md-6">
                 {{\Carbon\Carbon::now()->format('Y')}}   &copy; Made with <i class="bi bi-heart text-danger" style="color: red"></i>
-                <a href="">RichLink</a>
+                <a href="">Faith Solutions</a>
             </div>
             <div class="col-md-6">
                 <div class="text-md-right footer-links d-none d-sm-block">

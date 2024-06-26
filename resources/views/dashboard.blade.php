@@ -77,7 +77,7 @@
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
                                                     <p class="text-muted mb-0">Principle Outstanding</p>
-                                                    <h4 class="fw-semibold mt-1">{{number_format($totalOutstanding,2)}}</h4>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($principleOutstanding,2)}}</h4>
                                                 </div>
 
                                             </div>
