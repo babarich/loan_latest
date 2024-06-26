@@ -11,6 +11,14 @@
                         <a class="btn btn-success" id="submitLoan" data-id="{{$loan->id}}"><i class="bx bx-check"></i> Submit Loan</a>
                     @endif
 
+
+                    @if(!$loan->loanPayment->paid_amount)
+
+                            <a href="{{route('loan.edit', $loan->id)}}" class="btn btn-sm btn-primary btn-wave waves-effect waves-light mr-2">
+                                                <i class="ri-pencil-line align-middle me-2 d-inline-block"></i>Refresh Loan
+                        </a>
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -278,7 +286,8 @@
                                     <div>
                                         <h6 class="fw-semibold mb-0">Payment List</h6>
                                     </div>
-                                    @if($loan->release_status === 'approved')
+                                    
+                                    @if($loan->release_status === 'approved'  && $loan->schedules->sum('amount') > 0)
                                         <button class="btn btn-sm btn-primary d-flex align-items-center justify-content-center btn-wave waves-light"
                                                 data-bs-toggle="modal" data-bs-target="#create-folder">
                                             <i class="ri-add-circle-line align-middle me-1"></i>Add  Payment

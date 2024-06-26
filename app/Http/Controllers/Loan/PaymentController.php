@@ -107,10 +107,19 @@ class PaymentController extends Controller
     public function create(){
 
         $borrowers = Borrower::whereHas('loans', function ($query) {
-            $query->where('release_status', 'approved');
-        })->with(['loans' => function ($query) {
-            $query->where('release_status', 'approved');
-        }])->get();
+        $query->where('release_status', 'approved');
+    })->whereHas('schedules', function ($query) {
+        $query->select('borrower_id')
+            ->groupBy('borrower_id')
+            ->havingRaw('SUM(amount) > 0');
+    })->with(['loans' => function ($query) {
+        $query->where('release_status', 'approved');
+    }, 'schedules' => function ($query) {
+        $query->select('borrower_id')
+            ->groupBy('borrower_id')
+            ->havingRaw('SUM(amount) > 0');
+    }])->get();
+
 
 
         return view('payment.create', compact('borrowers'));
@@ -141,7 +150,9 @@ class PaymentController extends Controller
            });
        
            if ($paymentAmount > $totalAmountDue) {
-               return response()->json(['error' => 'Payment amount exceeds the total amount due'], 400);
+             session()->flash('error', 'Payment amount exceeds the total amount due');
+            return redirect()->back();
+            
            }
        
            foreach ($loanSchedules as $loanSchedule) {

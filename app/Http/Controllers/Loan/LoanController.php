@@ -262,6 +262,7 @@ class LoanController extends Controller
             }
 
 
+          
             $payLoan = LoanPayment::query()->where('loan_id', $loanId)->first();
             $payLoan->delete();
             LoanPayment::create([
@@ -275,7 +276,9 @@ class LoanController extends Controller
             $loanDate = $request->input('release_date');
             $paymentCycle = $request->input('payment_cycle');
             $cycle = $request->input('number_payments');
+
             $singleInterest = $this->singleInterest($principle,$interest_type,$percent,$amount);
+
             $term = $request->input('number_payments');
             $loanService = new LoanService();
             if ( $request->input('interest') === 'reducing'){
@@ -285,6 +288,7 @@ class LoanController extends Controller
 
             }else{
                 $schedules = $this->calculateRepaymentSchedule($principle,$totalInterest,$duration,$paymentCycle,$cycle,$loanDate, $interest);
+              
             }
             $scheduleLoans = LoanSchedule::query()->where('loan_id', $loanId)->get();
             foreach ($scheduleLoans as $scheduleLoan){
@@ -316,8 +320,8 @@ class LoanController extends Controller
                         'borrower_id' => $validatedData['borrower'],
                         'start_date' => $schedule['start_date'],
                         'due_date' => $schedule['due_date'],
-                        'principle' => $schedule['repayment_amount'] - $singleInterest,
-                        'interest' => $singleInterest,
+                        'principle' => $schedule['principle'],
+                        'interest' => $schedule['interest'],
                         'amount' => $schedule['repayment_amount'],
                         'status' => 'pending',
                         'user_id' => Auth::id(),
@@ -340,7 +344,15 @@ class LoanController extends Controller
     }
 
 
+    public function refreshLoan(Request $request, $loanId){
 
+        try{
+
+        }catch(\Exception $e){
+            
+        }
+
+    }
 
    private function calculateLoan($principle ,$interest, $percent, $duration, $type, $method){
 
@@ -449,8 +461,15 @@ class LoanController extends Controller
         $date = Carbon::parse($loanDate);
         $repaymentSchedule = [];
         $repaymentFrequency = $cycleCount;
-        $repaymentAmount = $this->calculateRepaymentAmount($principleAmount, $interest, $term, $int);
-
+        
+        $repaymentAmount = $this->calculateRepaymentAmount($principleAmount, $interest, $repaymentFrequency, $int);
+        $totalInterest = $interest;
+    
+    
+    
+        // Calculate principle and interest per cycle
+         $principlePerCycle = $principleAmount / $repaymentFrequency;
+         $interestPerCycle = $totalInterest / $repaymentFrequency;
 
         // Generate repayment schedule
         for ($i = 0; $i < $repaymentFrequency; $i++) {
@@ -466,10 +485,11 @@ class LoanController extends Controller
             }
 
             $repaymentSchedule[] = [
-                'principle' => $principle,
+                'principle' => $principlePerCycle,
                 'due_date' => $dueDate,
                 'start_date' => $startDate,
                 'repayment_amount' => $repaymentAmount,
+                 'interest' => $interestPerCycle,
                 'paid' => false,
             ];
         }
@@ -479,16 +499,10 @@ class LoanController extends Controller
 
     private function calculateRepaymentAmount($principleAmount, $interest, $term, $int)
     {
-        $repaymentAmount = 0;
-
-        if($int === 'reducing'){
-            $value1 = $interest * pow((1 + $interest), $term);
-            $value2 = pow((1 + $interest), $term) - 1;
-            $repaymentAmount    = $principleAmount * ($value1 / $value2);
-        }else{
-            $totalRepayment = $principleAmount + $interest;
-            $repaymentAmount = $totalRepayment / $term;
-        }
+             $repaymentAmount = 0;
+             $totalRepayment = $principleAmount + $interest;
+             $repaymentAmount = $totalRepayment / $term;
+        
 
 
         return $repaymentAmount;
