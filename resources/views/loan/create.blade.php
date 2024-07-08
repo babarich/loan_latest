@@ -87,10 +87,10 @@
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
                             </div>
-                            <div class="col-xl-6" style="display: none" id="pendingDiv">
+                            <!-- <div class="col-xl-6" style="display: none" id="pendingDiv">
                                 <label class="form-label">Previous Pending Loan</label>
-                                <input type="number" class="form-control" id="pending" placeholder=""
-                                       name="pending">
+                                <input type="number" class="form-control number_format" id="pending" placeholder=""
+                                       name="pending" step="0.01">
                                 @error('pending')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
@@ -105,7 +105,7 @@
                                 @error('payoff')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
-                            </div>
+                            </div> -->
                             <div class="col-xl-6">
                                 <label class="form-label">Loan Release Date</label>
                                 <input type="date" class="form-control" id="release_date" placeholder="" name="release_date">
@@ -192,7 +192,7 @@
                                 <select class="form-control" name="guarantor" id="guarantorId">
                                     <option value="" >Select..</option>
                                     @foreach($guarantors as $guarantor)
-                                        <option value="{{$guarantor->id}}">{{$guarantor->first_name}}</option>
+                                        <option value="{{$guarantor->id}}">{{$guarantor->first_name}} {{$guarantor->last_name ?? ''}}</option>
                                     @endforeach
                                 </select>
                                 @error('guarantor')
@@ -254,34 +254,34 @@
                placeholder:"Select Customer"
            })
 
-           $('#customerId').on('change', function (){
-               var id = $(this).val()
-               $.ajax({
-                   url: "{{route('loan.check', ['id' => ''])}}" + '/' + id,
-                   dataType:'json',
-                   type:'POST',
-                   data:{_token:"{{csrf_token()}}"},
-                   delay:250,
-                   success:function (response){
-                       let item = response.status
+        //    $('#customerId').on('change', function (){
+        //        var id = $(this).val()
+        //        $.ajax({
+        //            url: "{{route('loan.check', ['id' => ''])}}" + '/' + id,
+        //            dataType:'json',
+        //            type:'POST',
+        //            data:{_token:"{{csrf_token()}}"},
+        //            delay:250,
+        //            success:function (response){
+        //                let item = response.status
 
-                       if (item.found === true){
-                           $('#pending').val(item.amount)
-                           $('#pendingDiv').show()
-                           $('#payDiv').show()
-                       }else{
-                           $('#pendingDiv').hide()
-                           $('#payDiv').hide()
-                       }
+        //                if (item.found === true){
+        //                    $('#pending').val(item.amount)
+        //                    $('#pendingDiv').show()
+        //                    $('#payDiv').show()
+        //                }else{
+        //                    $('#pendingDiv').hide()
+        //                    $('#payDiv').hide()
+        //                }
 
-                   },
-                   error:function (error){
-                     toastr.error("sorry it seems something went wrong")
-                       $('#pendingDiv').hide()
-                       $('#payDiv').hide()
-                   }
-               })
-           })
+        //            },
+        //            error:function (error){
+        //              toastr.error("sorry it seems something went wrong")
+        //                $('#pendingDiv').hide()
+        //                $('#payDiv').hide()
+        //            }
+        //        })
+        //    })
        })
    </script>
 

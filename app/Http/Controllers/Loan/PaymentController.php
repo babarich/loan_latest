@@ -85,14 +85,21 @@ class PaymentController extends Controller
 
         $query->currentMonth();
 
-        if ($request->filled('due_date')) {
-            $query->dueDate($request->input('due_date'));
+        if ($request->filled('due_date') && !$request->filled('start_date')) {
+            $query->filter($request);
         }
 
-        if ($request->filled('start_date')) {
-            $query->startDate($request->input('start_date'));
+        if ($request->filled('start_date') && !$request->filled('due_date')) {
+            $query->filter($request);
         }
 
+
+        if ($request->filled('due_date') && $request->filled('start_date')) {
+            $query->filter($request);
+        }
+
+
+    
         if ($request->filled('user_id')) {
             $query->byUser($request->input('user_id'));
         }

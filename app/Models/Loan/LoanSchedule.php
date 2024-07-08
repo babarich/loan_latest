@@ -48,11 +48,21 @@ class LoanSchedule extends Model
 
 
 
-    public function scopeFilter($query , array $filters){
-        $query->when($filters['search'] ?? null, function ($query, $search){
-            $query->where('name', 'like', '%'.$search.'%');
-        })->when($filters['date'] ?? null, function ($query, $date){
-            $query->whereDate('due_date', '=', $date);
+    public function scopeFilter($query ,$request){
+     
+        $query->when($request->filled('start_date') && $request->filled('due_date'), function($query) use ($request){
+          $query->whereBetween('due_date', [$request->input('start_date'), $request->input('due_date')]);
+        });
+
+        $query->whereMonth('due_date', Carbon::now()->month)
+            ->whereYear('due_date', Carbon::now()->year);
+
+         $query->when($request->filled('start_date') && !$request->filled('due_date'), function($query) use ($request){
+          $query->whereDate('due_date', $request->input('start_date'));
+        });   
+
+       $query->when(!$request->filled('start_date') && $request->filled('due_date'), function($query) use ($request){
+          $query->whereDate('due_date', $request->input('due_date'));
         });
     }
 
@@ -62,19 +72,10 @@ class LoanSchedule extends Model
             ->whereYear('due_date', Carbon::now()->year);
     }
 
-    public function scopeDueDate($query, $date)
-    {
-        return $query->whereDate('due_date', $date);
-    }
-
-    public function scopeStartDate($query, $date)
-    {
-        return $query->whereDate('start_date', $date);
-    }
-
     public function scopeByUser($query, $userId)
     {
         return $query->where('user_id', $userId);
     }
 
+    
 }

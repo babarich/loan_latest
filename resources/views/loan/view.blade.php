@@ -8,17 +8,8 @@
             <div class="col-sm-12 col-md-6 col-lg-6">
                 <div class="d-flex flex-row-reverse">
                     @if($loan->stage < 1)
-                        <a class="btn btn-success" id="submitLoan" data-id="{{$loan->id}}"><i class="bx bx-check"></i> Submit Loan</a>
+                        <a class="btn btn-success ms-3" id="submitLoan" data-id="{{$loan->id}}"><i class="bx bx-check"></i> Submit Loan</a>
                     @endif
-
-
-                    @if(!$loan->loanPayment->paid_amount)
-
-                            <a href="{{route('loan.edit', $loan->id)}}" class="btn btn-sm btn-primary btn-wave waves-effect waves-light mr-2">
-                                                <i class="ri-pencil-line align-middle me-2 d-inline-block"></i>Refresh Loan
-                        </a>
-                    @endif
-
                 </div>
             </div>
         </div>
@@ -1014,6 +1005,7 @@
 
                 };
                 data.push(row);
+                
             });
 
             const swalWithBootstrapButtons = Swal.mixin({
@@ -1028,7 +1020,7 @@
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
+                confirmButtonText: 'Yes, update changes!',
                 cancelButtonText: 'No, cancel!',
                 reverseButtons: true
             }).then((result) => {
@@ -1043,13 +1035,14 @@
                         success:function (response){
                             location.reload()
                             swalWithBootstrapButtons.fire(
-                                'Deleted!',
-                                'Your loan has been deleted.',
+                                'Updated!',
+                                'Your loan has been updated.',
                                 'success'
                             )
+                            toastr.success("Updated the schedules successfully", "Success")
                         },
                         error:function (error){
-
+                         toastr.error("Failed to update schedules", "Error")
                         }
                     })
 

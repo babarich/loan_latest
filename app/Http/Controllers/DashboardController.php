@@ -25,7 +25,7 @@ class DashboardController extends Controller
     public function index(Request $request){
 
              $totalOutstanding = Loan::sum('principle_amount');
-             $amountDue= LoanSchedule::query()->whereDate('due_date', '=', Carbon::now())->sum('amount');
+             $amountDue= LoanSchedule::query()->whereDate('due_date', '<=', Carbon::now())->sum('amount');
              $principleOutstanding = LoanSchedule::sum('principle');
              $interestOut = LoanSchedule::sum('interest');
              $fully = LoanPayment::query()->where('status', '=','completed')->count();

@@ -42,9 +42,13 @@
 
 
         <div class="card-footer text-end">
-            <button type="submit" class="btn btn-primary btn-wave waves-effect waves-light">
+            <button type="submit" class="btn btn-primary btn-wave waves-effect waves-light mr-4">
                 <i class="bi bi-funnel"></i> Filter
             </button>
+
+            <a href="{{route('payment.collection')}}" class="btn btn-danger btn-wave waves-effect waves-light">
+               <i class="bi bi-eraser"></i> Clear
+            </a>
         </div>
     </form>
             </div>
