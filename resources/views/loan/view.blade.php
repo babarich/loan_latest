@@ -303,19 +303,22 @@
 
 
                                                     <div class="col-xl-12 mb-3">
-                                                        <label for="create-folder1" class="form-label">Payment  Cycle</label>
-                                                        <select  class="form-control" name="schedule" id="paymentSchedule" required>
+                                                        <label for="paymentSchedule" class="form-label">Payment Cycle</label>
+                                                        <select class="form-control" name="schedule" id="paymentSchedule" required>
                                                             <option value="">Select...</option>
                                                             @foreach($loan->schedules as $schedule)
-                                                                <option value="{{$schedule->id}}">{{$schedule->due_date}} - {{number_format($schedule->amount)}}</option>
+                                                                <option value="{{$schedule->id}}" data-amount="{{$schedule->amount}}">
+                                                                    {{$schedule->due_date}} - {{number_format($schedule->amount)}}
+                                                                </option>
                                                             @endforeach
-
                                                         </select>
                                                     </div>
                                                     <div class="col-xl-12 mb-3">
-                                                        <label for="create-folder1" class="form-label"> Enter Amount</label>
-                                                        <input  class="form-control  number-format" type="number" name="amount" id="amount" required>
+                                                        <label for="amount" class="form-label">Enter Amount</label>
+                                                        <input class="form-control" type="number" name="amount" id="amount" required>
                                                     </div>
+                                                    <div id="error-message" style="color: red;"></div>
+
                                                     <div class="col-xl-12 mb-3">
                                                         <label for="create-folder1" class="form-label"> Payment Date</label>
                                                         <input  class="form-control" type="date" name="date" required>
@@ -910,6 +913,30 @@
 
         });
 
+
+          var paymentSchedule = document.getElementById('paymentSchedule');
+        var amountInput = document.getElementById('amount');
+        var errorMessage = document.getElementById('error-message');
+
+        paymentSchedule.addEventListener('change', function() {
+            var selectedOption = paymentSchedule.options[paymentSchedule.selectedIndex];
+            var maxAmount = selectedOption.getAttribute('data-amount');
+
+            amountInput.setAttribute('max', maxAmount);
+            errorMessage.textContent = ''; 
+        });
+
+        amountInput.addEventListener('input', function() {
+            var selectedOption = paymentSchedule.options[paymentSchedule.selectedIndex];
+            var maxAmount = selectedOption ? selectedOption.getAttribute('data-amount') : null;
+            
+            if (maxAmount && parseFloat(amountInput.value) > parseFloat(maxAmount)) {
+                errorMessage.textContent = 'The entered amount cannot be greater than ' + maxAmount;
+                amountInput.value = '';
+            } else {
+                errorMessage.textContent = '';
+            }
+        });
 
             calculateTotals();
             $('.editable').on('click', function() {

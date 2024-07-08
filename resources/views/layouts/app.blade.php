@@ -89,7 +89,9 @@
         @if(Session::has('info'))
             toastr.info("{{ session('info') }}");
         @endif
-    })
+
+   
+    });
 </script>
 </body>
 
