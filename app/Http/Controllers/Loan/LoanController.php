@@ -538,7 +538,6 @@ class LoanController extends Controller
         $types = CollateralType::query()->get();
 
         $schedule = LoanSchedule::query()->where('loan_id', $id)
-            ->where('interest_paid', '<=', 0)
             ->orderBy('due_date', 'asc')
             ->first();
 
@@ -878,76 +877,81 @@ class LoanController extends Controller
     }
 
 
-    public  function rolloverPayment(Request $request, $loanId)
+
+
+
+    public function rolloverPayment(Request $request, $loanId)
     {
-        $validatedData =  $request->validate([
-            'amount' => 'required',
-            'type' => 'required',
-            'date' => 'required',
+    $validatedData = $request->validate([
+        'amount' => 'required|numeric|min:0',
+        'type' => 'required|string',
+        'date' => 'required|date',
+    ]);
 
+    try {
+        DB::beginTransaction();
+
+        $schedules = LoanSchedule::where('loan_id', $loanId)->where('paid', false)->orderBy('due_date', 'asc')->get();
+        if ($schedules->isEmpty()) {
+            throw new \Exception('No unpaid loan schedules found.');
+        }
+
+        $paymentAmount = $validatedData['amount'];
+        $firstSchedule = $schedules->first();
+
+        if ($paymentAmount >= $firstSchedule->interest) {
+            $paidInterest = $firstSchedule->interest;
+            $firstSchedule->interest_paid = $paidInterest;
+            $firstSchedule->interest = 0;
+            $paymentAmount -= $paidInterest;
+        } else {
+            throw new \Exception('Insufficient payment amount to cover the interest.');
+        }
+
+        foreach ($schedules as $schedule) {
+            $schedule->due_date = Carbon::parse($schedule->due_date)->addMonth();
+            $schedule->save();
+        }
+
+        
+        $firstSchedule->interest = $validatedData['amount'];
+        $firstSchedule->save();
+
+        $payment = LoanPayment::where('loan_id', $loanId)->firstOrCreate(['loan_id' => $loanId]);
+        $payment->paid_amount += $validatedData['amount'];
+        $payment->due_amount = max(0, $payment->due_amount - $validatedData['amount']);
+        $payment->save();
+
+        PaymentLoan::create([
+            'loan_id' => $loanId,
+            'borrower_id' => Loan::find($loanId)->borrower_id,
+            'description' => $request->input('description'),
+            'payment_date' => $validatedData['date'],
+            'amount' => $validatedData['amount'],
+            'type' => $validatedData['type'],
+            'bank' => $request->input('bank'),
+            'mobile' => $request->input('mobile'),
+            'reference' => $request->input('reference'),
+            'user_id' => Auth::id(),
+            'com_id' => Auth::user()->com_id,
         ]);
-        $schedules = LoanSchedule::query()->where('loan_id', '=', $loanId)->get();
-        try {
-            DB::beginTransaction();
-            if ($schedules){
-                $paymentAmount = $validatedData['amount'];
-                $due = 0;
-                $payment = LoanPayment::query()->where('loan_id', $loanId)->first();
-                foreach ($schedules as $schedule){
-                    $remainingAmountDue = $schedule->interest + $schedule->principle;
-                    $schedule->paid = true;
-                    $schedule->status = 'completed';
-                    $paidInterest = $schedule->interest;
-                    $schedule->interest_paid = $paidInterest;
-                    $schedule->interest -= $paidInterest;
-                    $paymentAmount -= $paidInterest;
-                    $paidPrincipal = $schedule->principle;
-                    $schedule->principal_paid = $paidPrincipal;
-                    $schedule->principle -= $paidPrincipal;
-                    $paymentAmount -= $paidPrincipal;
-                    $schedule->amount -= $paidPrincipal + $paidInterest;
-                    $schedule->save();
-                    $total = $payment->paid_amount + $validatedData['amount'];
-                    if ($payment->due_Amount > 0 && $payment->due_amount > $validatedData['amount']){
-                        $due = $payment->due_amount - $validatedData['amount'];
-                    }else{
-                        $due = 0;
-                    }
-                    $payment->update(['paid_amount' => $total, 'due_amount' => $due]);
 
+        
+    
 
-                }
-
-                $loan = Loan::query()->find($loanId);
-                PaymentLoan::create([
-                    'loan_id' => $loanId,
-                    'borrower_id' => $loan->borrower_id,
-                    'description' => $request->filled('description') ? $request->input('description') : null,
-                    'payment_date' => $validatedData['date'],
-                    'amount' => $validatedData['amount'],
-                    'type' => $validatedData['type'],
-                    'bank' => $request->filled('bank') ? $request->input('bank') : null,
-                    'mobile' => $request->filled('mobile') ? $request->input('mobile') : null,
-                    'reference' => $request->filled('reference') ? $request->input('reference') : null,
-                    'user_id' => Auth::id(),
-                    'com_id' => Auth::user()->com_id,
-                ]);
-
-
-
-                $loan->update(['status' => 'completed']);
-
-            }
-
-            DB::commit();
-        }catch (\Exception $e){
+        DB::commit();
+         }catch (\Exception $e){
             DB::rollBack();
             Log::info('error_payment', [$e]);
             return  Redirect::back()->with('error', 'sorry something went wrong cannot create loan try again');
         }
 
-        return Redirect::route('loan.settlement')->with('success','You have added successfully a payment');
+        return Redirect::route('loan.rollover')->with('success','You have added successfully a payment');
+
     }
+
+
+
 
     public function delete(Request $request)
     {

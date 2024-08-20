@@ -42,7 +42,7 @@
                                     <td>{{number_format($loan->principle_amount)}}</td>
                                     <td>{{number_format($loan->total_interest)}}</td>
                                     <td>{{isset($loan->interest_percentage) ? $loan->interest_percentage. ' '. '%' : $loan->interest_amount}}</td>
-                                    <td>{{number_format($loan->loanpayment->due_amount)}}</td>
+                                    <td>{{number_format($loan->total_amount_due)}}</td>
                                     <td>{{number_format($loan->loanpayment->paid_amount) ?? 0}}</td>
 
                                     <td>
