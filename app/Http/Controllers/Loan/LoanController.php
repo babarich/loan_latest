@@ -899,6 +899,7 @@ class LoanController extends Controller
         $paymentAmount = $validatedData['amount'];
         $firstSchedule = $schedules->first();
 
+
         if ($paymentAmount >= $firstSchedule->interest) {
             $paidInterest = $firstSchedule->interest;
             $firstSchedule->interest_paid = $paidInterest;
@@ -907,15 +908,33 @@ class LoanController extends Controller
         } else {
             throw new \Exception('Insufficient payment amount to cover the interest.');
         }
+            
 
-        foreach ($schedules as $schedule) {
-            $schedule->due_date = Carbon::parse($schedule->due_date)->addMonth();
-            $schedule->save();
-        }
+            $newSchedule = LoanSchedule::create([
+                'loan_id' => $firstSchedule->loan_id,
+                'principle' => $firstSchedule->principle,
+                'amount' => $firstSchedule->amount,
+                'borrower_id' => $firstSchedule->borrower_id,
+                'interest' => $paidInterest,
+                'due_date' => Carbon::parse($firstSchedule->due_date)->addMonth(),
+                'start_date' => Carbon::parse($firstSchedule->start_date)->addMonth(),
+                'paid' => false,
+                'interest_paid' => 0,
+                'com_id' => $firstSchedule->com_id
+            ]);
+           $firstSchedule->principle = 0;
+           $firstSchedule->amount = 0;
+           $firstSchedule->save();
+
+            foreach ($schedules->slice(1) as $schedule) {
+                $schedule->due_date = Carbon::parse($schedule->due_date)->addMonth();
+                $schedule->start_date =Carbon::parse($schedule->start_date)->addMonth();
+                $schedule->save();
+            }
+
 
         
-        $firstSchedule->interest = $validatedData['amount'];
-        $firstSchedule->save();
+
 
         $payment = LoanPayment::where('loan_id', $loanId)->firstOrCreate(['loan_id' => $loanId]);
         $payment->paid_amount += $validatedData['amount'];

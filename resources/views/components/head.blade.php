@@ -67,7 +67,11 @@
                 </a>
                 <!-- End::header-link|dropdown-toggle -->
                 <ul class="main-header-dropdown dropdown-menu pt-0 overflow-hidden header-profile-dropdown dropdown-menu-end" aria-labelledby="mainHeaderProfile">
-
+                    <li>
+                        <a href="{{route('profile.edit')}}" class="dropdown-item d-flex">
+                            <i class="ti ti-users fs-18 me-2 op-7"></i> Profile
+                        </a>
+                    </li>
                     <li>
                         <a href="{{ route('logout') }}" class="dropdown-item d-flex"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

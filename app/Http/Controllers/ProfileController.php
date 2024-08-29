@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -37,6 +39,21 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
+     public function password(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $id = Auth::id();
+        $user =User::findOrFail($id);
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+        }
+        
+        return redirect()->back()->with('success', 'Profile updated successfully.');
+    }
     /**
      * Delete the user's account.
      */

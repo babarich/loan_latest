@@ -267,7 +267,11 @@ Route::group(['middleware' => 'auth'], function (){
             });
         });
     });
-
+            
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+     Route::post('/password/update', [ProfileController::class, 'password'])->name('profile.password');
+ 
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
 });

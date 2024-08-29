@@ -66,7 +66,7 @@ class Loan extends Model
        
         public function schedules()
         {
-          return  $this->hasMany(LoanSchedule::class, 'loan_id');
+          return  $this->hasMany(LoanSchedule::class, 'loan_id')->orderBy('due_date','asc');
         }
 
 
