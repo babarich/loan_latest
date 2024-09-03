@@ -19,6 +19,7 @@ class LoanScheduleController extends Controller
 
              $amountDueSums = LoanSchedule::query()
               ->whereDate('due_date', '<=', Carbon::now())
+              ->where('amount', '>', 0)
               ->select('borrower_id', DB::raw('SUM(amount) as total_amount_due'))
               ->where('status', 'pending')
               ->groupBy('borrower_id');
@@ -30,6 +31,7 @@ class LoanScheduleController extends Controller
             })
             ->where('loan_schedules.status', 'pending')
             ->whereDate('due_date', '<=', Carbon::now())
+             ->where('amount', '>', 0)
             ->orderBy('loan_schedules.updated_at', 'desc')
             ->get(['loan_schedules.*', 'amount_due_sums.total_amount_due']);
 

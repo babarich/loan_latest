@@ -539,6 +539,8 @@ class LoanController extends Controller
 
         $schedule = LoanSchedule::query()->where('loan_id', $id)
             ->orderBy('due_date', 'asc')
+            ->where('paid', false)
+            ->where('amount', '>', 0)
             ->first();
 
         $loan = Loan::with(['schedules','user', 'borrower','guarantor','product', 'loanpayment','agreements',
@@ -931,10 +933,6 @@ class LoanController extends Controller
                 $schedule->start_date =Carbon::parse($schedule->start_date)->addMonth();
                 $schedule->save();
             }
-
-
-        
-
 
         $payment = LoanPayment::where('loan_id', $loanId)->firstOrCreate(['loan_id' => $loanId]);
         $payment->paid_amount += $validatedData['amount'];
