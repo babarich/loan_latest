@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
 
 class LoanController extends Controller
 {
@@ -791,6 +792,9 @@ class LoanController extends Controller
 
         $loans = Loan::query()->where('status', '!=', 'complete')
             ->where('release_status', 'approved')
+            ->with(['schedules' => function($query){
+                $query->whereNot('status', 'completed');
+            }])
             ->get();
 
         return view('loan.rollover', compact('loans'));
