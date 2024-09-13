@@ -100,9 +100,11 @@
                         <li class="slide">
                             <a href="{{route('collateral.showComment')}}"  class="{{request()->is('collaterals/comment_index') ? 'side-menu__item active' : 'side-menu__item'}}">Loan Comments</a>
                         </li>
+                        @can('loan_approve')
                         <li class="slide">
                             <a href="{{route('approve.index')}}"  class="{{request()->is('approvals/index') ? 'side-menu__item active' : 'side-menu__item'}}">Loan Approvals</a>
                         </li>
+                        @endcan
                     </ul>
                 </li>
                 <!-- End::slide -->
@@ -121,9 +123,11 @@
                         <li class="slide">
                             <a href="{{route('payment.index')}}" class="{{request()->is('payments/index') ? 'side-menu__item active' : 'side-menu__item'}}">Payments</a>
                         </li>
+                        @can('loan_approve')
                         <li class="slide">
                             <a href="{{route('payment.chart')}}" class="{{request()->is('payments/chart') ? 'side-menu__item active' : 'side-menu__item'}}">Payment Chart</a>
                         </li>
+                        @endcan
                         <li class="slide">
                             <a href="{{route('payment.collection')}}" class="{{request()->is('payments/collection') ? 'side-menu__item active' : 'side-menu__item'}}">Collection Report</a>
                         </li>
@@ -134,7 +138,7 @@
                 <!-- Start::slide__category -->
                 <li class="slide__category"><span class="category-name">Settings</span></li>
                 <!-- End::slide__category -->
-
+                @can('loan_approve')
                 <!-- Start::slide -->
                 <li class="slide has-sub">
                     <a href="javascript:void(0);" class="side-menu__item">
@@ -162,7 +166,7 @@
                     </ul>
                 </li>
                 <!-- End::slide -->
-
+                @endcan
 
             </ul>
             <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24"> <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path> </svg></div>

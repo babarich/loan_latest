@@ -3,6 +3,7 @@
 namespace App\Models\Loan;
 
 use App\Models\User;
+use App\Traits\LoanUserTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
