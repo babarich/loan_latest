@@ -119,6 +119,7 @@
                                 </div>
                             </div>
                         </div>
+                        @can('loan_approve')
                         <div class="col-xxl-3 col-lg-3 col-md-3 col-sm-12">
                             <div class="card custom-card overflow-hidden">
                                 <div class="card-body">
@@ -146,6 +147,9 @@
                                 </div>
                             </div>
                         </div>
+                        @endcan
+
+                        @can('loan_approve')
                         <div class="col-xxl-3 col-lg-3 col-md-3 col-sm-12">
                             <div class="card custom-card overflow-hidden">
                                 <div class="card-body">
@@ -173,6 +177,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endcan
 
                         <div class="col-xxl-3 col-lg-3 col-md-3 col-sm-12">
                             <div class="card custom-card overflow-hidden">
@@ -205,7 +210,7 @@
                     </div>
                 </div>
 
-
+                @can('loan_approve')
                 <div class="row">
                     <div class="col-xl-6">
                         <div class="card custom-card">
@@ -286,7 +291,7 @@
                         </div>
                     </div>
                 </div>
-
+                @endcan
 
 
 
