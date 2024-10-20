@@ -55,7 +55,8 @@ class PaymentController extends Controller
 
         $total = PaymentLoan::sum('amount');
         $week = PaymentLoan::lastweek()->sum('amount');
-        $month = PaymentLoan::lastmonth()->sum('amount');
+        $lastMonth = PaymentLoan::lastmonth()->sum('amount');
+        $month = PaymentLoan::month()->sum('amount');
         $loans = Loan::count();
         $interest = LoanSchedule::sum('interest_paid');
         $principle = LoanSchedule::sum('principal_paid');
@@ -80,6 +81,7 @@ class PaymentController extends Controller
             'total' => $total,
             'week' => $week,
             'month' => $month,
+            'lastMonth' => $lastMonth,
             'loan' => $loans,
             'interest' => $interest,
             'interestMonth' => $interestThisMonth,
