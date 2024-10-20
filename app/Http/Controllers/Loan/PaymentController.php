@@ -55,8 +55,7 @@ class PaymentController extends Controller
 
         $total = PaymentLoan::sum('amount');
         $week = PaymentLoan::lastweek()->sum('amount');
-        $lastMonth = PaymentLoan::lastmonth()->sum('amount');
-        $month = PaymentLoan::month()->sum('amount');
+        
         $loans = Loan::count();
         $interest = LoanSchedule::sum('interest_paid');
         $principle = LoanSchedule::sum('principal_paid');
@@ -65,6 +64,7 @@ class PaymentController extends Controller
         $lastMonth = Carbon::now()->subMonth()->month;
         $lastMonthYear = Carbon::now()->subMonth()->year;
 
+    
 
         $interestThisMonth = LoanSchedule::whereMonth('due_date', $currentMonth)
             ->whereYear('due_date', $currentYear)
@@ -75,13 +75,24 @@ class PaymentController extends Controller
             ->whereYear('due_date', $lastMonthYear)
             ->sum('interest_paid');
 
+        $principleMonth = LoanSchedule::whereMonth('due_date', $currentMonth)
+            ->whereYear('due_date', $currentYear)
+            ->sum('interest_paid');
+
+
+        $principleLastMonth = LoanSchedule::whereMonth('due_date', $lastMonth)
+            ->whereYear('due_date', $lastMonthYear)
+            ->sum('interest_paid');
+
+         $month = $interestThisMonth + $principleMonth;
+         $lastMonthCollection =  $principleLastMonth + $interestLastMonth;
 
         return view('payment.chart',[
             'today' => $today,
-            'total' => $total,
+            'total' => $interest + $principle,
             'week' => $week,
             'month' => $month,
-            'lastMonth' => $lastMonth,
+            'lastMonth' => $lastMonthCollection,
             'loan' => $loans,
             'interest' => $interest,
             'interestMonth' => $interestThisMonth,
