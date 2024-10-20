@@ -75,21 +75,21 @@ class PaymentController extends Controller
             ->whereYear('due_date', $lastMonthYear)
             ->sum('interest_paid');
 
-        $principleMonth = LoanSchedule::whereMonth('due_date', $currentMonth)
-            ->whereYear('due_date', $currentYear)
-            ->sum('interest_paid');
+        $month = PaymentLoan::whereMonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+            ->sum('amount');
 
 
-        $principleLastMonth = LoanSchedule::whereMonth('due_date', $lastMonth)
-            ->whereYear('due_date', $lastMonthYear)
-            ->sum('interest_paid');
+        $lastMonthCollection = PaymentLoan::whereMonth('created_at', $lastMonth)
+            ->whereYear('created_at', $lastMonthYear)
+            ->sum('amount');
 
-         $month = $interestThisMonth + $principleMonth;
-         $lastMonthCollection =  $principleLastMonth + $interestLastMonth;
+    
+    
 
         return view('payment.chart',[
             'today' => $today,
-            'total' => $interest + $principle,
+            'total' => $total,
             'week' => $week,
             'month' => $month,
             'lastMonth' => $lastMonthCollection,
