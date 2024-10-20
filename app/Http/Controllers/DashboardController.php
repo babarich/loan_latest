@@ -37,7 +37,14 @@ class DashboardController extends Controller
              $monthly = $dataMonth->getMonthProjected();
              $books = $dataMonth->getMonthLoan();
 
-
+             $currentMonth = Carbon::now()->month;
+             $currentYear = Carbon::now()->year;
+             
+     
+             $interestThisMonth = LoanSchedule::whereMonth('due_date', $currentMonth)
+                 ->whereYear('due_date', $currentYear)
+                 ->sum('interest_paid');
+    
 
         return view ('dashboard',[
             'totalOutstanding' => $totalOutstanding,
@@ -50,7 +57,8 @@ class DashboardController extends Controller
             'borrowers' => $borrowers,
             'denied' => $denied,
             'monthly' => $monthly,
-            'books' => $books
+            'books' => $books,
+            'interest' => $interestThisMonth
 
 
         ]);

@@ -52,7 +52,7 @@
                                         <div class="flex-fill ms-3">
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
-                                                    <p class="text-muted mb-0">Last 7 days </p>
+                                                    <p class="text-muted mb-0">This Week Collection </p>
                                                     <h4 class="fw-semibold mt-1">{{number_format($week,2)}}</h4>
                                                 </div>
 
@@ -75,7 +75,7 @@
                                         <div class="flex-fill ms-3">
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
-                                                    <p class="text-muted mb-0">Last 30 days </p>
+                                                    <p class="text-muted mb-0">Current Month Collection </p>
                                                     <h4 class="fw-semibold mt-1">{{number_format($month,2)}}</h4>
                                                 </div>
 
@@ -115,6 +115,52 @@
                                 <div class="card-body">
                                     <div class="d-flex align-items-top justify-content-between">
                                         <div>
+                                                        <span class="avatar avatar-md avatar-rounded bg-warning">
+                                                            <i class="ti ti-briefcase fs-16"></i>
+                                                        </span>
+                                        </div>
+                                        <div class="flex-fill ms-3">
+                                            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                                <div>
+                                                    <p class="text-muted mb-0">Last Month Income</p>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($interestMonth,2)}}</h4>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-lg-3 col-md-3 col-sm-12">
+                            <div class="card custom-card overflow-hidden">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-top justify-content-between">
+                                        <div>
+                                                        <span class="avatar avatar-md avatar-rounded bg-warning">
+                                                            <i class="ti ti-briefcase fs-16"></i>
+                                                        </span>
+                                        </div>
+                                        <div class="flex-fill ms-3">
+                                            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                                <div>
+                                                    <p class="text-muted mb-0">This Month Income </p>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($interestLastMonth,2)}}</h4>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-lg-3 col-md-3 col-sm-12">
+                            <div class="card custom-card overflow-hidden">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-top justify-content-between">
+                                        <div>
                                                         <span class="avatar avatar-md avatar-rounded bg-primary">
                                                             <i class="ti ti-calendar fs-16"></i>
                                                         </span>
@@ -122,7 +168,7 @@
                                         <div class="flex-fill ms-3">
                                             <div class="d-flex align-items-center justify-content-between flex-wrap">
                                                 <div>
-                                                    <p class="text-muted mb-0">Total Interest</p>
+                                                    <p class="text-muted mb-0">Total Income</p>
                                                     <h4 class="fw-semibold mt-1">{{number_format($interest,2)}}</h4>
                                                 </div>
 
@@ -200,6 +246,8 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        
 
                     </div>
                 </div>

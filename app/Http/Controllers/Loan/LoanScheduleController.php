@@ -17,23 +17,27 @@ class LoanScheduleController extends Controller
 
     public function index(Request $request){
 
-             $amountDueSums = LoanSchedule::query()
-              ->whereDate('due_date', '<=', Carbon::now())
-              ->where('amount', '>', 0)
-              ->select('borrower_id', DB::raw('SUM(amount) as total_amount_due'))
-              ->where('status', 'pending')
-              ->groupBy('borrower_id');
+           $amountDueSums = LoanSchedule::query()
+    ->whereDate('due_date', '<=', Carbon::now())
+    ->where('amount', '>', 0)
+    ->where('status', 'pending')
+    ->select('borrower_id', DB::raw('SUM(amount) as total_amount_due'))
+    ->groupBy('borrower_id');
 
 
-            $schedules = LoanSchedule::query()
-                ->joinSub($amountDueSums, 'amount_due_sums', function ($join) {
-                $join->on('loan_schedules.borrower_id', '=', 'amount_due_sums.borrower_id');
-            })
-            ->where('loan_schedules.status', 'pending')
-            ->whereDate('due_date', '<=', Carbon::now())
-             ->where('amount', '>', 0)
-            ->orderBy('loan_schedules.updated_at', 'desc')
-            ->get(['loan_schedules.*', 'amount_due_sums.total_amount_due']);
+    $schedules = LoanSchedule::query()
+        ->joinSub($amountDueSums, 'amount_due_sums', function ($join) {
+            $join->on('loan_schedules.borrower_id', '=', 'amount_due_sums.borrower_id');
+        })
+        ->join('loans', 'loans.id', '=', 'loan_schedules.loan_id') // Join the loans table
+        ->where('loan_schedules.status', 'pending')
+        ->whereDate('loan_schedules.due_date', '<=', Carbon::now())
+        ->where('loan_schedules.amount', '>', 0)
+        ->where('loans.release_status', 'approved')
+        ->orderBy('loan_schedules.updated_at', 'desc')
+        ->get(['loan_schedules.*', 'amount_due_sums.total_amount_due', 'loans.status as loan_status']);
+
+
 
                 return view('schedule.index', compact('schedules'));
     }

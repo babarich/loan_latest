@@ -20,6 +20,7 @@ use App\Models\Loan\PaymentLoan;
 use App\Models\User;
 use App\Services\ChartService;
 use App\Services\CollectionService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -44,8 +45,10 @@ class PaymentController extends Controller
 
 
 
-    public function chart(Request $request, InterestChart $interestChart, InterestProjectedChart $projectedChart,
-    PrincipleChart $principleChart, PrincipleProjectedChart $principleProjectedChart, LoanProjected $loanProjected, MonthlyPayment $monthlyPayment)
+    public function chart(Request $request, InterestChart $interestChart, 
+    InterestProjectedChart $projectedChart,
+    PrincipleChart $principleChart, PrincipleProjectedChart $principleProjectedChart, 
+    LoanProjected $loanProjected, MonthlyPayment $monthlyPayment)
     {
 
         $today = PaymentLoan::today()->sum('amount');
@@ -56,6 +59,20 @@ class PaymentController extends Controller
         $loans = Loan::count();
         $interest = LoanSchedule::sum('interest_paid');
         $principle = LoanSchedule::sum('principal_paid');
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+        $lastMonth = Carbon::now()->subMonth()->month;
+        $lastMonthYear = Carbon::now()->subMonth()->year;
+
+
+        $interestThisMonth = LoanSchedule::whereMonth('due_date', $currentMonth)
+            ->whereYear('due_date', $currentYear)
+            ->sum('interest_paid');
+
+
+        $interestLastMonth = LoanSchedule::whereMonth('due_date', $lastMonth)
+            ->whereYear('due_date', $lastMonthYear)
+            ->sum('interest_paid');
 
 
         return view('payment.chart',[
@@ -65,6 +82,8 @@ class PaymentController extends Controller
             'month' => $month,
             'loan' => $loans,
             'interest' => $interest,
+            'interestMonth' => $interestThisMonth,
+            'interestLastMonth' => $interestLastMonth,
             'principle' => $principle,
             'chartData' => $monthlyPayment->build(),
             'projectedMonth' => $loanProjected->build(),

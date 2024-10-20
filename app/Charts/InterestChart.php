@@ -19,7 +19,6 @@ class InterestChart
     {
         $data = LoanSchedule::query()->get();
         $groupedData = $data->groupBy(function($item) {
-
             return Carbon::parse($item->due_date)->format('M');
         });
 

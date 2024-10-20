@@ -92,6 +92,36 @@
                                 </div>
                             </div>
                         </div>
+                         @can('loan_approve')
+                        <div class="col-xxl-3 col-lg-3 col-md-3 col-sm-12">
+                            <div class="card custom-card overflow-hidden">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-top justify-content-between">
+                                        <div>
+                                                        <span class="avatar avatar-md avatar-rounded bg-success">
+                                                            <i class="ti ti-briefcase fs-16"></i>
+                                                        </span>
+                                        </div>
+                                        <div class="flex-fill ms-3">
+                                            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                                <div>
+                                                    <p class="text-muted mb-0">This Month Income</p>
+                                                    <h4 class="fw-semibold mt-1">{{number_format($interest, 2)}}</h4>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mt-1">
+                                                <div>
+                                                    <a class="text-success" href="{{route('payment.index')}}">View All<i class="ti ti-arrow-narrow-right ms-2 fw-semibold d-inline-block"></i></a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endcan
+
                         <div class="col-xxl-3 col-lg-3 col-md-3 col-sm-12">
                             <div class="card custom-card overflow-hidden">
                                 <div class="card-body">
