@@ -36,13 +36,13 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-        $file = $request->file('photo');
+         $file = $request->file('photo');
 
         $company = Company::create($request->all() + [
                 'reference' => 'NALD'.Carbon::now()->format('YmdHis'),
                 'name'=>$request->company,
                 'phone_number'=>$request->phone_number,
-                'photo' => base64_encode(file_get_contents($file->getRealPath()))
+                'photo' => $request->hasFile('photo') ? base64_encode(file_get_contents($file->getRealPath())) : null
             ]);
 
         $user = User::create([
