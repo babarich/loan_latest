@@ -17,7 +17,7 @@
                 <div  class="mb-4 font-medium text-sm text-green-600">
                     <x-auth-session-status class="mb-4" :status="session('status')" />
                 </div>
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                     @csrf
 
                     <!-- Name -->
@@ -37,6 +37,12 @@
                     </div>
 
 
+                    <div class="row">
+                        <div class="col-sm-6">
+                        <input type="file" name="photo" accept="image/*" required class="block mt-1 w-full">
+                        </div>
+
+                    </div>
                     <div class="row">
                         <!-- Email Address -->
                         <div class="col-sm-6 mt-4">

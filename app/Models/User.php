@@ -56,4 +56,9 @@ class User extends Authenticatable
             return [$permission['name'] => true];
         });
     }
+
+    public function company (){
+        return $this->belongsTo(Company::class,'com_id');
+    }
+
 }

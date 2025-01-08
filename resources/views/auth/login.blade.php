@@ -7,7 +7,7 @@
               background-repeat: no-repeat;  background-size: cover;">
             <div class="max-w-md text-center">
                 <div class="hero-in">
-                    <div class="text-4xl text-white leading-10 py-1 font-[900]">LOAN<br> MANAGEMENT SYSTEM</div>
+                    <div class="text-4xl text-white leading-10 py-1 font-[900]"></div>
                     <div class="text-md mt-2 text-white leading-4">We are the best in making your financial life easy.</div>
                 </div>
             </div>
