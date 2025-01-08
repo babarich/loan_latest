@@ -3,12 +3,13 @@
 namespace App\Models\Loan;
 
 use App\Models\User;
+use App\Traits\HasCompanyTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory,HasCompanyTrait;
 
     protected $table = 'products';
 

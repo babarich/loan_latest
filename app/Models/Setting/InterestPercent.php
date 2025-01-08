@@ -3,12 +3,13 @@
 namespace App\Models\Setting;
 
 use App\Models\User;
+use App\Traits\HasCompanyTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class InterestPercent extends Model
 {
-    use HasFactory;
+    use HasFactory,HasCompanyTrait;
 
     protected $table = 'interest_percents';
 

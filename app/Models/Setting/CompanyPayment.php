@@ -2,12 +2,13 @@
 
 namespace App\Models\Setting;
 
+use App\Traits\HasCompanyTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CompanyPayment extends Model
 {
-    use HasFactory;
+    use HasFactory,HasCompanyTrait;
 
     protected $table = 'company_payments';
 

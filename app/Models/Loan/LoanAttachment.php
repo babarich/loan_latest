@@ -3,12 +3,13 @@
 namespace App\Models\Loan;
 
 use App\Models\User;
+use App\Traits\HasCompanyTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LoanAttachment extends Model
 {
-    use HasFactory;
+    use HasFactory,HasCompanyTrait;
 
     protected $table = 'loan_attachments';
 

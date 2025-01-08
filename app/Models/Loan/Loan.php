@@ -6,13 +6,14 @@ use App\Models\Borrow\Borrower;
 use App\Models\Borrow\Guarantor;
 use App\Models\Collateral\Collateral;
 use App\Models\User;
+use App\Traits\HasCompanyTrait;
 use App\Traits\LoanUserTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Loan extends Model
 {
-    use HasFactory,LoanUserTrait;
+    use HasFactory,LoanUserTrait,HasCompanyTrait;
 
     protected $table = 'loans';
 

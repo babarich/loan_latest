@@ -3,12 +3,13 @@
 namespace App\Models\Borrow;
 
 use App\Models\User;
+use App\Traits\HasCompanyTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BorrowerGroup extends Model
 {
-    use HasFactory;
+    use HasFactory,HasCompanyTrait;
 
     protected $table = 'borrower_groups';
     protected $fillable = [ 'name','collector_name', 'user_id', 'description', 'status', 'com_id'];

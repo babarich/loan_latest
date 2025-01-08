@@ -6,6 +6,7 @@ use App\Models\Borrow\Borrower;
 use App\Models\Borrow\Guarantor;
 use App\Models\Collateral\Collateral;
 use App\Models\User;
+use App\Traits\HasCompanyTrait;
 use App\Traits\LoanFlowScope;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,13 +15,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TempLoan extends Model
 {
-    use HasFactory,LoanFlowScope;
+    use HasFactory,LoanFlowScope,HasCompanyTrait;
 
     protected $table = 'loans';
 
     protected $fillable = ['reference', 'loan_product', 'borrower_id', 'principle_amount', 'interest_method', 'interest_type', 'interest_percentage',
         'interest_duration', 'loan_duration', 'duration_type', 'payment_cycle', 'payment_number', 'interest_amount','total_interest', 'loan_release_date',
-        'maturity_date', 'disbursed_by', 'description', 'status', 'release_status','guarantor_id', 'user_id','disbursement'];
+        'maturity_date', 'disbursed_by', 'description', 'status', 'release_status','guarantor_id', 'user_id','disbursement','com_id'];
 
 
     public function user()

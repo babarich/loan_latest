@@ -4,6 +4,7 @@ namespace App\Models\Loan;
 
 use App\Models\Borrow\Borrower;
 use App\Traits\FilterByDatesTrait;
+use App\Traits\HasCompanyTrait;
 use App\Traits\LoanUserTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class LoanSchedule extends Model
 {
-    use HasFactory,FilterByDatesTrait,LoanUserTrait;
+    use HasFactory,FilterByDatesTrait,LoanUserTrait,HasCompanyTrait;
 
     protected $table = 'loan_schedules';
 

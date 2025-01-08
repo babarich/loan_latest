@@ -3,13 +3,14 @@
 namespace App\Models\Loan;
 
 use App\Models\User;
+use App\Traits\HasCompanyTrait;
 use App\Traits\LoanUserTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LoanPayment extends Model
 {
-    use HasFactory;
+    use HasFactory,HasCompanyTrait;
 
     protected $table = 'loan_payments';
 
