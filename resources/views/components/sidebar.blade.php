@@ -9,7 +9,7 @@
             @php
             $user = \Illuminate\Support\Facades\Auth::user();
             $logo = \App\Models\Company::where('id', $user->com_id)->first();
-            dd($logo);
+            
             @endphp
 
             @if(isset($logo))

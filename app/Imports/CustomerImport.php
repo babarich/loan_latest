@@ -5,13 +5,14 @@ namespace App\Imports;
 use App\Models\Borrow\Borrower;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class CustomerImport implements ToModel, WithHeadingRow
+class CustomerImport implements ToModel, WithHeadingRow,SkipsEmptyRows
 {
 
     use Importable;
@@ -39,24 +40,23 @@ class CustomerImport implements ToModel, WithHeadingRow
         }
 
         // Check if a borrower with the same mobile number already exists (if mobile should be unique)
-        $existingBorrowerByMobile = Borrower::where('mobile', $row['mobile'])->first();
+        // $existingBorrowerByMobile = Borrower::where('mobile', $row['mobile'])->first();
 
-        if ($existingBorrowerByMobile) {
-            // Handle the duplicate case, for example, by skipping this record or updating the existing record
-            // Here, we choose to skip the record
-            return null;
-        }
+    
+        
+        $data = [
+            'reference' => isset($row['name']) ? $reference : null,
+            'first_name' => $row['name'] ?? null,
+            'gender' => $row['gender'] ?? null,
+            'mobile' => $row['mobile'] ?? null,
+            'address' => $row['address'] ?? null,
+            'uploaded_by' => isset($row['name']) ? $this->user->id : null,
+            'status' => isset($row['name'])  ? 'pending' : null,
+            'com_id' => isset($row['name'])  ? $this->user->com_id : null
+            ];
 
-        return new Borrower([
-            'reference' => $reference,
-            'first_name' => $row['name'],
-            'gender' => $row['gender'],
-            'mobile' => $row['mobile'],
-            'address' => $row['address'],
-            'uploaded_by' => $this->user->id,
-            'status' => 'pending',
-            'com_id' => $this->user->com_id
-        ]);
+        $data = array_filter($data, fn($value) => !is_null($value));
+        return new Borrower($data);
     }
 
 }
