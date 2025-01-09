@@ -4,13 +4,13 @@ namespace App\Models\Loan;
 
 use App\Models\User;
 use App\Traits\FilterByDatesTrait;
-use App\Traits\HasCompanyTrait;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PaymentLoan extends Model
 {
-    use HasFactory,FilterByDatesTrait,HasCompanyTrait;
+    use HasFactory,FilterByDatesTrait;
     protected $table = 'payment_loans';
 
     protected $fillable = ['loan_id', 'description', 'amount', 'payment_date', 'user_id', 'type','borrower_id', 'com_id', 'bank', 'mobile', 'reference'];

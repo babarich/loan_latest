@@ -3,13 +3,13 @@
 namespace App\Models\Collateral;
 
 use App\Models\User;
-use App\Traits\HasCompanyTrait;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CollateralType extends Model
 {
-    use HasFactory,HasCompanyTrait;
+    use HasFactory;
 
     protected $table = 'collateral_types';
 

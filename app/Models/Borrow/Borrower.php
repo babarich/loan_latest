@@ -6,14 +6,14 @@ use App\Models\Loan\Loan;
 use App\Models\Loan\LoanSchedule;
 use App\Models\Loan\PaymentLoan;
 use App\Models\User;
-use App\Traits\HasCompanyTrait;
+
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Borrower extends Model
 {
-    use HasFactory,HasCompanyTrait;
+    use HasFactory;
 
 
     protected $dates = [

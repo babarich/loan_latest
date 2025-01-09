@@ -6,7 +6,7 @@ use App\Models\Borrow\Borrower;
 use App\Models\Borrow\Guarantor;
 use App\Models\Collateral\Collateral;
 use App\Models\User;
-use App\Traits\HasCompanyTrait;
+
 use App\Traits\LoanFlowScope;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TempLoan extends Model
 {
-    use HasFactory,LoanFlowScope,HasCompanyTrait;
+    use HasFactory,LoanFlowScope;
 
     protected $table = 'loans';
 

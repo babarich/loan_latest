@@ -3,14 +3,14 @@
 namespace App\Models\Borrow;
 
 use App\Models\User;
-use App\Traits\HasCompanyTrait;
+
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Guarantor extends Model
 {
-    use HasFactory,HasCompanyTrait;
+    use HasFactory;
 
     protected $dates = [
         'date_birth'

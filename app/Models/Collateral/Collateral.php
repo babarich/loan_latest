@@ -4,13 +4,13 @@ namespace App\Models\Collateral;
 
 use App\Models\Loan\Loan;
 use App\Models\User;
-use App\Traits\HasCompanyTrait;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Collateral extends Model
 {
-    use HasFactory,HasCompanyTrait;
+    use HasFactory;
 
 
     protected $casts = [
