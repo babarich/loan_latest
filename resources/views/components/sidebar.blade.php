@@ -4,10 +4,22 @@
     <!-- Start::main-sidebar-header -->
     <div class="main-sidebar-header">
         <a href="{{route('dashboard')}}" class="header-logo">
+            
+
+            @php
+            $user = \Illuminate\Support\Facades\Auth::user();
+            $logo = \App\Models\Company::where('id', $user->com_id)->first();
+            dd($logo);
+            @endphp
+
+            @if(isset($logo))
+            <img src="data:image/png;base64,{{$logo->photo}}" alt="logo" class="desktop-logo">
+            @else
+
+            @endif
             <p class="fw-bold  fs-6" style="color: #aa166d">
             {{ \Illuminate\Support\Facades\Auth::user()->company->name ?? 'No company assigned' }}   
             </p>
-{{--            <img src="{{asset('assets/images/logo/logo.png')}}" alt="logo" class="desktop-logo">--}}
         </a>
     </div>
     <!-- End::main-sidebar-header -->

@@ -4,7 +4,7 @@
         <div class="hidden lg:flex items-center justify-center flex-1  account-block" style="background-image: url('/images/woman.jpg')">
             <div class="max-w-md text-center">
                 <div class="hero-in">
-                    <div class="text-4xl text-white leading-10 py-1 font-[900]">MINAJO<br> Finance Limited</div>
+                    <div class="text-4xl text-white leading-10 py-1 font-[900]">Loan<br> Management System</div>
                     <div class="text-md mt-2 text-white leading-4">We are the best in making your financial life easy.</div>
                 </div>
             </div>
@@ -12,7 +12,7 @@
         <!-- Right Pane -->
         <div class="w-full bg-gray-100 lg:w-1/2 flex items-center justify-center">
             <div class="max-w-md w-full p-6">
-                <h1 class="text-4xl font-[900] leading-5 mb-6 text-black text-center">MINAJO FINANCE LTD </h1>
+                <h1 class="text-4xl font-[900] leading-5 mb-6 text-black text-center">Faith Solution </h1>
                 <h1 class="text-sm font-semibold mb-5 text-gray-500 text-center">Make your financial life easy </h1>
                 <div  class="mb-4 font-medium text-sm text-green-600">
                     <x-auth-session-status class="mb-4" :status="session('status')" />
