@@ -38,7 +38,10 @@ class LoanController extends Controller
     public function index(Request $request){
 
 
-        $loans = Loan::query()->where('status', '!=', 'complete')->orderBy('updated_at', 'desc')->get();
+        $user = Auth::user();
+        $loans = Loan::query()
+        ->where('com_id', $user->com_id)
+        ->where('status', '!=', 'complete')->orderBy('updated_at', 'desc')->get();
 
         return view('loan.index', compact('loans'));
     }
@@ -47,15 +50,20 @@ class LoanController extends Controller
 
     public function create(Request $request){
 
+            $user = Auth::user();
+
              $guarantors = Guarantor::query()
+             ->where('com_id', $user->com_id)
             ->orderBy('updated_at', 'desc')
             ->get();
 
             $borrowers = Borrower::query()
+            ->where('com_id', $user->com_id)
             ->orderBy('updated_at', 'desc')
             ->get();
 
             $products = Product::query()
+            ->where('com_id', $user->com_id)
             ->orderBy('updated_at', 'desc')
             ->get();
 
@@ -512,7 +520,10 @@ class LoanController extends Controller
 
 
     public function show(Request $request, $id){
-        $types = CollateralType::query()->get();
+        $user = Auth::user();
+        $types = CollateralType::query()
+        ->where('com_id', $user->com_id)
+        ->get();
         $loan = Loan::with(['schedules','user', 'borrower','guarantor','product', 'loanpayment','agreements',
             'collaterals', 'files','comments','cycles', 'payments'])->findOrFail($id);
         $returns  = LoanReturn::query()->where('loan_id', $id)->get();
@@ -521,7 +532,10 @@ class LoanController extends Controller
 
 
     public function showSettlement(Request $request, $id){
-        $types = CollateralType::query()->get();
+        $user = Auth::user();
+        $types = CollateralType::query()
+        ->where('com_id', $user->com_id)
+        ->get();
         $totalInterest = LoanSchedule::query()->where('loan_id', $id)->whereDate('due_date', '<', Carbon::now())
             ->sum('interest');
 
@@ -536,7 +550,10 @@ class LoanController extends Controller
 
 
     public function showRollover(Request $request, $id){
-        $types = CollateralType::query()->get();
+        $user = Auth::user();
+        $types = CollateralType::query()
+        ->where('com_id', $user->com_id)
+        ->get();
 
         $schedule = LoanSchedule::query()->where('loan_id', $id)
             ->orderBy('due_date', 'asc')
@@ -626,17 +643,21 @@ class LoanController extends Controller
     {
 
 
+        $user = Auth::user();
         $loan = Loan::findOrFail($id);
 
         return view('loan.edit',[
             'guarantors' => Guarantor::query()
+                ->where('com_id', $user->com_id)
                 ->orderBy('updated_at', 'desc')
                 ->get(),
             'borrowers' => Borrower::query()
+                ->where('com_id', $user->com_id)
                 ->orderBy('updated_at', 'desc')
                 ->get(),
 
             'products' => Product::query()
+                ->where('com_id', $user->com_id)
                 ->orderBy('updated_at', 'desc')
                 ->get(),
             'loan' => $loan
@@ -739,9 +760,10 @@ class LoanController extends Controller
 
     public function report(Request $request)
     {
+        $user = Auth::user();
         try {
             DB::beginTransaction();
-            $loans = Loan::all();
+            $loans = Loan::where('com_id', $user->com_id)->all();
             $pdf =  Pdf::loadView('loan_report', compact('loans'));
             DB::commit();
         }catch (\Exception $e){
@@ -778,8 +800,11 @@ class LoanController extends Controller
 
     public function settlement(Request $request){
 
+        $user = Auth::user();
 
-        $loans = Loan::query()->where('status', '!=', 'complete')
+        $loans = Loan::query()
+            ->where('com_id', $user->com_id)
+            ->where('status', '!=', 'complete')
             ->where('release_status', 'approved')
             ->get();
 
@@ -790,7 +815,9 @@ class LoanController extends Controller
     public function rollover(Request $request){
 
 
+        $user = Auth::user();
         $loans = Loan::query()->where('status', '!=', 'complete')
+              ->where('com_id', $user->com_id)
             ->where('release_status', 'approved')
             ->with(['schedules' => function($query){
                 $query->whereNot('status', 'completed');
@@ -803,8 +830,10 @@ class LoanController extends Controller
 
     public function closed(Request $request){
 
+        $user = Auth::user();
 
         $loans = Loan::query()->where('status', '=', 'complete')
+            ->where('com_id', $user->com_id)
             ->where('release_status', 'approved')
             ->get();
 

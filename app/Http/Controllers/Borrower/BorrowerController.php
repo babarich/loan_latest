@@ -30,7 +30,10 @@ class BorrowerController extends Controller
    {
 
 
-       $customers =  Borrower::query()->orderBy('updated_at', 'desc')->get();
+       $user = Auth::user();    
+       $customers =  Borrower::query()
+       ->where('com_id', $user->com_id)
+       ->orderBy('updated_at', 'desc')->get();
 
        return view('customers.index', compact('customers'));
    }
@@ -38,8 +41,10 @@ class BorrowerController extends Controller
     public function create(Request $request)
     {
 
-
-        $groups = \App\Models\Borrow\BorrowerGroup::query()->select('id', 'name')->get();
+        $user = Auth::user();
+        $groups = \App\Models\Borrow\BorrowerGroup::query()
+        ->where('com_id', $user->com_id)
+        ->select('id', 'name')->get();
        return view('customers.create', compact('groups'));
     }
 

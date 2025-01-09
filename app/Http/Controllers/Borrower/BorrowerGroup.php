@@ -24,7 +24,11 @@ class BorrowerGroup extends Controller
     public function index(Request $request)
     {
 
-        $groups = \App\Models\Borrow\BorrowerGroup::query()->orderBy('updated_at', 'desc')->with('borrowers')->get();
+        $user= Auth::user();
+
+        $groups = \App\Models\Borrow\BorrowerGroup::query()
+        ->where('com_id', $user->com_id)
+        ->orderBy('updated_at', 'desc')->with('borrowers')->get();
 
         return view('group.index', compact('groups'));
     }
@@ -95,6 +99,8 @@ class BorrowerGroup extends Controller
 
     public function show(Request $request, $id)
     {
+
+        
         $group = \App\Models\Borrow\BorrowerGroup::with(['borrowers', 'officers'])->findOrFail($id);
 
 

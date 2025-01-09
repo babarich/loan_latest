@@ -20,7 +20,10 @@ class UserController extends Controller
 
     public function index(Request $request){
 
-        $users = User::with('roles:name')->orderBy('id', 'DESC')->get(['id', 'name', 'email','last_login']);
+        $user = Auth::user();
+
+        $users = User::where('com_id', $user->com_id)->with('roles:name')->orderBy('id', 'DESC')
+        ->get(['id', 'name', 'email','last_login']);
         $roles = Role::orderBy('id', 'ASC')->get();
         return view('settings.users.index', ['users' => $users, 'roles' => $roles]);
     }

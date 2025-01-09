@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Loan\Loan;
 use App\Models\Loan\LoanSchedule;
 use Carbon\Carbon;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Inertia\Inertia;
@@ -17,7 +19,9 @@ class LoanScheduleController extends Controller
 
     public function index(Request $request){
 
-           $amountDueSums = LoanSchedule::query()
+     $user = Auth::user(); 
+    $amountDueSums = LoanSchedule::query()
+    ->where('com_id', $user->com_id)
     ->whereDate('due_date', '<=', Carbon::now())
     ->where('amount', '>', 0)
     ->where('status', 'pending')
@@ -26,6 +30,7 @@ class LoanScheduleController extends Controller
 
 
     $schedules = LoanSchedule::query()
+        
         ->joinSub($amountDueSums, 'amount_due_sums', function ($join) {
             $join->on('loan_schedules.borrower_id', '=', 'amount_due_sums.borrower_id');
         })
@@ -33,6 +38,7 @@ class LoanScheduleController extends Controller
         ->where('loan_schedules.status', 'pending')
         ->whereDate('loan_schedules.due_date', '<=', Carbon::now())
         ->where('loan_schedules.amount', '>', 0)
+        ->where('loan_schedules.com_id', $user->com_id)
         ->where('loans.release_status', 'approved')
         ->orderBy('loan_schedules.updated_at', 'desc')
         ->get(['loan_schedules.*', 'amount_due_sums.total_amount_due', 'loans.status as loan_status']);
@@ -48,8 +54,10 @@ class LoanScheduleController extends Controller
 
     public function maturity(Request $request){
 
+        $user = Auth::user();
         $matures = Loan::query()
             ->where('status', 'pending')
+            ->where('com_id', $user->com_id)
             ->where('maturity_date', '>=', Carbon::now())
             ->get();
 

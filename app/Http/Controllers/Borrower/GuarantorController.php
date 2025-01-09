@@ -29,7 +29,10 @@ class GuarantorController extends Controller
 
     public function index(Request $request)
     {
-        $guarantors = Guarantor::query()->orderBy('updated_at', 'desc')->get();
+        $user = Auth::user();
+        $guarantors = Guarantor::query()
+        ->where('com_id', $user->com_id)
+        ->orderBy('updated_at', 'desc')->get();
         return  view('guarantors.index', compact('guarantors'));
     }
 

@@ -5,7 +5,7 @@
     <div class="main-sidebar-header">
         <a href="{{route('dashboard')}}" class="header-logo">
             <p class="fw-bold  fs-6" style="color: #aa166d">
-           
+            {{ \Illuminate\Support\Facades\Auth::user()->company->name ?? 'No company assigned' }}   
             </p>
 {{--            <img src="{{asset('assets/images/logo/logo.png')}}" alt="logo" class="desktop-logo">--}}
         </a>

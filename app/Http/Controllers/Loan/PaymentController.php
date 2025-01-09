@@ -36,8 +36,10 @@ class PaymentController extends Controller
 
     public function index(Request $request){
 
-
-        $payments = PaymentLoan::query()->orderBy('updated_at', 'desc')->get();
+        $user = Auth::user();
+        $payments = PaymentLoan::query()
+        ->where('com_id', $user->com_id)
+        ->orderBy('updated_at', 'desc')->get();
 
         return view('payment.index', compact('payments'));
 
@@ -50,15 +52,16 @@ class PaymentController extends Controller
     PrincipleChart $principleChart, PrincipleProjectedChart $principleProjectedChart, 
     LoanProjected $loanProjected, MonthlyPayment $monthlyPayment)
     {
+        $user = Auth::user();
 
-        $today = PaymentLoan::today()->sum('amount');
+        $today = PaymentLoan::where('com_id', $user->com_id)->today()->sum('amount');
 
-        $total = PaymentLoan::sum('amount');
-        $week = PaymentLoan::lastweek()->sum('amount');
+        $total = PaymentLoan::where('com_id', $user->com_id)->sum('amount');
+        $week = PaymentLoan::where('com_id', $user->com_id)->lastweek()->sum('amount');
         
-        $loans = Loan::count();
-        $interest = LoanSchedule::sum('interest_paid');
-        $principle = LoanSchedule::sum('principal_paid');
+        $loans = Loan::where('com_id', $user->com_id)->count();
+        $interest = LoanSchedule::where('com_id', $user->com_id)->sum('interest_paid');
+        $principle = LoanSchedule::where('com_id', $user->com_id)->sum('principal_paid');
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
         $lastMonth = Carbon::now()->subMonth()->month;
@@ -68,20 +71,24 @@ class PaymentController extends Controller
 
         $interestThisMonth = LoanSchedule::whereMonth('due_date', $currentMonth)
             ->whereYear('due_date', $currentYear)
+            ->where('com_id', $user->com_id)
             ->sum('interest_paid');
 
 
         $interestLastMonth = LoanSchedule::whereMonth('due_date', $lastMonth)
             ->whereYear('due_date', $lastMonthYear)
+            ->where('com_id', $user->com_id)
             ->sum('interest_paid');
 
         $month = PaymentLoan::whereMonth('created_at', $currentMonth)
             ->whereYear('created_at', $currentYear)
+            ->where('com_id', $user->com_id)
             ->sum('amount');
 
 
         $lastMonthCollection = PaymentLoan::whereMonth('created_at', $lastMonth)
             ->whereYear('created_at', $lastMonthYear)
+            ->where('com_id', $user->com_id)
             ->sum('amount');
 
     
@@ -112,8 +119,9 @@ class PaymentController extends Controller
 
     public function collection(Request $request)
     {
+        $user = Auth::user();
 
-        $query = LoanSchedule::query();
+        $query = LoanSchedule::query()->where('com_id', $user->com_id);
 
         $query->currentMonth();
 
@@ -145,6 +153,7 @@ class PaymentController extends Controller
 
     public function create(){
 
+        $user = Auth::user();
         $borrowers = Borrower::whereHas('loans', function ($query) {
         $query->where('release_status', 'approved');
     })->whereHas('schedules', function ($query) {
@@ -157,7 +166,7 @@ class PaymentController extends Controller
         $query->select('borrower_id')
             ->groupBy('borrower_id')
             ->havingRaw('SUM(amount) > 0');
-    }])->get();
+    }])->where('com_id', $user->com_id)->get();
 
 
 

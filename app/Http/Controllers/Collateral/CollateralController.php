@@ -25,7 +25,9 @@ class CollateralController extends Controller
 
     public function index(Request $request){
 
+        $user = Auth::user();
         $collaterals = Collateral::query()
+        ->where('com_id', $user->com_id)
                        ->orderBy('updated_at', 'desc')
                        ->get();
         return view('collateral.index', compact('collaterals'));
@@ -149,7 +151,9 @@ class CollateralController extends Controller
     public  function showComment(Request $request)
     {
 
+        $user = Auth::user();
         $comments = LoanComment::query()
+                    ->where('com_id', $user->com_id)
                     ->orderBy('updated_at', 'desc')
                     ->get();
         return view('collateral.comment', compact('comments'));

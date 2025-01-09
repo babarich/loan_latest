@@ -13,8 +13,10 @@ class CompanyController extends Controller
 
     public function index(Request $request)
     {
-
-        $transactions = CompanyPayment::query()->get();
+        $user = Auth::user();
+        $transactions = CompanyPayment::query()
+        ->where('com_id', $user->com_id)
+        ->get();
         return view('settings.transaction.index', compact('transactions'));
     }
 

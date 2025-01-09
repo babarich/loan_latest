@@ -25,9 +25,11 @@ class LoanApprovalController extends Controller
 
     public function index(){
 
+        $user = Auth::user();
         $loans = TempLoan::query()
             ->where('release_status', 'pending')
             ->where('stage', '>', 0)
+            ->where('com_id', $user->com_id)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -37,8 +39,13 @@ class LoanApprovalController extends Controller
 
 
     public function show(Request $request, $id){
-        $types = CollateralType::query()->get();
-        $transactions = CompanyPayment::query()->get();
+        $user = Auth::user();
+        $types = CollateralType::query()
+        ->where('com_id', $user->com_id)
+        ->get();
+        $transactions = CompanyPayment::query()
+        ->where('com_id', $user->com_id)
+        ->get();
         $loan = TempLoan::with(['schedules','user', 'borrower','guarantor','product','agreements',
             'collaterals', 'files','comments'])->findOrFail($id);
         return view('approval.view',['loan' =>$loan, 'types' => $types, 'transactions' => $transactions]);

@@ -19,8 +19,10 @@ class CollateralTypeController extends Controller
 
     public function index(Request $request)
     {
-
-        $types = CollateralType::query()->get();
+       $user = Auth::user();
+        $types = CollateralType::query()
+        ->where('com_id', $user->com_id)
+        ->get();
         return view('collateralType.index', compact('types'));
     }
 

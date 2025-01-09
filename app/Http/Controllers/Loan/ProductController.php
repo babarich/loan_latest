@@ -17,8 +17,8 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-
-        $products = Product::query()->orderBy('updated_at', 'desc')->get();
+        $user = Auth::user();
+        $products = Product::query()->where('com_id', $user->com_id)->orderBy('updated_at', 'desc')->get();
 
         return view('products.index', compact('products'));
     }

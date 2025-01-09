@@ -14,7 +14,7 @@ use App\Models\Loan\LoanSchedule;
 use App\Services\ChartService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -24,15 +24,16 @@ class DashboardController extends Controller
 
     public function index(Request $request){
 
-             $totalOutstanding = Loan::sum('principle_amount');
-             $amountDue= LoanSchedule::query()->whereDate('due_date', '<=', Carbon::now())->where('amount', '>', 0)->sum('amount');
-             $principleOutstanding = LoanSchedule::sum('principle');
-             $interestOut = LoanSchedule::sum('interest');
-             $fully = LoanPayment::query()->where('status', '=','completed')->count();
+             $user = Auth::user();
+             $totalOutstanding = Loan::where('com_id', $user->com_id)->sum('principle_amount');
+             $amountDue= LoanSchedule::query()->where('com_id', $user->com_id)->whereDate('due_date', '<=', Carbon::now())->where('amount', '>', 0)->sum('amount');
+             $principleOutstanding = LoanSchedule::where('com_id', $user->com_id)->sum('principle');
+             $interestOut = LoanSchedule::where('com_id', $user->com_id)->sum('interest');
+             $fully = LoanPayment::query()->where('com_id', $user->com_id)->where('status', '=','completed')->count();
              $open = LoanPayment::query()->where('status', '!=', 'completed')->count();
-             $borrowers = Borrower::count('id');
-             $denied =Loan::query()->where('status', '=', 'rejected')->count();
-             $loans =Loan::query()->where('release_status', '=', 'approved')->count();
+             $borrowers = Borrower::where('com_id', $user->com_id)->count('id');
+             $denied =Loan::query()->where('com_id', $user->com_id)->where('status', '=', 'rejected')->count();
+             $loans =Loan::query()->where('com_id', $user->com_id)->where('release_status', '=', 'approved')->count();
              $dataMonth = new ChartService();
              $monthly = $dataMonth->getMonthProjected();
              $books = $dataMonth->getMonthLoan();
@@ -43,6 +44,7 @@ class DashboardController extends Controller
      
              $interestThisMonth = LoanSchedule::whereMonth('due_date', $currentMonth)
                  ->whereYear('due_date', $currentYear)
+                 ->where('com_id', $user->com_id)
                  ->sum('interest_paid');
     
 
