@@ -2,10 +2,10 @@
 @section('content')
     <div class="row mb-6 mt-4">
         <div class="col-sm-12 col-md-6 col-lg-6">
-        <button class="btn btn-sm btn-primary d-flex align-items-center justify-content-center btn-wave waves-light"
+        <!-- <button class="btn btn-sm btn-primary d-flex align-items-center justify-content-center btn-wave waves-light"
                 data-bs-toggle="modal" data-bs-target="#commentForm">
             <i class="ri-add-circle-line align-middle me-1"></i>Upload Customer
-        </button>
+        </button> -->
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="d-flex flex-row-reverse">
