@@ -239,6 +239,29 @@ Route::group(['middleware' => 'auth'], function (){
         });
     });
 
+    Route::group(['prefix' => 'coas'], function (){
+
+        Route::name('coa.')->group(function (){
+            Route::controller(\App\Http\Controllers\AccountGroupController::class)->group(function (){
+                Route::get('index', 'index')->name('index');
+                Route::get('create', 'create')->name('create');
+                Route::post('store', 'store')->name('store');
+                Route::get('view/{id?}', 'show')->name('show');
+                Route::post('update/{id?}', 'update')->name('update');
+                Route::get('edit/{id?}', 'edit')->name('edit');
+                Route::post('delete', 'delete')->name('delete');
+            });
+
+            Route::controller(\App\Http\Controllers\ChartOfAccountController::class)->group(function (){
+                Route::get('chart', 'index')->name('chart');
+                Route::get('addChart', 'create')->name('addChart');
+                Route::post('add_chart_of_account', 'addChartOfAccount')->name('addChartOfAccount');
+                Route::post('update_chart_account/{id?}', 'updateChartOfAccount')->name('updateChartOfAccount');
+                Route::get('edit/{id?}', 'edit')->name('edit');
+                Route::post('delete', 'delete')->name('delete');
+            });
+        });
+    });
 
     Route::group(['prefix' => 'payments'], function (){
 

@@ -149,6 +149,51 @@
                 </li>
                 <!-- End::slide -->
 
+                 @if(isset($logo) && $logo->id === 2)
+            <!-- Start::slide__category -->
+            <li class="slide__category"><span class="category-name">Accounting</span></li>
+                <!-- End::slide__category -->
+                <!-- Start::slide -->
+                <li  class="{{request()->is('*coa*')   ? 'slide has-sub active open' : 'slide has-sub'}}" >
+                    <a href="javascript:void(0);" class="side-menu__item">
+                        <i class="bx bx-credit-card side-menu__icon"></i>
+                        <span class="side-menu__label">Transactions</span>
+                        <i class="fe fe-chevron-right side-menu__angle"></i>
+                    </a>
+                    <ul class="slide-menu child1">
+                          <li class="slide">
+                            <a href="{{route('payment.index')}}" 
+                            class="{{request()->is('payments/index') ? 'side-menu__item active' : 'side-menu__item'}}">Petty Cash</a>
+                        </li>
+                          <li class="slide">
+                            <a href="{{route('payment.index')}}" 
+                            class="{{request()->is('payments/index') ? 'side-menu__item active' : 'side-menu__item'}}">Expense</a>
+                        </li>
+                        <li class="slide">
+                            <a href="{{route('coa.index')}}" 
+                            class="{{request()->is('coas/index') ? 'side-menu__item active' : 'side-menu__item'}}">Account Group</a>
+                        </li>
+                          <li class="slide">
+                            <a href="{{route('coa.chart')}}" 
+                            class="{{request()->is('coas/chart') ? 'side-menu__item active' : 'side-menu__item'}}">Chart of Account</a>
+                        </li>
+                        
+                    </ul>
+                </li>
+                <!-- End::slide -->
+
+               @endif
+
+
+
+
+
+
+
+
+
+
+
                 <!-- Start::slide__category -->
                 <li class="slide__category"><span class="category-name">Settings</span></li>
                 <!-- End::slide__category -->

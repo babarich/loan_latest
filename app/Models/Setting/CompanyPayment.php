@@ -12,7 +12,7 @@ class CompanyPayment extends Model
 
     protected $table = 'company_payments';
 
-    protected $fillable = ['payment_type', 'name', 'account', 'user_id', 'com_id'];
+    protected $fillable = ['payment_type', 'name', 'account', 'user_id', 'com_id','open_balance'];
 
 
 }

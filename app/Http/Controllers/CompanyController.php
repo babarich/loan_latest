@@ -43,6 +43,7 @@ class CompanyController extends Controller
                 'name' => $request->filled('name') ? $request->input('name') : null,
                 'account' => $request->filled('account') ? $request->input('account') : null,
                 'payment_type' => $request->filled('payment_type') ? $request->input('payment_type') : null,
+                'open_balance' => $request->filled('balance') ? $request->input('balance') : null,
                 'user_id' => Auth::id(),
                 'com_id' => Auth::user()->com_id,
 
@@ -73,6 +74,7 @@ class CompanyController extends Controller
                 'name' => $request->filled('name') ? $request->input('name') : null,
                 'account' => $request->filled('account') ? $request->input('account') : null,
                 'payment_type' => $request->filled('payment_type') ? $request->input('payment_type') : null,
+                'open_balance' => $request->filled('balance') ? $request->input('balance') : null,
 
             ]);
             DB::commit();
@@ -89,7 +91,7 @@ class CompanyController extends Controller
     {
         $transaction = CompanyPayment::with('user')->findOrFail($id);
 
-        return view('settings.transaction.view',['$transaction' =>$transaction]);
+        return view('settings.transaction.view',['transaction' =>$transaction]);
     }
 
 
@@ -98,7 +100,7 @@ class CompanyController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $transaction = CompanyPayment::with('user')->findOrFail($id);
+        $transaction = CompanyPayment::findOrFail($id);
         return view('settings.transaction.edit',['transaction' => $transaction]);
     }
 

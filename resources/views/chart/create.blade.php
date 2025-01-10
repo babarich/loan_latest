@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
     <div class="row mb-6 mt-4">
         <div class="col-sm-12 col-md-6 col-lg-6">
 
@@ -7,12 +8,8 @@
         <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="d-flex flex-row-reverse gap-3">
                 <div class="mr-4">
-                    <a class="btn btn-primary" href="{{route('company.index')}}"><i class="bx bx-left-arrow-alt"></i>Back</a>
+                    <a class="btn btn-primary" href="{{route('coa.chart')}}"><i class="bx bx-left-arrow-alt"></i>Back</a>
                 </div>
-
-
-
-
             </div>
         </div>
     </div>
@@ -22,13 +19,21 @@
             <div class="card custom-card">
                 <div class="card-header justify-content-between">
                     <div class="card-title">
-                 Create a new Payment Method
+                 Create a new Chart of Account
                     </div>
                 </div>
-                <form method="POST" action="{{route('company.store')}}" enctype="multipart/form-data">
+                <form method="POST" action="{{route('coa.addChartOfAccount')}}" enctype="multipart/form-data">
                     @csrf
                 <div class="card-body">
                         <div class="row gy-4 mb-4">
+                            <div class="col-xl-12">
+                                <label for="job-title" class="form-label">Account Code</label>
+                                <input type="text" class="form-control" id="code" placeholder="" name="code">
+                                @error('code')
+                                <span class="text-danger"><strong>{{$message}}</strong></span>
+                                @enderror
+                            </div>
+
                             <div class="col-xl-12">
                                 <label for="job-title" class="form-label">Account Name</label>
                                 <input type="text" class="form-control" id="name" placeholder="" name="name">
@@ -37,27 +42,36 @@
                                 @enderror
                             </div>
                             <div class="col-xl-12">
-                                <label for="job-title" class="form-label">Payment Method</label>
-                                <select  class="form-control" id="percent"  name="payment_type">
+                                <label for="job-title" class="form-label">Account Type</label>
+                                <select  class="form-control" id="accountType"  name="financial_category_id">
                                     <option value="">Select..</option>
-                                    <option value="Mobile Money">Mobile Money</option>
-                                    <option value="Bank Account">Bank Account</option>
+                                    @foreach($types as $type)
+                                     <option value="{{$type->id}}">{{$type->name}}</option>
+                                    @endforeach
+                                    
                                 </select>
-                                @error('payment_type')
+                                @error('financial_category_id')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
                             </div>
+                            <span>If you skip to select a group, system will automatically add this chart name into a group</span>
                             <div class="col-xl-12">
-                                <label for="job-title" class="form-label">Account / Mobile</label>
-                                <input type="text" class="form-control" id="name" placeholder="" name="account">
-                                @error('account')
+                                <label for="job-title" class="form-label">Account Group</label>
+                                <select  class="form-control" id="accountGroup"  name="account_group_id">
+                                    <option value="">Select..</option>
+                                    @foreach($groups as $group)
+                                     <option value="{{$group->id}}">{{$group->name}}</option>
+                                    @endforeach
+                                    
+                                </select>
+                                @error('account_group')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
                             </div>
                              <div class="col-xl-12">
-                                <label for="job-title" class="form-label">Open Balance </label>
-                                <input type="text" class="form-control" id="balance" placeholder="" name="balance">
-                                @error('balance')
+                                <label for="job-title" class="form-label">Enter Notes </label>
+                                <textarea rows="3" class="form-control" id="notes" placeholder="" name="note"></textarea>
+                                @error('note')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
                             </div>
