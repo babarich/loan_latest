@@ -161,13 +161,10 @@
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
                     <ul class="slide-menu child1">
+                          
                           <li class="slide">
-                            <a href="{{route('payment.index')}}" 
-                            class="{{request()->is('payments/index') ? 'side-menu__item active' : 'side-menu__item'}}">Petty Cash</a>
-                        </li>
-                          <li class="slide">
-                            <a href="{{route('payment.index')}}" 
-                            class="{{request()->is('payments/index') ? 'side-menu__item active' : 'side-menu__item'}}">Expense</a>
+                            <a href="{{route('expense.index')}}" 
+                            class="{{request()->is('expenses/index') ? 'side-menu__item active' : 'side-menu__item'}}">Expense</a>
                         </li>
                         <li class="slide">
                             <a href="{{route('coa.index')}}" 

@@ -6,7 +6,7 @@
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="d-flex flex-row-reverse">
-                  <a class="btn btn-primary" href="{{route('coa.addChart')}}"><i class="bx bx-plus"></i> Add Chart Of Account</a>
+                  <a class="btn btn-primary" href="{{route('expense.create')}}"><i class="bx bx-plus"></i> Add new Expense</a>
             </div>
         </div>
     </div>
@@ -17,7 +17,7 @@
         <div class="col-xl-12">
             <div class="card custom-card">
                 <div class="card-header">
-                    <div class="card-title">Chart Of Account List</div>
+                    <div class="card-title">Expenses List</div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -25,10 +25,11 @@
                                <thead>
                                <tr>
                                    <th>SN</th>
-                                   <th>Account Code</th>
-                                   <th>Account Name</th>
+                                   <th>Date</th>
+                                   <th>Expense Type</th>
                                    <th>Account Type</th>
-                                   <th>Account Group</th>
+                                   <th>Payment</th>
+                                   <th>Amount</th>
                                    <th>Created By</th>
                                    <th>Created At</th>
                                    <th>Action </th>
@@ -36,27 +37,22 @@
                                </tr>
                                </thead>
                                 <tbody>
-                                @foreach($charts as $chart)
+                                @foreach($expenses as $expense)
                                     <tr>
                                         <td>{{$loop->iteration}}</td>
-                                        <td>{{$chart->code}}</td>
-                                        <td>{{$chart->name}}</td>
-                                        <td>{{$chart->category->name ?? 'N/A'}}</td>
-                                        <td>{{$chart->group->name ?? 'N/A'}} </td>
-                                        <td>{{$chart->user->name ?? ''}}</td>
-                                        <td>{{$chart->created_at}}</td>
+                                        <td>{{$expense->date}}</td>
+                                        <td>{{$expense->name}}</td>
+                                        <td>{{$expense->chart->name ?? 'N/A'}}</td>
+                                        <td>{{$expense->payment->name ?? 'N/A'}} </td>
+                                        <td>{{number_format($expense->amount)}}</td>
+                                        <td>{{$expense->user->name ?? ''}}</td>
+                                        <td>{{$expense->created_at}}</td>
                                        <td>
-                                            <a href="{{route('coa.editChart', $chart->id)}}" class="btn btn-sm btn-primary btn-wave waves-effect waves-light">
-                                                <i class="ri-pencil-line align-middle me-2 d-inline-block"></i>Edit
-                                            </a>
-                                            <a href="{{route('coa.showChart', $chart->id)}}" class="btn btn-sm btn-success btn-wave waves-effect waves-light">
+                                           
+                                            <a href="{{route('expense.show', $expense->id)}}" class="btn btn-sm btn-success btn-wave waves-effect waves-light">
                                                 <i class="ri-eye-line align-middle me-2 d-inline-block"></i>View
                                             </a>
 
-                                            <a class="btn btn-sm btn-danger btn-wave waves-effect waves-light deleteTrans"
-                                            data-id="{{$chart->id}}">
-                                                <i class="ri-delete-bin-line align-middle me-2 d-inline-block"></i>Delete
-                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

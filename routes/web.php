@@ -257,8 +257,9 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::get('addChart', 'create')->name('addChart');
                 Route::post('add_chart_of_account', 'addChartOfAccount')->name('addChartOfAccount');
                 Route::post('update_chart_account/{id?}', 'updateChartOfAccount')->name('updateChartOfAccount');
-                Route::get('edit/{id?}', 'edit')->name('edit');
-                Route::post('delete', 'delete')->name('delete');
+                Route::get('edit_chart_account/{id?}', 'edit')->name('editChart');
+                 Route::get('view_chart/{id?}', 'show')->name('showChart');
+                Route::post('delete', 'delete')->name('deleteChart');
             });
         });
     });
@@ -275,6 +276,21 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::post('update/{id?}', 'update')->name('update');
                 Route::get('edit/{id?}', 'edit')->name('edit');
                 Route::get('create', 'create')->name('create');
+            });
+        });
+    });
+
+     Route::group(['prefix' => 'expenses'], function (){
+
+        Route::name('expense.')->group(function (){
+            Route::controller(\App\Http\Controllers\ExpenseController::class)->group(function (){
+                Route::get('index', 'index')->name('index');
+                Route::get('create', 'create')->name('create');
+                Route::post('store', 'store')->name('store');
+                Route::get('view/{id?}', 'show')->name('show');
+                Route::post('update/{id?}', 'update')->name('update');
+                Route::get('edit/{id?}', 'edit')->name('edit');
+                
             });
         });
     });

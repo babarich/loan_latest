@@ -7,7 +7,7 @@
         <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="d-flex flex-row-reverse gap-3">
                 <div class="mr-4">
-                    <a class="btn btn-primary" href="{{route('coa.chart')}}"><i class="bx bx-left-arrow-alt"></i>Back</a>
+                    <a class="btn btn-primary" href="{{route('expense.index')}}"><i class="bx bx-left-arrow-alt"></i>Back</a>
                 </div>
 
 
@@ -15,6 +15,8 @@
             </div>
         </div>
     </div>
+
+     
 
     <!-- Start::row-1 -->
     <div class="row mt-4">
@@ -30,18 +32,18 @@
                                     <li class="list-group-item">
                                         <div class="d-flex flex-wrap gap-2 align-items-center">
                                             <div class="me-2 fw-semibold">
-                                               Account Name :
+                                               Expense Type :
                                             </div>
-                                            <span class="fs-12 text-muted float-end">{{$chart->name}}</span>
+                                            <span class="fs-12 text-muted float-end">{{$expense->name}}</span>
                                         </div>
                                     </li>
 
                                     <li class="list-group-item">
                                         <div class="d-flex flex-wrap gap-2 align-items-center">
                                             <div class="me-2 fw-semibold">
-                                               Account Code:
+                                               Expense Date:
                                             </div>
-                                            <span class="fs-12 text-muted float-end">{{$chart->code}}</span>
+                                            <span class="fs-12 text-muted float-end">{{$expense->date}}</span>
                                         </div>
                                     </li>
 
@@ -50,16 +52,34 @@
                                             <div class="me-2 fw-semibold">
                                                Account Type :
                                             </div>
-                                            <span class="fs-12 text-muted float-end">{{$chart->category->name ?? 'N/A'}}</span>
+                                            <span class="fs-12 text-muted float-end">{{$expense->chart->name ?? 'N/A'}}</span>
                                         </div>
                                     </li>
 
                                     <li class="list-group-item">
                                         <div class="d-flex flex-wrap gap-2 align-items-center">
                                             <div class="me-2 fw-semibold">
-                                               Account Group:
+                                               Payment Account:
                                             </div>
-                                            <span class="fs-12 text-muted float-end">{{$chart->group->name ?? 'N/A'}}</span>
+                                            <span class="fs-12 text-muted float-end">{{$expense->payment->name ?? 'N/A'}}</span>
+                                        </div>
+                                    </li>
+
+                                      <li class="list-group-item">
+                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                            <div class="me-2 fw-semibold">
+                                               Amount:
+                                            </div>
+                                            <span class="fs-12 text-muted float-end">{{number_format($expense->amount) ?? 'N/A'}}</span>
+                                        </div>
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                            <div class="me-2 fw-semibold">
+                                               Reference No:
+                                            </div>
+                                            <span class="fs-12 text-muted float-end">{{$expense->ref_no ?? 'N/A'}}</span>
                                         </div>
                                     </li>
 
@@ -68,7 +88,7 @@
                                             <div class="me-2 fw-semibold">
                                                Created By :
                                             </div>
-                                            <span class="fs-12 text-muted float-end">{{$chart->user->name ?? 'N/A'}}</span>
+                                            <span class="fs-12 text-muted float-end">{{$expense->user->name ?? 'N/A'}}</span>
                                         </div>
                                     </li>
 
@@ -77,7 +97,7 @@
                                             <div class="me-2 fw-semibold">
                                                Created At:
                                             </div>
-                                            <span class="fs-12 text-muted float-end">{{$chart->created_at}}</span>
+                                            <span class="fs-12 text-muted float-end">{{$expense->created_at}}</span>
                                         </div>
                                     </li>
 
@@ -86,7 +106,7 @@
                                             <div class="me-2 fw-semibold">
                                                Notes:
                                             </div>
-                                            <span class="fs-12 text-muted float-end">{{$chart->note}}</span>
+                                            <span class="fs-12 text-muted float-end">{{$expense->note}}</span>
                                         </div>
                                     </li>
 

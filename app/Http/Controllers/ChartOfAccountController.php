@@ -146,6 +146,23 @@ class ChartOfAccountController extends Controller
 
         return view('chart.create', compact('types', 'groups'));
     }
+   
+
+    public function edit(Request $request, $chartId){
+        $types = FinancialCategory::get();
+        $groups = AccountGroup::where('com_id', Auth::user()->com_id)->get();
+
+        $chart = ChartOfAccount::findOrFail($chartId);
+
+        return view('chart.edit', compact('types', 'groups', 'chart'));
+    }
+
+    public function show(Request $request, $chartId){
+   
+        $chart = ChartOfAccount::findOrFail($chartId);
+        
+        return view('chart.view', compact('chart'));
+    }
 
     public function deleteChartOfAccount(Request $request,$id){
         // $check_expense = \App\Models\Expense::where('refer_expense_id', $id)->first();

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
     <div class="row mb-6 mt-4">
         <div class="col-sm-12 col-md-6 col-lg-6">
 
@@ -7,12 +8,8 @@
         <div class="col-sm-12 col-md-6 col-lg-6">
             <div class="d-flex flex-row-reverse gap-3">
                 <div class="mr-4">
-                    <a class="btn btn-primary" href="{{route('coa.chart')}}"><i class="bx bx-left-arrow-alt"></i>Back</a>
+                    <a class="btn btn-primary" href="{{route('expense.index')}}"><i class="bx bx-left-arrow-alt"></i>Back</a>
                 </div>
-
-
-
-
             </div>
         </div>
     </div>
@@ -22,61 +19,75 @@
             <div class="card custom-card">
                 <div class="card-header justify-content-between">
                     <div class="card-title">
-                        Update  Chart Of Account
+                 Create a new expense
                     </div>
                 </div>
-                <form method="POST" action="{{route('coa.updateChartOfAccount', $chart->id)}}" enctype="multipart/form-data">
+                <form method="POST" action="{{route('expense.store')}}" enctype="multipart/form-data">
                     @csrf
                 <div class="card-body">
                         <div class="row gy-4 mb-4">
                             <div class="col-xl-12">
-                                <label for="job-title" class="form-label">Account Code</label>
-                                <input type="text" class="form-control" id="code" placeholder="" name="code"
-                                value="{{old('code',$chart->code)}}">
-                                @error('code')
+                                <label for="job-title" class="form-label">Expense Type</label>
+                                <input type="text" class="form-control" id="name" placeholder="" name="name">
+                                @error('name')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
                             </div>
 
                             <div class="col-xl-12">
-                                <label for="job-title" class="form-label">Account Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="" name="name"
-                                value="{{old('code',$chart->name)}}">
-                                @error('name')
+                                <label for="job-title" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="date" placeholder="" name="date">
+                                @error('date')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
                             </div>
+
+                            <div class="col-xl-12">
+                                <label for="job-title" class="form-label">Amount</label>
+                                <input type="text" class="form-control" id="amount" placeholder="" name="amount">
+                                @error('amount')
+                                <span class="text-danger"><strong>{{$message}}</strong></span>
+                                @enderror
+                            </div>
+
                             <div class="col-xl-12">
                                 <label for="job-title" class="form-label">Account Type</label>
-                                <select  class="form-control" id="accountType"  name="financial_category_id">
+                                <select  class="form-control" id="accountType"  name="chart_id">
                                     <option value="">Select..</option>
-                                    @foreach($types as $type)
-                                     <option value="{{$type->id}}" {{old('financial_category_id', 
-                                        $chart->financial_category_id === $type->id ? 'selected' : '')}}>{{$type->name}}</option>
+                                    @foreach($charts as $chart)
+                                     <option value="{{$chart->id}}">{{$chart->name}}</option>
                                     @endforeach
                                     
                                 </select>
-                                @error('financial_category_id')
+                                @error('chart_id')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
                             </div>
-                            <span>If you skip to select a group, system will automatically add this chart name into a group</span>
+                  
                             <div class="col-xl-12">
-                                <label for="job-title" class="form-label">Account Group</label>
-                                <select  class="form-control" id="accountGroup"  name="account_group_id">
+                                <label for="job-title" class="form-label">Payment Account</label>
+                                <select  class="form-control" id="paymentAccount"  name="payment_id">
                                     <option value="">Select..</option>
-                                    @foreach($groups as $group)
-                                     <option value="{{$group->id}}" {{old('account_group_id', 
-                                        $chart->account_group_id === $group->id ? 'selected' : '')}}>{{$group->name}}</option>
+                                    @foreach($payments as $payment)
+                                     <option value="{{$payment->id}}">{{$payment->name}}</option>
                                     @endforeach
+                                    
                                 </select>
-                                @error('account_group')
+                                @error('payment_id')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
                             </div>
+                            <div class="col-xl-12">
+                                <label for="job-title" class="form-label">Reference No</label>
+                                <input type="text" class="form-control" id="ref" placeholder="" name="ref_no">
+                                @error('ref_no')
+                                <span class="text-danger"><strong>{{$message}}</strong></span>
+                                @enderror
+                            </div>
+
                              <div class="col-xl-12">
                                 <label for="job-title" class="form-label">Enter Notes </label>
-                                <textarea rows="3" class="form-control" id="notes" placeholder="" name="note">{{old('note', $chart->note)}}</textarea>
+                                <textarea rows="3" class="form-control" id="notes" placeholder="" name="note"></textarea>
                                 @error('note')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
