@@ -91,7 +91,7 @@
            }).then((result) => {
                if (result.isConfirmed) {
                    $.ajax({
-                       url:'{{route('coa.delete')}}',
+                       url:'',
                        type:'POST',
                        data:{
                            _token:'{{csrf_token()}}',
