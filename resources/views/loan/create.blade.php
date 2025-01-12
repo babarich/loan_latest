@@ -127,7 +127,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <label for="percentage" class="form-label">Loan Interest Percentage</label>
-                                <input type="number" name="percent" class="form-control" required>
+                                <input type="number" name="percent" class="form-control" step="0.01" required>
                                 @error('percent')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
