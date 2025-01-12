@@ -10,8 +10,8 @@ class DashboardService
 
 
 
-    public function getDashboard(){
-        $data = PaymentLoan::query()->get();
+    public function getDashboard($user){
+        $data = PaymentLoan::query()->where('com_id', $user->com_id)->get();
         $groupedData = $data->groupBy(function($item) {
             return $item->created_at->format('M');
         });
@@ -29,8 +29,8 @@ class DashboardService
     }
 
 
-    public function getLoans(){
-        $data = Loan::query()->get();
+    public function getLoans($user){
+        $data = Loan::query()->where('com_id', $user->com_id)->get();
         $groupedData = $data->groupBy(function($item) {
             return $item->created_at->format('M');
         });

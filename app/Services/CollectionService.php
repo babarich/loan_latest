@@ -11,10 +11,11 @@ class CollectionService
 
 
 
-    public function report()
+    public function report($user)
     {
 
         $weekly = LoanSchedule::query()
+        ->where('com_id', $user->com_id)
                 ->whereBetween('due_date', [Carbon::today()->subDays(7), Carbon::now()])
                 ->select(DB::raw('extract(DOW from due_date) as week_name'),
                     DB::raw('SUM(amount) as amount'),

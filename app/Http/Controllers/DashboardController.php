@@ -30,13 +30,13 @@ class DashboardController extends Controller
              $principleOutstanding = LoanSchedule::where('com_id', $user->com_id)->sum('principle');
              $interestOut = LoanSchedule::where('com_id', $user->com_id)->sum('interest');
              $fully = LoanPayment::query()->where('com_id', $user->com_id)->where('status', '=','completed')->count();
-             $open = LoanPayment::query()->where('status', '!=', 'completed')->count();
+             $open = LoanPayment::query()->where('status', '!=', 'completed')->where('com_id', $user->com_id)->count();
              $borrowers = Borrower::where('com_id', $user->com_id)->count('id');
              $denied =Loan::query()->where('com_id', $user->com_id)->where('status', '=', 'rejected')->count();
              $loans =Loan::query()->where('com_id', $user->com_id)->where('release_status', '=', 'approved')->count();
              $dataMonth = new ChartService();
-             $monthly = $dataMonth->getMonthProjected();
-             $books = $dataMonth->getMonthLoan();
+             $monthly = $dataMonth->getMonthProjected($user);
+             $books = $dataMonth->getMonthLoan($user);
 
              $currentMonth = Carbon::now()->month;
              $currentYear = Carbon::now()->year;

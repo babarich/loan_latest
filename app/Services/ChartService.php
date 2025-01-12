@@ -11,10 +11,12 @@ class ChartService
 {
 
 
-    public function getDataMonth()
+    public function getDataMonth($user)
     {
 
-        $data = PaymentLoan::query()->get();
+
+
+        $data = PaymentLoan::query()->where('com_id', $user->com_id)->get();
         $groupedData = $data->groupBy(function($item) {
             return $item->created_at->format('M');
         });
@@ -32,10 +34,10 @@ class ChartService
     }
 
 
-    public function getMonthProjected()
+    public function getMonthProjected($user)
     {
 
-        $data = LoanSchedule::query()->get();
+        $data = LoanSchedule::query()->where('com_id', $user->com_id)->get();
         $groupedData = $data->groupBy(function($item) {
 
             return Carbon::parse($item->due_date)->format('M');
@@ -56,10 +58,10 @@ class ChartService
 
 
 
-    public function getMonthLoan()
+    public function getMonthLoan($user)
     {
 
-        $data = Loan::query()->where('release_status','approved')->get();
+        $data = Loan::query()->where('com_id', $user->com_id)->where('release_status','approved')->get();
         $groupedData = $data->groupBy(function($item) {
             return Carbon::parse($item->created_at)->format('M');
         });
@@ -77,10 +79,10 @@ class ChartService
         return $chartData;
     }
 
-    public function getInterest()
+    public function getInterest($user)
     {
 
-        $data = LoanSchedule::query()->get();
+        $data = LoanSchedule::query()->where('com_id', $user->com_id)->get();
         $groupedData = $data->groupBy(function($item) {
 
             return Carbon::parse($item->due_date)->format('M');
@@ -100,10 +102,10 @@ class ChartService
 
 
 
-    public function getProjectedInterest()
+    public function getProjectedInterest($user)
     {
 
-        $data = LoanSchedule::query()->get();
+        $data = LoanSchedule::query()->where('com_id', $user->com_id)->get();
         $groupedData = $data->groupBy(function($item) {
 
             return Carbon::parse($item->due_date)->format('M');
@@ -123,10 +125,10 @@ class ChartService
 
 
 
-    public function getPrinciple()
+    public function getPrinciple($user)
     {
 
-        $data = LoanSchedule::query()->get();
+        $data = LoanSchedule::query()->where('com_id', $user->com_id)->get();
         $groupedData = $data->groupBy(function($item) {
 
             return Carbon::parse($item->due_date)->format('M');
@@ -146,10 +148,10 @@ class ChartService
 
 
 
-    public function getProjectedPrinciple()
+    public function getProjectedPrinciple($user)
     {
 
-        $data = LoanSchedule::query()->get();
+        $data = LoanSchedule::query()->where('com_id', $user->com_id)->get();
         $groupedData = $data->groupBy(function($item) {
 
             return Carbon::parse($item->due_date)->format('M');
