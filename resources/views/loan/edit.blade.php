@@ -102,7 +102,9 @@
                             </div>
                             <div class="col-xl-6">
                                 <label for="percentage" class="form-label">Loan Interest Percentage</label>
-                                <input type="number" name="percent" class="form-control" value="{{old('percent', $loan->interest_percentage)}}">
+                                <input type="number" name="percent" class="form-control" 
+                                step="0.01"
+                                value="{{old('percent', $loan->interest_percentage)}}">
                                 @error('percent')
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror

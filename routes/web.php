@@ -259,7 +259,7 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::post('update_chart_account/{id?}', 'updateChartOfAccount')->name('updateChartOfAccount');
                 Route::get('edit_chart_account/{id?}', 'edit')->name('editChart');
                  Route::get('view_chart/{id?}', 'show')->name('showChart');
-                Route::post('chart_delete', 'delete')->name('deleteChart');
+                Route::post('chart_delete', 'deleteChartOfAccount')->name('deleteChart');
             });
         });
     });

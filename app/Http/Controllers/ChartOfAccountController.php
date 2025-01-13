@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\FunctionHelper;
 use App\Models\Account\AccountGroup;
 use App\Models\Account\ChartOfAccount;
+use App\Models\Account\Expense;
 use App\Models\Account\FinancialCategory;
 
 use Illuminate\Http\Request;
@@ -78,8 +79,10 @@ class ChartOfAccountController extends Controller
         if (!empty($chartofaccount)) {
 
                 if ($chartofaccount->chart_no > 0) {
-                    $chart_no = \collect(DB::select('select chart_no from chart_of_accounts WHERE
-                    (id=' . $id) . ' and com_id=' . Auth::user()->com_id . ')')->first();
+                  $chart_no = \collect(DB::select(
+                    'select chart_no from chart_of_accounts WHERE id = ? and com_id = ?',
+                    [$id, Auth::user()->com_id]
+                     ))->first();
 
                     $chart_number = $chart_no->chart_no;
                 } else {
@@ -128,7 +131,7 @@ class ChartOfAccountController extends Controller
                 $affected_number = $chartofaccount->update($array);
                 if ($affected_number > 0) {
                     $msg = "Chart of account updated successfully";
-                    return redirect()->route('coa.updateChart')->with('success',$msg);
+                    return redirect()->route('coa.chart')->with('success',$msg);
                 } else {
                     $msg = "Update failed , please try again";
                     return redirect()->back()->with('error', $msg);
@@ -164,26 +167,20 @@ class ChartOfAccountController extends Controller
         return view('chart.view', compact('chart'));
     }
 
-    public function deleteChartOfAccount(Request $request,$id){
-        // $check_expense = \App\Models\Expense::where('refer_expense_id', $id)->first();
-        // $check_chart = \App\Models\COA::where('id', $id)->first();
-        // if($check_chart->predefined >= 1){
-        //     $msg = "Error cannot delete this chart of account";
-        //     return response()->json(['code' => 422, 'message' => $msg], 422);
-        // }
-        // if (empty($check_expense)) {
-        //     \App\Models\COA::where('id', $id)->delete();
-        //     $msg = "Chart of account deleted successfully";
-        //     return response()->json(['code' => 200, 'message' => $msg], 200);
-        // } else {
-        //     $f = \App\Models\COA::where('id', $id)->first();
-        //     if ($f->predefined < 1) {
-        //         //delete by force
-        //         \App\Models\Expense::where('refer_expense_id', $id)->delete();
-        //         \App\Models\COA::find($id)->delete();
-        //         $msg = "Chart of account deleted successfully";
-        //         return response()->json(['code' => 200, 'message' => $msg], 200);
-        //     }
-        // }
+    public function deleteChartOfAccount(Request $request){
+        $id = $request->input('id');
+        $check_expense = Expense::where('chart_id', $id)->first();
+        $check_chart = ChartOfAccount::where('id', $id)->first();
+        if($check_expense){
+            $msg = "Error cannot delete this chart of account";
+            return redirect()->back()->with('error',$msg);
+        }
+        if (empty($check_expense)) {
+            ChartOfAccount::where('id', $id)->delete();
+            $msg = "Chart of account deleted successfully";
+            return redirect()->back()->with('success', $msg);
+        } else {
+            
+        }
     }
 }
