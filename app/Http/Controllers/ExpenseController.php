@@ -46,7 +46,7 @@ class ExpenseController extends Controller
     public function store(Request $request){
         
 
-        $payment = CompanyPayment::query()->where('id', 'payment_id')->first();
+        $payment = CompanyPayment::query()->where('id', $request->input('payment_id'))->first();
         try{
             DB::beginTransaction();
 

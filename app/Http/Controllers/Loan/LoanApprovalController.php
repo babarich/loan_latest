@@ -84,6 +84,8 @@ class LoanApprovalController extends Controller
 
     public function approve(Request $request, $id)
     {
+    
+        $payment = CompanyPayment::query()->where('id', $request->input('payment_method'))->first();
         try {
             DB::beginTransaction();
             $loan = Loan::findOrFail($id);
@@ -101,6 +103,15 @@ class LoanApprovalController extends Controller
                     'user_id' => Auth::id(),
                     'com_id' => Auth::user()->com_id,
                 ]);
+
+                if($payment){
+                $open = $payment->open_balance;
+                if($open > 0){
+                    $total = $open - $loan->amount;
+                    $payment->open_balance = $total;
+                    $payment->save();
+                }
+            }   
             }
             DB::commit();
         }catch (\Exception $e){
