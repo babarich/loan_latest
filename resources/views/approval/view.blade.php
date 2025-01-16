@@ -662,11 +662,7 @@
                 }
             })
 
-            $('#chartId').select2({
-               class:'form-control',
-               placeholder:"Select Account Type"
-           })
-
+          
 
             $('#submitLoan').on('click', function (){
                 console.log('hello')
