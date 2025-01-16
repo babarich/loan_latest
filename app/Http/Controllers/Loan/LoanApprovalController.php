@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Loan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account\ChartOfAccount;
 use App\Models\Collateral\CollateralType;
 use App\Models\Loan\Loan;
 use App\Models\Loan\LoanDisbursement;
@@ -46,9 +47,11 @@ class LoanApprovalController extends Controller
         $transactions = CompanyPayment::query()
         ->where('com_id', $user->com_id)
         ->get();
+         $charts = ChartOfAccount::query()->where('com_id', Auth::user()->com_id)->get();
+
         $loan = TempLoan::with(['schedules','user', 'borrower','guarantor','product','agreements',
             'collaterals', 'files','comments'])->findOrFail($id);
-        return view('approval.view',['loan' =>$loan, 'types' => $types, 'transactions' => $transactions]);
+        return view('approval.view',['loan' =>$loan, 'types' => $types, 'transactions' => $transactions, 'charts' => $charts]);
     }
 
 
@@ -102,6 +105,7 @@ class LoanApprovalController extends Controller
                     'payment_date' => $request->input('payment_date'),
                     'user_id' => Auth::id(),
                     'com_id' => Auth::user()->com_id,
+                    'chart_id' => $request->filled('chart_id') ? $request->input('chart_id'): null
                 ]);
 
                 if($payment){

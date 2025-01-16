@@ -12,7 +12,7 @@ class LoanDisbursement extends Model
 
 
     protected $table = 'loan_disbursements';
-    protected $fillable = ['loan_id','payment_method', 'payment_reference', 'payment_date', 'user_id', 'com_id'];
+    protected $fillable = ['loan_id','payment_method', 'payment_reference', 'payment_date', 'user_id', 'com_id', 'chart_id'];
 
 
 }

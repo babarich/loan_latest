@@ -51,7 +51,28 @@
                                 <input  class="form-control" type="text" name="payment_reference" />
 
                             </div>
+                            
+                                @php
+                                $user = \Illuminate\Support\Facades\Auth::user();
+                                $logo = \App\Models\Company::where('id', $user->com_id)->first();
+                                
+                                @endphp
 
+                             @if(isset($logo) && $logo->id === 2)   
+                            <div class="col-xl-12">
+                                <label for="job-title" class="form-label">Account Type</label>
+                                <select  class="form-control" id="accountType"  name="chart_id">
+                                    <option value="">Select..</option>
+                                    @foreach($charts as $chart)
+                                     <option value="{{$chart->id}}">{{$chart->name}}</option>
+                                    @endforeach
+                                    
+                                </select>
+                                @error('chart_id')
+                                <span class="text-danger"><strong>{{$message}}</strong></span>
+                                @enderror
+                            </div>
+                            @endif
 
                             <div class="col-xl-12 mb-3">
                                 <label class="form-label">Payment Date</label>
