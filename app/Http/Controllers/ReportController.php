@@ -51,31 +51,30 @@ class ReportController extends Controller
             });
     }
 
-    public function trial(Request $request){
+   public function trial(Request $request)
+{
+    $accounts = ChartOfAccount::with(['journalEntries'])->get();
 
-            $accounts = ChartOfAccount::with(['journalEntries' => function ($query) {
-                $query->select('chart_of_account_id')
-                    ->groupBy('chart_of_account_id');
-            }])->get();
-
-
-        $trialBalance = $accounts->map(function ($account) {
+    $trialBalance = $accounts->map(function ($account) {
         $debit = $account->journalEntries->sum('debit');
         $credit = $account->journalEntries->sum('credit');
-            return [
-                'account_name' => $account->name,
-                'debit' => $debit,
-                'credit' => $credit,
-            ];
-        });
 
-            $totals = [
-                'debit' => $trialBalance->sum('debit'),
-                'credit' => $trialBalance->sum('credit'),
-            ];
+        return [
+            'account_name' => $account->name,
+            'debit' => $debit,
+            'credit' => $credit,
+        ];
+    });
 
-            return view('reports.trial', ['trialBalance' => $trialBalance,
-        'totals' => $totals]);
+    $totals = [
+        'debit' => $trialBalance->sum('debit'),
+        'credit' => $trialBalance->sum('credit'),
+    ];
 
-    }
+    return view('reports.trial', [
+        'trialBalance' => $trialBalance,
+        'totals' => $totals,
+    ]);
+}
+
 }
