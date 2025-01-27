@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Loan;
 
 use App\Http\Controllers\Controller;
 use App\Models\Account\ChartOfAccount;
+use App\Models\Account\JournalEntry;
 use App\Models\Collateral\CollateralType;
 use App\Models\Loan\Loan;
 use App\Models\Loan\LoanDisbursement;
@@ -107,15 +108,44 @@ class LoanApprovalController extends Controller
                     'com_id' => Auth::user()->com_id,
                     'chart_id' => $request->filled('chart_id') ? $request->input('chart_id'): null
                 ]);
+                    $customerAmount = $loan->amount * 0.99;
+                    $insuranceAmount = $loan->amount * 0.01;
 
-                if($payment){
-                $open = $payment->open_balance;
-                if($open > 0){
-                    $total = $open - $loan->amount;
-                    $payment->open_balance = $total;
-                    $payment->save();
-                }
-            }   
+                    if($request->filled('chart_id')){
+                        JournalEntry::create([
+                        'chart_of_account_id' => $request->input('chart_id'),
+                        'debit' => $loan->amount,
+                        'credit' => 0,
+                        'reference' => "Loan Disbursement #{$loan->id}",
+                        'com_id' => Auth::user()->com_id,
+                        ]);
+
+                        $chartCustomer = ChartOfAccount::query()->where('name', 'like', 'Customer')->first();
+                        if($chartCustomer){
+                            JournalEntry::create([
+                            'chart_of_account_id' => $chartCustomer,
+                            'debit' => 0,
+                            'credit' => $customerAmount,
+                            'reference' => "Loan Disbursement #{$loan->id} for Customer #{$loan->borrower_id}",
+                            'com_id' => Auth::user()->com_id,
+                        ]);
+
+                        }
+                   
+                        $chartInsurance = ChartOfAccount::query()->where('name', 'like', 'Insurance')->first();
+                        if($chartInsurance){
+                            JournalEntry::create([
+                            'chart_of_account_id' => $chartInsurance,
+                            'debit' => 0,
+                            'credit' => $insuranceAmount,
+                            'reference' => "Insurance Fee for Loan #{$loan->id}",
+                            'com_id' => Auth::user()->com_id,
+                        ]);
+                        }
+                        
+
+                    }
+                    
             }
             DB::commit();
         }catch (\Exception $e){

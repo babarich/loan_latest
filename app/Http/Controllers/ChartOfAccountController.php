@@ -62,6 +62,7 @@ class ChartOfAccountController extends Controller
             'open_balance' => (float) request('open_balance') > 0 ? (float) request('open_balance') : 0,
             "status" => "1",
             "com_id"=>Auth::user()->com_id,
+            "user_id" => Auth::id(),
             "chart_no" => $chart_no->chart_no + 1
         );
 

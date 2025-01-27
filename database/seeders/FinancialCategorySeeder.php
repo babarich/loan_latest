@@ -53,9 +53,9 @@ class FinancialCategorySeeder extends Seeder
             ],
             [
                 'id'=> 7,
-                'name'=>'Capital',
+                'name'=>'Equity',
                 'financial_statement_id'=>1,
-                'note'=>'Capital',
+                'note'=>'Equity',
             ],
 
 

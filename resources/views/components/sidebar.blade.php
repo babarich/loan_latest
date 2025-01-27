@@ -174,6 +174,16 @@
                             <a href="{{route('coa.chart')}}" 
                             class="{{request()->is('coas/chart') ? 'side-menu__item active' : 'side-menu__item'}}">Chart of Account</a>
                         </li>
+
+                         <li class="slide">
+                            <a href="{{route('coa.balance')}}" 
+                            class="{{request()->is('coas/balance') ? 'side-menu__item active' : 'side-menu__item'}}">Balance Sheet</a>
+                        </li>
+
+                         <li class="slide">
+                            <a href="{{route('coa.trial')}}" 
+                            class="{{request()->is('coas/trial') ? 'side-menu__item active' : 'side-menu__item'}}">Trial Balance</a>
+                        </li>
                         
                     </ul>
                 </li>

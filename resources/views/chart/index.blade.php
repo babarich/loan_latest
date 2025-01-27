@@ -28,6 +28,7 @@
                                    <th>Account Code</th>
                                    <th>Account Name</th>
                                    <th>Account Type</th>
+                                   <th>Open Balance</th>
                                    <th>Account Group</th>
                                    <th>Created By</th>
                                    <th>Created At</th>
@@ -42,6 +43,7 @@
                                         <td>{{$chart->code}}</td>
                                         <td>{{$chart->name}}</td>
                                         <td>{{$chart->category->name ?? 'N/A'}}</td>
+                                        <td>{{$chart->open_balance}}</td>
                                         <td>{{$chart->group->name ?? 'N/A'}} </td>
                                         <td>{{$chart->user->name ?? ''}}</td>
                                         <td>{{$chart->created_at}}</td>

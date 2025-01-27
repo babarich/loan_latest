@@ -11,6 +11,8 @@ use App\Charts\MonthlyPayment;
 use App\Charts\PrincipleChart;
 use App\Charts\PrincipleProjectedChart;
 use App\Http\Controllers\Controller;
+use App\Models\Account\ChartOfAccount;
+use App\Models\Account\JournalEntry;
 use App\Models\Borrow\Borrower;
 use App\Models\Borrow\BorrowerGroup;
 use App\Models\Loan\Loan;
@@ -219,6 +221,29 @@ class PaymentController extends Controller
                    $loanSchedule->principle = 0;
                    $loanSchedule->amount = 0;
                    $loanSchedule->save();
+
+                   $chartInsurance = ChartOfAccount::query()->where('name', 'like', 'Interest')->first();
+                   if($chartInsurance){
+                       JournalEntry::create([
+                       'chart_of_account_id' => $chartInsurance,
+                       'debit' => 0,
+                       'credit' => $paidInterest,
+                       'reference' => "Interest Fee for Loan #{$loanSchedule->loan_id}",
+                       'com_id' => Auth::user()->com_id,
+                   ]);
+                   }
+
+                   $chartLoan = ChartOfAccount::query()->where('name', 'like', 'Loan Portfolio')->first();
+                   if($chartLoan){
+                       JournalEntry::create([
+                       'chart_of_account_id' => $chartLoan,
+                       'debit' => 0,
+                       'credit' => $paidPrincipal,
+                       'reference' => "Principle Fee for Loan #{$loanSchedule->loan_id}",
+                       'com_id' => Auth::user()->com_id,
+                   ]);
+                   }
+
                } else {
                    $paidInterest = min($paymentAmount, $loanSchedule->interest);
                    $loanSchedule->interest_paid += $paidInterest;
@@ -234,6 +259,28 @@ class PaymentController extends Controller
                    $loanSchedule->status = 'partial';
                    $loanSchedule->amount -= ($paidInterest + $paidPrincipal);
                    $loanSchedule->save();
+
+                    $chartInsurance = ChartOfAccount::query()->where('name', 'like', 'Interest')->first();
+                    if($chartInsurance){
+                        JournalEntry::create([
+                        'chart_of_account_id' => $chartInsurance,
+                        'debit' => 0,
+                        'credit' => $paidInterest,
+                        'reference' => "Interest Fee for Loan #{$loanSchedule->loan_id}",
+                        'com_id' => Auth::user()->com_id,
+                    ]);
+                    }
+
+                   $chartLoan = ChartOfAccount::query()->where('name', 'like', 'Loan Portfolio')->first();
+                   if($chartLoan){
+                       JournalEntry::create([
+                       'chart_of_account_id' => $chartLoan,
+                       'debit' => 0,
+                       'credit' => $paidPrincipal,
+                       'reference' => "Principal Fee for Loan #{$loanSchedule->loan_id}",
+                       'com_id' => Auth::user()->com_id,
+                   ]);
+                   }
                }
        
                if ($paymentAmount <= 0) {
@@ -245,7 +292,24 @@ class PaymentController extends Controller
            $totalPaid = $payment->paid_amount + $validatedData['amount'];
            $dueAmount = max(0, $payment->due_amount - $validatedData['amount']);
            $payment->update(['paid_amount' => $totalPaid, 'due_amount' => $dueAmount]);
-       
+
+
+                        $chartCustomer = ChartOfAccount::query()->where('name', 'like', 'Customer')->first();
+                        if($chartCustomer){
+                            JournalEntry::create([
+                            'chart_of_account_id' => $chartCustomer,
+                            'debit' => $validatedData['amount'],
+                            'credit' => 0,
+                            'reference' => "Loan Disbursement  for Customer #{$request->input('customer_id')}",
+                            'com_id' => Auth::user()->com_id,
+                        ]);
+
+                        
+                   
+
+                    }
+                        
+
            PaymentLoan::create([
                'loan_id' => $loanSchedules->first()->loan_id,
                'borrower_id' => $loanSchedules->first()->borrower_id,

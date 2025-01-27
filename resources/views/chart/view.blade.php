@@ -66,6 +66,15 @@
                                     <li class="list-group-item">
                                         <div class="d-flex flex-wrap gap-2 align-items-center">
                                             <div class="me-2 fw-semibold">
+                                               Open Balance:
+                                            </div>
+                                            <span class="fs-12 text-muted float-end">{{$chart->open_balance ?? 0 }}</span>
+                                        </div>
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                            <div class="me-2 fw-semibold">
                                                Created By :
                                             </div>
                                             <span class="fs-12 text-muted float-end">{{$chart->user->name ?? 'N/A'}}</span>

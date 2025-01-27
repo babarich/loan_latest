@@ -74,6 +74,14 @@
                                 <span class="text-danger"><strong>{{$message}}</strong></span>
                                 @enderror
                             </div>
+                            <div class="col-xl-12">
+                                <label for="job-title" class="form-label">Open Balance</label>
+                                <input type="text" class="form-control" id="openBalance" placeholder="" name="open_balance"
+                                value="{{old('open_balance', $chart->open_balance)}}">
+                                @error('open_balance')
+                                <span class="text-danger"><strong>{{$message}}</strong></span>
+                                @enderror
+                            </div>
                              <div class="col-xl-12">
                                 <label for="job-title" class="form-label">Enter Notes </label>
                                 <textarea rows="3" class="form-control" id="notes" placeholder="" name="note">{{old('note', $chart->note)}}</textarea>
