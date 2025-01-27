@@ -108,13 +108,13 @@ class LoanApprovalController extends Controller
                     'com_id' => Auth::user()->com_id,
                     'chart_id' => $request->filled('chart_id') ? $request->input('chart_id'): null
                 ]);
-                    $customerAmount = $loan->amount * 0.99;
-                    $insuranceAmount = $loan->amount * 0.01;
+                    $customerAmount = $loan->principle_amount * 0.99;
+                    $insuranceAmount = $loan->principle_amount * 0.01;
 
                     if($request->filled('chart_id')){
                         JournalEntry::create([
                         'chart_of_account_id' => $request->input('chart_id'),
-                        'debit' => $loan->amount,
+                        'debit' => $loan->principle_amount,
                         'credit' => 0,
                         'reference' => "Loan Disbursement #{$loan->id}",
                         'com_id' => Auth::user()->com_id,

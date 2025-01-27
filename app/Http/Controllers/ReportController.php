@@ -11,6 +11,7 @@ class ReportController extends Controller
 {
     
     public function balance(Request $request){
+      
         $assets = $this->getAccountTotalByType(5);
         $liabilities = $this->getAccountTotalByType(6);
         $equity = $this->getAccountTotalByType(7);
