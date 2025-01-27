@@ -120,7 +120,10 @@ class LoanApprovalController extends Controller
                         'com_id' => Auth::user()->com_id,
                         ]);
 
-                        $chartCustomer = ChartOfAccount::query()->where('name', 'like', 'Customer')->first();
+                        $chartCustomer = ChartOfAccount::query()
+                        ->where('name', 'like', '%' . $payment->name . '%')
+                        ->first();
+
                         if($chartCustomer){
                             JournalEntry::create([
                             'chart_of_account_id' => $chartCustomer,
@@ -132,7 +135,10 @@ class LoanApprovalController extends Controller
 
                         }
                    
-                        $chartInsurance = ChartOfAccount::query()->where('name', 'like', 'Insurance')->first();
+                        $chartInsurance = ChartOfAccount::query()
+                        ->where('name', 'like', '%Insurance%')
+                        ->first();
+
                         if($chartInsurance){
                             JournalEntry::create([
                             'chart_of_account_id' => $chartInsurance,
