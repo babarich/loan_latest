@@ -126,7 +126,7 @@ class LoanApprovalController extends Controller
 
                         if($chartCustomer){
                             JournalEntry::create([
-                            'chart_of_account_id' => $chartCustomer,
+                            'chart_of_account_id' => $chartCustomer->id,
                             'debit' => 0,
                             'credit' => $customerAmount,
                             'reference' => "Loan Disbursement #{$loan->id} for Customer #{$loan->borrower_id}",
@@ -141,7 +141,7 @@ class LoanApprovalController extends Controller
 
                         if($chartInsurance){
                             JournalEntry::create([
-                            'chart_of_account_id' => $chartInsurance,
+                            'chart_of_account_id' => $chartInsurance->id,
                             'debit' => 0,
                             'credit' => $insuranceAmount,
                             'reference' => "Insurance Fee for Loan #{$loan->id}",

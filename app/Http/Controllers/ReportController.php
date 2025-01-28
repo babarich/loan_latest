@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Account\ChartOfAccount;
 use App\Models\Account\JournalEntry;
+use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -19,6 +21,10 @@ class ReportController extends Controller
         $totalAssets = $assets->sum('balance');
         $totalLiabilities = $liabilities->sum('balance');
         $totalEquity = $equity->sum('balance');
+
+        $company = Company::query()->where('id', Auth::user()->com_id)->first();
+
+     
     
 
         // $sheets = DB::table('journal_entries')
@@ -30,7 +36,8 @@ class ReportController extends Controller
         //     ->get();
 
 
-            return view('reports.balance', compact('assets', 'liabilities', 'equity', 'totalAssets', 'totalLiabilities', 'totalEquity'));
+            return view('reports.balance', compact('assets', 
+            'liabilities', 'equity', 'totalAssets', 'totalLiabilities', 'totalEquity','company'));
 
     }
 
@@ -55,6 +62,8 @@ class ReportController extends Controller
 {
     $accounts = ChartOfAccount::with(['journalEntries'])->get();
 
+     $company = Company::query()->where('id', Auth::user()->com_id)->first();
+
     $trialBalance = $accounts->map(function ($account) {
         $debit = $account->journalEntries->sum('debit');
         $credit = $account->journalEntries->sum('credit');
@@ -74,6 +83,7 @@ class ReportController extends Controller
     return view('reports.trial', [
         'trialBalance' => $trialBalance,
         'totals' => $totals,
+        'company' => $company
     ]);
 }
 

@@ -230,10 +230,13 @@ Route::group(['middleware' => 'auth'], function (){
             Route::controller(\App\Http\Controllers\CompanyController::class)->group(function (){
                 Route::get('index', 'index')->name('index');
                 Route::get('create', 'create')->name('create');
+                Route::get('setting', 'indexCompany')->name('setting');
                 Route::post('store', 'store')->name('store');
                 Route::get('view/{id?}', 'show')->name('show');
                 Route::post('update/{id?}', 'update')->name('update');
+                Route::post('company_update/{id?}', 'updateCompany')->name('updateCompany');
                 Route::get('edit/{id?}', 'edit')->name('edit');
+                Route::get('company_edit/{id?}', 'editCompany')->name('editCompany');
                 Route::post('delete', 'delete')->name('delete');
             });
         });

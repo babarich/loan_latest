@@ -229,6 +229,9 @@
                         <li class="slide">
                             <a href="{{route('company.index')}}" class="{{request()->is('companies/index') ? 'side-menu__item active' : 'side-menu__item'}}">Payment Method</a>
                         </li>
+                        <li class="slide">
+                            <a href="{{route('company.setting')}}" class="{{request()->is('companies/setting') ? 'side-menu__item active' : 'side-menu__item'}}">Company</a>
+                        </li>
                     </ul>
                 </li>
                 <!-- End::slide -->

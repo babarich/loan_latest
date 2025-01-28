@@ -222,10 +222,13 @@ class PaymentController extends Controller
                    $loanSchedule->amount = 0;
                    $loanSchedule->save();
 
-                   $chartInsurance = ChartOfAccount::query()->where('name', 'like', 'Interest')->first();
+                   $chartInsurance =  ChartOfAccount::query()
+                        ->where('name', 'like', '%Interest%')
+                        ->first();
+
                    if($chartInsurance){
                        JournalEntry::create([
-                       'chart_of_account_id' => $chartInsurance,
+                       'chart_of_account_id' => $chartInsurance->id,
                        'debit' => 0,
                        'credit' => $paidInterest,
                        'reference' => "Interest Fee for Loan #{$loanSchedule->loan_id}",
@@ -233,10 +236,10 @@ class PaymentController extends Controller
                    ]);
                    }
 
-                   $chartLoan = ChartOfAccount::query()->where('name', 'like', 'Loan Portfolio')->first();
+                   $chartLoan = ChartOfAccount::query()->where('name', 'like', '%Loan Portfolio%')->first();
                    if($chartLoan){
                        JournalEntry::create([
-                       'chart_of_account_id' => $chartLoan,
+                       'chart_of_account_id' => $chartLoan->id,
                        'debit' => 0,
                        'credit' => $paidPrincipal,
                        'reference' => "Principle Fee for Loan #{$loanSchedule->loan_id}",
@@ -260,10 +263,10 @@ class PaymentController extends Controller
                    $loanSchedule->amount -= ($paidInterest + $paidPrincipal);
                    $loanSchedule->save();
 
-                    $chartInsurance = ChartOfAccount::query()->where('name', 'like', 'Interest')->first();
+                    $chartInsurance = ChartOfAccount::query()->where('name', 'like', '%Interest%')->first();
                     if($chartInsurance){
                         JournalEntry::create([
-                        'chart_of_account_id' => $chartInsurance,
+                        'chart_of_account_id' => $chartInsurance->id,
                         'debit' => 0,
                         'credit' => $paidInterest,
                         'reference' => "Interest Fee for Loan #{$loanSchedule->loan_id}",
@@ -271,10 +274,10 @@ class PaymentController extends Controller
                     ]);
                     }
 
-                   $chartLoan = ChartOfAccount::query()->where('name', 'like', 'Loan Portfolio')->first();
+                   $chartLoan = ChartOfAccount::query()->where('name', 'like', '%Loan Portfolio%')->first();
                    if($chartLoan){
                        JournalEntry::create([
-                       'chart_of_account_id' => $chartLoan,
+                       'chart_of_account_id' => $chartLoan->id,
                        'debit' => 0,
                        'credit' => $paidPrincipal,
                        'reference' => "Principal Fee for Loan #{$loanSchedule->loan_id}",
@@ -293,11 +296,17 @@ class PaymentController extends Controller
            $dueAmount = max(0, $payment->due_amount - $validatedData['amount']);
            $payment->update(['paid_amount' => $totalPaid, 'due_amount' => $dueAmount]);
 
+                         $paymentType = 'Bank';
+                         if($request->filled('bank')){
+                            $paymentType = 'Bank';
+                         }else{
+                            $paymentType = 'Mobile';
+                         }
 
-                        $chartCustomer = ChartOfAccount::query()->where('name', 'like', 'Customer')->first();
+                        $chartCustomer = ChartOfAccount::query()->where('name', 'like', '%' . $paymentType . '%')->first();
                         if($chartCustomer){
                             JournalEntry::create([
-                            'chart_of_account_id' => $chartCustomer,
+                            'chart_of_account_id' => $chartCustomer->id,
                             'debit' => $validatedData['amount'],
                             'credit' => 0,
                             'reference' => "Loan Disbursement  for Customer #{$request->input('customer_id')}",
