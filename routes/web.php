@@ -1,5 +1,6 @@
 <?php
 
+use App\Exports\Loan\LoanGenderExport;
 use App\Http\Controllers\Borrower\BorrowerController;
 use App\Http\Controllers\Borrower\BorrowerGroup;
 use App\Http\Controllers\Borrower\GuarantorController;
@@ -12,7 +13,9 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\ProfileController;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', function () {
     return view('auth/login');
@@ -302,6 +305,22 @@ Route::group(['middleware' => 'auth'], function (){
                 
             });
         });
+    });
+
+    Route::group(['prefix' => 'reports'], function (){
+
+        Route::name('report.')->group(function (){
+            Route::controller(\App\Http\Controllers\ReportController::class)->group(function (){
+                Route::get('gender', 'gender')->name('gender');
+                Route::get('export/loans', 'exportGender')->name('exportGender');
+                
+                
+            });
+
+          
+        });
+
+        
     });
 
     Route::group(['prefix' => 'users'], function (){

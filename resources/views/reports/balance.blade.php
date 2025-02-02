@@ -41,6 +41,21 @@
 
 <div class="row mt-4">
     <div class="col-xl-12">
+         <form action="{{ route('coa.balance') }}" method="GET" class="mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="from_date">From Date</label>
+                <input type="date" name="from_date" id="from_date" class="form-control" value="{{ $fromDate }}">
+            </div>
+            <div class="col-md-3">
+                <label for="to_date">To Date</label>
+                <input type="date" name="to_date" id="to_date" class="form-control" value="{{ $toDate }}">
+            </div>
+            <div class="col-md-3 align-self-end">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
     <div class="card custom-card">
     <div class="card-header d-md-flex d-block">
         <div class="h5 mb-0 d-sm-flex d-block align-items-center">
@@ -163,30 +178,31 @@
     @endsection
 
     @section('scripts')
-<!-- Include html2canvas and jsPDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-qsSPQ8ixMWz1+Q0Wy1RdMEccScfSoQjFF7EoOeLhE3N/dVmZexhcVDP6pCBkOCiv2OgrGFMdoojzLPkxBtN/jA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" integrity="sha512-p3PZl8H1jO72rAf5tggqVuT8Rn7jEHG1j3ocpGylgnq3GZ3ISiqokx9G0AenL71DYMoGIMQGidXQanYmd+j4fQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script>
     $(document).ready(function () {
         // Save as PDF
         document.getElementById('saveAsPdf').addEventListener('click', function () {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'mm', 'a4'); // Create a new PDF in portrait mode, A4 size
+            // Initialize jsPDF correctly for the UMD version
+            const { jsPDF } = window.jspdf || {}; 
+            const doc = new jsPDF('p', 'mm', 'a4'); // Portrait mode, A4 size
 
-            // Capture the balance sheet content
+            // Capture the content
             const content = document.querySelector('.card-body');
 
             html2canvas(content).then((canvas) => {
-                const imgData = canvas.toDataURL('image/png'); // Convert the content to an image
+                const imgData = canvas.toDataURL('image/png');
                 const imgWidth = 210; // A4 width in mm
-                const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate height to maintain aspect ratio
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-                // Add the image to the PDF
+                // Add image to PDF
                 doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                doc.save('BalanceSheet.pdf'); // Save the PDF
+                doc.save('BalanceSheet.pdf');
             });
         });
+    
 
         // Print functionality
         function printDiv(divID) {

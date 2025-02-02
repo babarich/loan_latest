@@ -157,7 +157,7 @@
                 <li  class="{{request()->is('*coa*')   ? 'slide has-sub active open' : 'slide has-sub'}}" >
                     <a href="javascript:void(0);" class="side-menu__item">
                         <i class="bx bx-credit-card side-menu__icon"></i>
-                        <span class="side-menu__label">Transactions</span>
+                        <span class="side-menu__label">Accounting</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
                     <ul class="slide-menu child1">
@@ -194,6 +194,30 @@
 
 
 
+                 @if(isset($logo) && $logo->id === 2)
+            <!-- Start::slide__category -->
+            <li class="slide__category"><span class="category-name">Report Management</span></li>
+                <!-- End::slide__category -->
+                <!-- Start::slide -->
+                <li  class="{{request()->is('*report*')   ? 'slide has-sub active open' : 'slide has-sub'}}" >
+                    <a href="javascript:void(0);" class="side-menu__item">
+                        <i class="bx bx-credit-card side-menu__icon"></i>
+                        <span class="side-menu__label">Reports</span>
+                        <i class="fe fe-chevron-right side-menu__angle"></i>
+                    </a>
+                    <ul class="slide-menu child1">
+                          
+                          <li class="slide">
+                            <a href="{{route('report.gender')}}" 
+                            class="{{request()->is('reports/gender') ? 'side-menu__item active' : 'side-menu__item'}}">Loan By Gender</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+                <!-- End::slide -->
+
+               @endif
 
 
 
