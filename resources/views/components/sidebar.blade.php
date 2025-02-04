@@ -175,15 +175,7 @@
                             class="{{request()->is('coas/chart') ? 'side-menu__item active' : 'side-menu__item'}}">Chart of Account</a>
                         </li>
 
-                         <li class="slide">
-                            <a href="{{route('coa.balance')}}" 
-                            class="{{request()->is('coas/balance') ? 'side-menu__item active' : 'side-menu__item'}}">Balance Sheet</a>
-                        </li>
-
-                         <li class="slide">
-                            <a href="{{route('coa.trial')}}" 
-                            class="{{request()->is('coas/trial') ? 'side-menu__item active' : 'side-menu__item'}}">Trial Balance</a>
-                        </li>
+                         
                         
                     </ul>
                 </li>
@@ -207,9 +199,19 @@
                     </a>
                     <ul class="slide-menu child1">
                           
+                    <li class="slide">
+                            <a href="{{route('report.balance')}}" 
+                            class="{{request()->is('reports/balance') ? 'side-menu__item active' : 'side-menu__item'}}">Balance Sheet</a>
+                        </li>
+
+                         <li class="slide">
+                            <a href="{{route('report.trial')}}" 
+                            class="{{request()->is('reports/trial') ? 'side-menu__item active' : 'side-menu__item'}}">Trial Balance</a>
+                        </li>
+
                           <li class="slide">
                             <a href="{{route('report.gender')}}" 
-                            class="{{request()->is('reports/gender') ? 'side-menu__item active' : 'side-menu__item'}}">Loan By Gender</a>
+                            class="{{request()->is('reports/gender') ? 'side-menu__item active' : 'side-menu__item'}}">Other Reports</a>
                         </li>
                         
                         

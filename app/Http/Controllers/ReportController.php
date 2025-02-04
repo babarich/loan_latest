@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Loan\BalanceSheetExport;
+use App\Exports\Loan\LoanBorrowerExport;
 use App\Exports\Loan\LoanGenderExport;
 use App\Models\Account\ChartOfAccount;
 use App\Models\Account\JournalEntry;
@@ -125,6 +127,28 @@ private function getAccountTotalByType($type, $companyId, $fromDate, $toDate)
                 $year = request('year', Carbon::now()->year);
 
              return Excel::download(new LoanGenderExport($quarter, $year, $id), 'quarterly_loans.xlsx');
+            
+        }
+
+
+        public function exportBorrower(Request $request){
+
+            $id = Auth::user()->com_id;
+               $quarter = request('quarter', Carbon::now()->quarter);
+                $year = request('year', Carbon::now()->year);
+
+             return Excel::download(new LoanBorrowerExport($quarter, $year, $id), 'quarterly_borrowers.xlsx');
+            
+        }
+
+
+         public function exportBalanceSheet(Request $request){
+
+                $id = Auth::user()->com_id;
+                $quarter = request('quarter', Carbon::now()->quarter);
+                $year = request('year', Carbon::now()->year);
+
+             return Excel::download(new BalanceSheetExport($quarter, $year, $id), 'quarterly_balance_sheet.xlsx');
             
         }
 }

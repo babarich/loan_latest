@@ -268,11 +268,6 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::post('chart_delete', 'deleteChartOfAccount')->name('deleteChart');
             });
 
-            Route::controller(\App\Http\Controllers\ReportController::class)->group(function (){
-                Route::get('balance', 'balance')->name('balance');
-                Route::get('trial', 'trial')->name('trial');
-           
-            });
         });
     });
 
@@ -313,6 +308,10 @@ Route::group(['middleware' => 'auth'], function (){
             Route::controller(\App\Http\Controllers\ReportController::class)->group(function (){
                 Route::get('gender', 'gender')->name('gender');
                 Route::get('export/loans', 'exportGender')->name('exportGender');
+                Route::get('export_borrower_report', 'exportBorrower')->name('exportBorrower');
+                Route::get('export_balance_sheet_report', 'exportBalanceSheet')->name('exportBalanceSheet');
+                Route::get('balance', 'balance')->name('balance');
+                Route::get('trial', 'trial')->name('trial');
                 
                 
             });

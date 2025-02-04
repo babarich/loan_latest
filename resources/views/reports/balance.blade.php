@@ -41,7 +41,7 @@
 
 <div class="row mt-4">
     <div class="col-xl-12">
-         <form action="{{ route('coa.balance') }}" method="GET" class="mb-4">
+         <form action="{{ route('report.balance') }}" method="GET" class="mb-4">
         <div class="row">
             <div class="col-md-3">
                 <label for="from_date">From Date</label>

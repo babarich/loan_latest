@@ -14,30 +14,144 @@
 
     <div class="row mt-4">
         <div class="col-xl-12">
-        <form action="{{route('report.exportGender')}}" method="GET">
-        <div class="row">
-            <div class="col-md-3">
-                <select name="quarter" class="form-select">
-                    <option value="1">Q1</option>
-                    <option value="2">Q2</option>
-                    <option value="3">Q3</option>
-                    <option value="4">Q4</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <input type="number" name="year" class="form-control" value="{{ date('Y') }}">
-            </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-primary">Export Excel</button>
-            </div>
-        </div>
-    </form>
+            <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card custom-card">
+                            <div class="card-header justify-content-between">
+                                <div class="card-title">
+                                    Loan  By Gender
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                            <form action="{{route('report.exportGender')}}" method="GET">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <select name="quarter" class="form-select">
+                                            <option value="1">Q1</option>
+                                            <option value="2">Q2</option>
+                                            <option value="3">Q3</option>
+                                            <option value="4">Q4</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" name="year" class="form-control" value="{{ date('Y') }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-primary">Export Excel</button>
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card custom-card">
+                            <div class="card-header justify-content-between">
+                                <div class="card-title">
+                                    Loan By Borrowers
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <form action="{{route('report.exportBorrower')}}" method="GET">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <select name="quarter" class="form-select">
+                                            <option value="1">Q1</option>
+                                            <option value="2">Q2</option>
+                                            <option value="3">Q3</option>
+                                            <option value="4">Q4</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" name="year" class="form-control" value="{{ date('Y') }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-primary">Export Excel</button>
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        
             
-</div>
+    </div>
             
   
 
+<div class="row mt-4">
+        <div class="col-xl-12">
+            <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card custom-card">
+                            <div class="card-header justify-content-between">
+                                <div class="card-title">
+                                    Balance Sheet
+                                </div>
 
+                            </div>
+                            <div class="card-body">
+                            <form action="{{route('report.exportBalanceSheet')}}" method="GET">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <select name="quarter" class="form-select">
+                                            <option value="1">Q1</option>
+                                            <option value="2">Q2</option>
+                                            <option value="3">Q3</option>
+                                            <option value="4">Q4</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" name="year" class="form-control" value="{{ date('Y') }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-primary">Export Excel</button>
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <!-- <div class="card custom-card">
+                            <div class="card-header justify-content-between">
+                                <div class="card-title">
+                                    Trial Balance
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <form action="{{route('report.exportBorrower')}}" method="GET">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <select name="quarter" class="form-select">
+                                            <option value="1">Q1</option>
+                                            <option value="2">Q2</option>
+                                            <option value="3">Q3</option>
+                                            <option value="4">Q4</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" name="year" class="form-control" value="{{ date('Y') }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-primary">Export Excel</button>
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+        </div>
+</div>
+            
+    </div>
 
 
 @endsection
