@@ -64,7 +64,7 @@ class LoanBorrowerExport implements FromCollection, WithHeadings, WithTitle, Wit
 
     public function title(): string
     {
-        return 'Q'.$this->quarter.' Report';
+        return 'Loan Borrower Q'.$this->quarter.' Report';
     }
 
     public function styles(Worksheet $sheet)

@@ -70,7 +70,7 @@ class LoanGenderExport implements  FromCollection, WithHeadings, WithTitle, With
 
     public function title(): string
     {
-        return 'Q'.$this->quarter.' Report';
+        return 'Loan Gender Q'.$this->quarter.' Report';
     }
 
     public function styles(Worksheet $sheet)
